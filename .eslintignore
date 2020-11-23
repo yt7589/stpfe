@@ -3,8 +3,8 @@ build/
 tests/
 node_modules/
 
-# D2CRUD 演示
-src/views/demo/d2-crud/
+# 禁用eslint
+src/
 
 # node 覆盖率文件
 coverage/
