@@ -144,7 +144,7 @@
         bottom: 0px;
         right: 0px;
         width: 1266px;
-        height: 54px;
+        height: 55px;
 
         background: url(./image/background-piece_4.png) no-repeat;
         background-size: 100% 100%;
@@ -153,10 +153,10 @@
 
       > .piece-5 {
         position: absolute;
-        bottom: 58px;
+        bottom: 54px;
         right: 0px;
         top: 217px;
-        width: 21px;
+        width: 17px;
 
         background: url(./image/background-piece_5.png) no-repeat;
         background-size: 100% 100%;
@@ -314,6 +314,8 @@
       left: 0px;
       bottom: 0px;
       right: 0px;
+      /*TODO: 确认底色*/
+      background: #061437;
 
       .custom-menu-box {
         position: absolute;

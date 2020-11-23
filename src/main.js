@@ -31,10 +31,15 @@ import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
 import solidGaugeInit from 'highcharts/modules/solid-gauge'
 import highchartsMore from 'highcharts/highcharts-more';
+import HighchartsVariablePie from 'highcharts/modules/variable-pie';
 
 highchartsMore(Highcharts)
+HighchartsVariablePie(Highcharts)
 solidGaugeInit(Highcharts)
 Vue.use(HighchartsVue)
+
+// PingFang 字体
+import './assets/fonts/font.css'
 
 // 百度地图
 import BaiduMap from 'vue-baidu-map-v3'

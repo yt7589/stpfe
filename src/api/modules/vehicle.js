@@ -64,4 +64,11 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       }
     })
   },
+
+  VehicleStatistic(){
+    return request({
+      url: '/vehicle/statistic',
+      method: 'get',
+    })
+  }
 })

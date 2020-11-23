@@ -101,7 +101,16 @@
     },
     mounted(){
     },
-    methods: {}
+    methods: {
+      handleSizeChange(size){
+        this.table.pagination.pageSize = size
+        this.fetchData()
+      },
+      handleCurrentChange(page){
+        this.table.pagination.page = page
+        this.fetchData(page)
+      }
+    }
   }
 </script>
 

@@ -133,9 +133,10 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-        this.$nextTick(() => {
+        setTimeout(() => {
+            // 立即聚焦会出现白屏
           this.zoomFocus()
-        })
+        }, 1000)
       },
       zoomFocus(){
         if (this.map.instance) {

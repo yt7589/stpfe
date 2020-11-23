@@ -1,42 +1,53 @@
 <template>
-  <div class="page-index">
-    <div class="page-index_wrapper">
-      <span class="button-box">
-        <el-button class="photo-button custom-primary-button" @click="openPage('photo')">开启图片体验</el-button>
-        <el-button class="video-button custom-primary-button" @click="openPage('video')">开启视频体验</el-button>
-      </span>
-
-      <!--<div class="line-1">-->
-      <!--<div class="number-box">-->
-      <!--<div class="number-box_wrapper">-->
-      <!--<div>-->
-      <!--<el-image class="title-image" :src="require('./image/image-exp-title.png')"></el-image>-->
-      <!--<span class="title-text">&nbsp;体验数据</span>-->
-      <!--</div>-->
-      <!--<div class="number-card card-photo">-->
-      <!--<el-image class="card-image" :src="require('./image/image-photo.png')"></el-image>-->
-      <!--<div class="card-value">-->
-      <!--<div class="value">123456</div>-->
-      <!--<div class="title">图片体验</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div class="line-2"></div>-->
+  <div class="page-index custom-main-content">
+    <div class="column-left">
+      <car-type-card class="line-car-type"></car-type-card>
+      <car-hour-card class="line"></car-hour-card>
+      <car-type-flow-card class="line"></car-type-flow-card>
+      <car-road-flow-card class="line"></car-road-flow-card>
+    </div>
+    <div class="column-middle">
+      <car-statics-card class="car-statics-card"></car-statics-card>
+      <area-flow-card class="area-flow-card"></area-flow-card>
+    </div>
+    <div class="column-right">
+      <car-break-card class="car-break-card"></car-break-card>
+      <car-break-type-card class="car-break-type-card"></car-break-type-card>
+      <car-break-today-card class="car-break-today-card"></car-break-today-card>
     </div>
   </div>
 </template>
 
 <script>
+  import CarHourCard from './components/car-hour-card'
+  import CarTypeCard from './components/car-type-card'
+  import CarTypeFlowCard from './components/car-type-flow-card'
+  import CarRoadFlowCard from './components/car-road-flow-card'
+  import CarStaticsCard from './components/car-statics-card'
+  import AreaFlowCard from './components/area-flow-card'
+  import CarBreakCard from './components/car-break-card'
+  import CarBreakTypeCard from './components/car-break-type-card'
+  import CarBreakTodayCard from './components/car-break-today-card'
+
+  import API from '@/api'
+
   export default {
-    components: {},
+    components: {
+      CarHourCard, CarTypeCard, CarTypeFlowCard, CarRoadFlowCard,
+      CarStaticsCard, AreaFlowCard,
+      CarBreakCard, CarBreakTypeCard, CarBreakTodayCard
+    },
     data () {
       return {}
     },
+    mounted(){
+//      this.fetchData()
+    },
     methods: {
-      openPage(page){
-        this.$emit("open", page)
+      fetchData(){
+        API.VehicleStatistic().then(() => {
+
+        })
       }
     }
   }
@@ -44,83 +55,67 @@
 
 <style lang="scss">
   .page-index {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    .column-left {
+      width: 25%;
+      height: 100%;
+      display: inline-block;
 
-    .page-index_wrapper {
-      position: absolute;
-      top: 147px;
-      left: 45px;
-      right: 45px;
-      bottom: 65px;
-
-      background: url('./image/bg-index.png');
-      background-size: 100% 100%;
-      -moz-background-size: 100% 100%;
-
-      .button-box {
-        position: absolute;
-        left: 120px;
-        top: 63%;
-      }
-      .photo-button {
-        display: inline-block;
+      .line-car-type {
+        width: 100%;
+        height: calc(19% - 10px);
+        margin-bottom: 10px;
       }
 
-      .video-button {
-        display: inline-block;
-        margin-left: 40px;
+      .line {
+        width: 100%;
+        height: calc(27% - 10px);
+        margin-bottom: 10px;
       }
     }
 
-    /*.line-1 {*/
-    /*height: calc(50% - 13px);*/
-    /*width: 100%;*/
-    /*}*/
+    .column-middle {
+      width: calc(50% - 14px);
+      height: 100%;
+      margin: 0px 7px;
+      display: inline-block;
 
-    /*.line-2 {*/
-    /*height: calc(50% - 13px);*/
-    /*width: 100%;*/
-    /*margin-top: 26px;*/
-    /*}*/
+      position: relative;
+      .car-statics-card {
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        height: 142px;
+      }
 
-    /*.number-box {*/
-    /*width: 380px;*/
-    /*height: 100%;*/
-    /*position: relative;*/
-    /*border-radius: 8px;*/
-    /*background: linear-gradient(#03173A, #101B57);*/
+      .area-flow-card {
+        position: absolute;
+        bottom: 0px;
+        height: 225px;
+        width: 100%;
+      }
+    }
 
-    /*.number-box_wrapper {*/
-    /*position: absolute;*/
-    /*top: 14px;*/
-    /*left: 23px;*/
-    /*right: 25px;*/
-    /*bottom: 21px;*/
-    /*}*/
+    .column-right {
+      width: 25%;
+      height: 100%;
+      display: inline-block;
 
-    /*.title-image {*/
-    /*width: 28px;*/
-    /*height: 28px;*/
-    /*}*/
+      .car-break-card {
+        width: 100%;
+        height: 40%;
+      }
 
-    /*.title-text {*/
-    /*font-size: 24px;*/
-    /*color: #FFFFF0;*/
-    /*line-height: 28px;*/
-    /*}*/
+      .car-break-type-card {
+        width: 100%;
+        height: 30%;
+      }
 
-    /*.number-card {*/
-    /*width: 100%;*/
-    /*height: calc(50% - 6px);*/
-    /*border-radius: 8px;*/
-    /*&.card-photo {*/
-    /*margin-top: 20px;*/
-    /*background: linear-gradient(90deg, #7CF7E9 0%, #F0917D 0%, #E38080 100%);*/
-    /*}*/
-    /*}*/
-    /*}*/
+      .car-break-today-card {
+        width: 100%;
+        height: 30%;
+      }
 
+    }
   }
 </style>
