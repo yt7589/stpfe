@@ -1,0 +1,60 @@
+.search-input {
+  .el-input__inner{
+    width: 182px;
+    height: 37px;
+    padding: 15px;
+    background: rgba(4, 95, 224, 0.5);
+    border-radius: 4px;
+    border: 1px solid #045FE0;
+    color: white;
+  }
+
+}
+
+.search-button {
+  cursor: pointer;
+  position: absolute;
+  left: 54%;
+  width: 64px;
+  height: 36px;
+  background: #045FE0;
+  border-radius: 4px;
+  border: unset;
+  font-size: 14px;
+  color: #FFFFFF;
+
+}
+.create-button{
+  cursor: pointer;
+  position: absolute;
+  left: 80%;
+  width: 64px;
+  height: 36px;
+  background: #00C087;
+  border-radius: 4px;
+  border: unset;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.custom-table .el-table__header th, .custom-table .el-table__header tr{
+  background-color: #00F6FF !important;
+}
+.button-page-group{
+  padding-bottom: 56px;
+  text-align: center;
+  .button-page{
+    cursor: pointer;
+    width: 93px;
+    height: 30px;
+    background: #0073FF;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    line-height: 20px;
+    color: #000205;
+  }
+
+}
