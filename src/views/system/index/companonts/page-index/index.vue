@@ -8,6 +8,7 @@
     </div>
     <div class="column-middle">
       <car-statics-card class="car-statics-card"></car-statics-card>
+      <car-flow-map class="car-flow-map"></car-flow-map>
       <area-flow-card class="area-flow-card"></area-flow-card>
     </div>
     <div class="column-right">
@@ -25,6 +26,8 @@
   import CarRoadFlowCard from './components/car-road-flow-card'
   import CarStaticsCard from './components/car-statics-card'
   import AreaFlowCard from './components/area-flow-card'
+  import CarFlowMap from './components/car-flow-map'
+
   import CarBreakCard from './components/car-break-card'
   import CarBreakTypeCard from './components/car-break-type-card'
   import CarBreakTodayCard from './components/car-break-today-card'
@@ -34,7 +37,7 @@
   export default {
     components: {
       CarHourCard, CarTypeCard, CarTypeFlowCard, CarRoadFlowCard,
-      CarStaticsCard, AreaFlowCard,
+      CarStaticsCard, AreaFlowCard, CarFlowMap,
       CarBreakCard, CarBreakTypeCard, CarBreakTodayCard
     },
     data () {
@@ -86,6 +89,15 @@
         top: 0px;
         width: 100%;
         height: 142px;
+        z-index: 1;
+      }
+
+      .car-flow-map {
+        position: absolute;
+        top: 110px;
+        width: 100%;
+        bottom: 194px;
+        z-index: 0;
       }
 
       .area-flow-card {
@@ -93,6 +105,7 @@
         bottom: 0px;
         height: 225px;
         width: 100%;
+        z-index: 1;
       }
     }
 

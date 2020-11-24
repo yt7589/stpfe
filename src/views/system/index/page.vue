@@ -4,7 +4,7 @@
       <div class="piece-1"></div>
       <div class="piece-2"></div>
       <div class="piece-3"></div>
-      <div class="piece-4"></div>
+      <!--<div class="piece-4"></div>-->
       <div class="piece-5"></div>
       <div class="piece-6"></div>
       <div class="piece-7"></div>
@@ -153,10 +153,10 @@
 
       > .piece-5 {
         position: absolute;
-        bottom: 54px;
+        bottom: 0px;
         right: 0px;
         top: 217px;
-        width: 17px;
+        width: 1270px;
 
         background: url(./image/background-piece_5.png) no-repeat;
         background-size: 100% 100%;
