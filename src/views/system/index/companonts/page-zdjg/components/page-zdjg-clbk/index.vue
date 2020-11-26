@@ -4,7 +4,7 @@
         <div style="margin-top: 4px; width: 100%;height: 100%">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
-                    <div style="padding: 16px; position: relative">
+                    <div style="padding: 16px; position: relative;display: flex;">
                         <el-input placeholder="请输入车辆牌号" class="search-input"></el-input>
                         <button class="search-button"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
@@ -49,8 +49,8 @@
                     <div style="padding: 16px 16px 0px 16px; position: relative;">
                         <el-row>
                             <el-col :span="3">  <el-avatar  :src="require('../../image/clbkdt@1x.png')"></el-avatar></el-col>
-                            <el-col :span="6" class="jgdt-text" style="width: 70%">  <span class="jgdt-span">布控动态</span></el-col>
-                            <el-clo :span="12"><span class="clbk-more">更多>></span></el-clo>
+                            <el-col :span="6" class="jgdt-text" >  <span class="jgdt-span">布控动态</span></el-col>
+                            <el-col :span="15" class="col-more"><span class="clbk-more">更多>></span></el-col>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -74,8 +74,8 @@
                     <div style="padding: 16px 16px 0px 16px; position: relative;">
                         <el-row>
                             <el-col :span="3">  <el-avatar  :src="require('../../image/bjdt@1x.png')"></el-avatar></el-col>
-                            <el-col :span="6" class="jgdt-text" style="width: 70%">  <span class="jgdt-span">报警动态</span></el-col>
-                            <el-clo :span="12"><span class="clbk-more">更多>></span></el-clo>
+                            <el-col :span="6" class="jgdt-text" >  <span class="jgdt-span">报警动态</span></el-col>
+                            <el-col :span="15" class="col-more"><span class="clbk-more">更多>></span></el-col>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -104,7 +104,7 @@
                 :visible.sync="dialogVisible"
                 width="366px"
                 height = "200px"
-                :before-close="handleClose">
+                >
             <el-form ref="dialogForm" :model="dialogData" label-width="56px">
                 <el-form-item label="车辆牌号">
                     <el-input v-model="dialogData.area"name="area" width="266" />
@@ -298,6 +298,9 @@
     .dt-list{
         position: relative;
         padding: 16px 16px 0 16px;
+    }
+    .col-more{
+        text-align: end;
     }
     .clbk-more{
         width: 58px;

@@ -1,4 +1,5 @@
 .search-input {
+  width: 50%;
   .el-input__inner{
     width: 182px;
     height: 37px;
@@ -13,8 +14,7 @@
 
 .search-button {
   cursor: pointer;
-  position: absolute;
-  left: 51%;
+  margin-left: 2px;
   width: 64px;
   height: 36px;
   background: #045FE0;
@@ -26,8 +26,7 @@
 }
 .create-button{
   cursor: pointer;
-  position: absolute;
-  left: 80%;
+  margin-left: 30px;
   width: 64px;
   height: 36px;
   background: #00C087;

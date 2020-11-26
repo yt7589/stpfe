@@ -4,7 +4,7 @@
         <div style="margin-top: 4px; width: 100%;height: 100%">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
-                    <div style="padding: 16px; position: relative">
+                    <div style="padding: 16px; position: relative;display: flex;" >
                         <el-input placeholder="地区名称" class="search-input"></el-input>
                         <button class="search-button"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
@@ -88,7 +88,7 @@
                 :visible.sync="dialogVisible"
                 width="366px"
                 height = "200px"
-                :before-close="handleClose">
+                >
             <el-form ref="dialogForm" :model="dialogData" label-width="56px">
                 <el-form-item label="地区名称">
                     <el-input v-model="dialogData.area"name="area" width="266" />
