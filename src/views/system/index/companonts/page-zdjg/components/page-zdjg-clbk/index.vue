@@ -1,18 +1,18 @@
 <template>
-    <div class="page-zdjg-qyjg" >
+    <div class="page-zdjg-clbk" >
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
         <div style="margin-top: 4px; width: 100%;height: 100%">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
                     <div style="padding: 16px; position: relative">
-                        <el-input placeholder="地区名称" class="search-input"></el-input>
+                        <el-input placeholder="请输入车辆牌号" class="search-input"></el-input>
                         <button class="search-button"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
                     </div>
                     <div>
                         <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
                             <el-table class="custom-table" :data="tableData">
-                                <el-table-column align="center" prop="area_name" label="地区名称" minWidth="150"></el-table-column>
+                                <el-table-column align="center" prop="area_name" label="车辆牌号" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
                                         <el-button type="text" size="mini">修改</el-button>
@@ -46,20 +46,36 @@
                     </div>
                 </el-col >
                 <el-col :span="5" class="col" style="width: 23%">
-                    <div style="padding: 16px; position: relative;">
+                    <div style="padding: 16px 16px 0px 16px; position: relative;">
                         <el-row>
-                            <el-col :span="3">  <el-avatar  :src="require('../../image/dt@1x.png')"></el-avatar></el-col>
-                            <el-col :span="6" class="jgdt-text">  <span class="jgdt-span">监管动态</span></el-col>
+                            <el-col :span="3">  <el-avatar  :src="require('../../image/clbkdt@1x.png')"></el-avatar></el-col>
+                            <el-col :span="6" class="jgdt-text" style="width: 70%">  <span class="jgdt-span">布控动态</span></el-col>
+                            <el-clo :span="12"><span class="clbk-more">更多>></span></el-clo>
                         </el-row>
                     </div>
-                    <div class="dt-list" style="position: relative;padding: 0 16px 0 16px;">
-                        <el-row :gutter="2">
-                            <el-col :span="12">
-                                <el-input placeholder="请输入地区名称" class="search-input"></el-input>
+                    <div class="dt-list">
+                        <el-row  v-for="(item,key) in dtData" :key="key">
+                            <el-col class="dt-row" :span="24">
+                                <el-card class="card">
+                                    <div  class="card-content">
+                                        <div>{{item.area}}</div>
+                                        <div>{{item.time}}</div>
+                                    </div>
+                                    <div class="card-content">
+                                        <div> <span style="color: #00F6FF">{{item.card}}</span></div>
+                                        <div>{{item.num}}</div>
+                                    </div>
+                                </el-card>
                             </el-col>
-                            <el-col :span="4">
-                                <el-button class="bt"><span>搜索</span></el-button>
-                            </el-col>
+                        </el-row>
+
+                    </div>
+
+                    <div style="padding: 16px 16px 0px 16px; position: relative;">
+                        <el-row>
+                            <el-col :span="3">  <el-avatar  :src="require('../../image/bjdt@1x.png')"></el-avatar></el-col>
+                            <el-col :span="6" class="jgdt-text" style="width: 70%">  <span class="jgdt-span">报警动态</span></el-col>
+                            <el-clo :span="12"><span class="clbk-more">更多>></span></el-clo>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -84,13 +100,13 @@
         </div>
 
         <el-dialog
-                title="添加地区"
+                title="添加布控车辆"
                 :visible.sync="dialogVisible"
                 width="366px"
                 height = "200px"
                 :before-close="handleClose">
             <el-form ref="dialogForm" :model="dialogData" label-width="56px">
-                <el-form-item label="地区名称">
+                <el-form-item label="车辆牌号">
                     <el-input v-model="dialogData.area"name="area" width="266" />
                 </el-form-item>
             </el-form>
@@ -104,9 +120,9 @@
 
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
-    import HeaderCrumb from '../common/header-crumb'
+  import HeaderCrumb from '../common/header-crumb'
   export default {
-    name: 'page-zdjg-qyjg',
+    name: 'page-zdjg-clbk',
     props:{
       firstItem:{
         type:String,
@@ -162,12 +178,7 @@
             time:'11:11:11',
             card:"京A11111",
             num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }
+          },
         ],
       }
     },
@@ -204,7 +215,7 @@
 </script>
 
 <style scoped lang="scss">
-    .page-zdjg-qyjg {
+    .page-zdjg-clbk {
         height: calc(100% - 170px);
         overflow-y: hidden;
 
@@ -288,10 +299,19 @@
         position: relative;
         padding: 16px 16px 0 16px;
     }
+    .clbk-more{
+        width: 58px;
+        height: 25px;
+        font-size: 18px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #00F6FF;
+        cursor: pointer;
+    }
 </style>
 
 <style lang="scss">
-    .page-zdjg-qyjg{
+    .page-zdjg-clbk{
         .el-card__body{
             padding: 12px 16px 12px 16px;
         }

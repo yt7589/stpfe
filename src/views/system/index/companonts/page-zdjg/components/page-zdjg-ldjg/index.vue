@@ -1,18 +1,18 @@
 <template>
-    <div class="page-zdjg-qyjg" >
+    <div class="page-zdjg-ldgj" >
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
         <div style="margin-top: 4px; width: 100%;height: 100%">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
                     <div style="padding: 16px; position: relative">
-                        <el-input placeholder="地区名称" class="search-input"></el-input>
+                        <el-input placeholder="路段名称" class="search-input"></el-input>
                         <button class="search-button"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
                     </div>
                     <div>
                         <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
                             <el-table class="custom-table" :data="tableData">
-                                <el-table-column align="center" prop="area_name" label="地区名称" minWidth="150"></el-table-column>
+                                <el-table-column align="center" prop="area_name" label="路段名称" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
                                         <el-button type="text" size="mini">修改</el-button>
@@ -84,13 +84,13 @@
         </div>
 
         <el-dialog
-                title="添加地区"
+                title="添加路段"
                 :visible.sync="dialogVisible"
                 width="366px"
                 height = "200px"
                 :before-close="handleClose">
             <el-form ref="dialogForm" :model="dialogData" label-width="56px">
-                <el-form-item label="地区名称">
+                <el-form-item label="路段名称">
                     <el-input v-model="dialogData.area"name="area" width="266" />
                 </el-form-item>
             </el-form>
@@ -104,9 +104,9 @@
 
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
-    import HeaderCrumb from '../common/header-crumb'
+  import HeaderCrumb from '../common/header-crumb'
   export default {
-    name: 'page-zdjg-qyjg',
+    name: 'page-zdjg-ldgj',
     props:{
       firstItem:{
         type:String,
@@ -204,7 +204,7 @@
 </script>
 
 <style scoped lang="scss">
-    .page-zdjg-qyjg {
+    .page-zdjg-ldgj {
         height: calc(100% - 170px);
         overflow-y: hidden;
 
@@ -291,7 +291,7 @@
 </style>
 
 <style lang="scss">
-    .page-zdjg-qyjg{
+    .page-zdjg-ldgj{
         .el-card__body{
             padding: 12px 16px 12px 16px;
         }

@@ -5,6 +5,8 @@
             :class="curPage===option?'is-active':''" @click="curPage=option">{{option.label}}</span>
         </div>
         <page-zdjg-qyjg  :first-item="firstItem" :second-item="curPage.label" v-show="curPage.label=='区域监管'" class="custom-main-content"></page-zdjg-qyjg>
+        <page-zdjg-ldjg  :first-item="firstItem" :second-item="curPage.label" v-show="curPage.label=='路段监管'" class="custom-main-content"></page-zdjg-ldjg>
+        <page-zdjg-clbk  :first-item="firstItem" :second-item="curPage.label" v-show="curPage.label=='车辆布控'" class="custom-main-content"></page-zdjg-clbk>
     </div>
 
 </template>
@@ -12,9 +14,13 @@
 <script>
     import './common.scss'
   import PageZdjgQyjg from './components/page-zdjg-qyjg'
+  import PageZdjgLdjg from './components/page-zdjg-ldjg'
+  import PageZdjgClbk from './components/page-zdjg-clbk'
   export default {
     components: {
       PageZdjgQyjg,
+      PageZdjgLdjg,
+      PageZdjgClbk,
     },
     data(){
       return {
