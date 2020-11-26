@@ -19,7 +19,7 @@
               type: 'area',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
-//              spacing: [0, 0, 0, 0]
+              spacing: [0, 0, 0, 0]
             },
             title: {
               text: ''
@@ -156,7 +156,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 15px;
+      top: 0px;
       font-size: 12px;
       color: #FFFFFF;
     }

@@ -10,6 +10,7 @@
 <script>
   import CustomCard from '../custom-card'
   export default {
+    props: ['data'],
     components: {CustomCard},
     data(){
       return {
@@ -19,7 +20,7 @@
               type: 'area',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
-              spacingTop: 40,
+              spacingTop: 20,
             },
             title: {
               text: ''
@@ -44,7 +45,7 @@
               },
               gridLineColor: '#045FE0',
               gridLineDashStyle: 'dash',
-              tickAmount:6,
+              tickAmount: 6,
               labels: {
                 style: {
                   color: 'white'
@@ -66,8 +67,9 @@
               }
             },
             series: [{
-              name: '小型车',
-              data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+              name: '',
+//              data:[12.1,13.4,12.1,13.4,12.1,13.4,12.1,13.4,12.1,13.4],
+              data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
               lineColor: '#00F6FF',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -90,9 +92,27 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let chartData = this.chart.option.series[0].data
+          this.data.forEach(item => {
+            let index = parseInt(item / 2) - 1;
+            if (index < chartData.length) {
+              chartData[index] = parseFloat(charData.trafficViolationNum)
+            }
+          })
+        }
+      }
+    }
   }
 </script>
 
@@ -109,7 +129,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 15px;
+      top: -5px;
       font-size: 12px;
       color: #FFFFFF;
     }

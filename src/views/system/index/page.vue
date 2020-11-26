@@ -314,8 +314,6 @@
       left: 0px;
       bottom: 0px;
       right: 0px;
-      /*TODO: 确认底色*/
-      background: #061437;
 
       .custom-menu-box {
         position: absolute;

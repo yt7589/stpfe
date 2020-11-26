@@ -35,7 +35,7 @@
       background: url(../../image/bg-card-head.png) no-repeat;
       background-size: 100% 60%;
       -moz-background-size: 100% 60%;
-      padding-bottom: 8px;
+      /*padding-bottom: 3px;*/
       background-position: bottom;
     }
 

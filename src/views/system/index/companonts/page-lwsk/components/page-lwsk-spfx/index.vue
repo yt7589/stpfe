@@ -5,44 +5,10 @@
                :center="map.center" :dragging="true"
                @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                :scroll-wheel-zoom="true">
-      <!--比例尺控件-->
-      <!--<bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>-->
-      <!--缩放控件-->
-      <!--<bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT"></bm-navigation>-->
       <bm-marker v-for="(point,index) in pointList" :key="index"
                  :position="{lng: point.longitude, lat: point.latitude}"
-                 v-if="map.instance" @click="onPointClick(point)">
+                 v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">
       </bm-marker>
-      <!--<camera-marker v-for="(camera,index) in cameraList" :key="index" :camera="camera"  v-if="map.instance" @click="onCameraClick(camera)"></camera-marker>-->
-      <!--<bm-control>-->
-      <!--<i class="fa fa-globe" @click="initMap" style="font-size:20px;margin:10px;"></i>-->
-      <!--</bm-control>-->
-      <!--<bm-control anchor="BMAP_ANCHOR_BOTTOM_RIGHT" class="map-zoom" v-if="map.instance">-->
-      <!--<img :src="img.zoom.in" @click="zoomIn">-->
-      <!--<img :src="img.zoom.out" @click="zoomOut">-->
-      <!--<img :src="img.zoom.focus" @click="zoomFocus">-->
-      <!--</bm-control>-->
-      <!--<bm-control anchor="BMAP_ANCHOR_TOP_RIGHT" class="drawer" v-if="map.instance">-->
-      <!--<img :src="drawer.visible?img.drawer.open:img.drawer.close" @click="drawer.visible=!drawer.visible">-->
-      <!--<div class="content" v-if="drawer.visible">-->
-      <!--<div class="title">机器人列表</div>-->
-      <!--<div>-->
-      <!--<div v-for="robot in robots" :key="robot.id" class="content-item" @click="focusRobot(robot)">-->
-      <!--<div class="name">-->
-      <!--<span>{{robot.name}}</span>-->
-      <!--<el-tag v-if="robot.tag" size="mini" :class="robot.tag.class" class="robot-tag">{{robot.tag.text}}</el-tag>-->
-      <!--</div>-->
-      <!--<el-link class="link" @click.stop="viewRobot(robot)">详情</el-link>-->
-      <!--<div class="location">-->
-      <!--<i class="fa fa-map-marker"></i>&nbsp;&nbsp;{{robot.location}}-->
-      <!--</div>-->
-      <!--<div class="event" v-if="robot.event">-->
-      <!--{{robot.event}}-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</bm-control>-->
     </baidu-map>
     <div class="camera-info">
       <div class="success-info" @click="zoomFocus">
@@ -77,6 +43,7 @@
       CameraInfoWindow
     },
     data(){
+      let markerIcon = require("./image/image-map-marker.png")
       return {
         map: {
           instance: null,
@@ -85,6 +52,13 @@
             lng: 116.495843,
             lat: 39.90421
           },
+          marker: {
+            url: markerIcon,
+            size: {
+              width: 300,
+              height: 157
+            }
+          }
         },
         pointList: [
           {
@@ -134,7 +108,7 @@
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
         setTimeout(() => {
-            // 立即聚焦会出现白屏
+          // 立即聚焦会出现白屏
           this.zoomFocus()
         }, 1000)
       },

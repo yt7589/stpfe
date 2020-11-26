@@ -70,5 +70,12 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       url: '/vehicle/statistic',
       method: 'get',
     })
+  },
+
+  TrafficViolation(){
+    return request({
+      url: '/traffic/violation',
+      method: 'get',
+    })
   }
 })
