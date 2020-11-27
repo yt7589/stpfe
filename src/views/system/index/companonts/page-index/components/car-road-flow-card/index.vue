@@ -19,8 +19,7 @@
               type: 'column',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
-              spacingTop: 40
-//              spacing: [0, 0, 0, 0]
+              spacing: [20, 0, 0, 0]
             },
             title: {
               text: '',
@@ -110,7 +109,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 15px;
+      top: -5px;
       font-size: 12px;
       color: #FFFFFF;
     }

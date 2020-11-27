@@ -19,7 +19,7 @@
               type: 'area',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
-//              spacing: [0, 0, 0, 0]
+              spacing: [0, 0, 0, 0]
             },
             title: {
               text: ''
@@ -74,14 +74,15 @@
               }
             },
             series: [{
+//                enabled:false,
               name: '小型车',
               data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
               lineColor: '#045FE0',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
                 stops: [
-                  [0, '#084398'],
-                  [1, '#061437']
+                  [0, '#045fe07f'],
+                  [1, '#00000000']
                 ]
               },
               marker: {
@@ -99,8 +100,8 @@
               color: {
                 linearGradient: [0, 0, 0, '100%'],
                 stops: [
-                  [0, '#D1494E'],
-                  [1, '#061437']
+                  [0, '#EA80867f'],
+                  [1, '#00000000']
                 ]
               },
               marker: {
@@ -118,8 +119,8 @@
               color: {
                 linearGradient: [0, 0, 0, '100%'],
                 stops: [
-                  [0, '#F4CB07'],
-                  [1, '#061437']
+                  [0, '#F4CB077f'],
+                  [1, '#00000000']
                 ]
               },
               marker: {
@@ -155,7 +156,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 15px;
+      top: 0px;
       font-size: 12px;
       color: #FFFFFF;
     }

@@ -1,6 +1,6 @@
 <template>
   <custom-card title="分时段过车统计" class="car-hour-card">
-    <div class="card-body-wrapper" slot="body">
+    <div class="card-body-wrapper" slot="body" v-if="data">
       <highcharts class="chart" :options="chart.option"></highcharts>
       <div class="unit">单位： 万辆</div>
     </div>
@@ -8,8 +8,10 @@
 </template>
 
 <script>
+  import dayjs from 'dayjs'
   import CustomCard from '../custom-card'
   export default {
+    props: ['data'],
     components: {CustomCard},
     data(){
       return {
@@ -19,7 +21,7 @@
               type: 'column',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
-//              spacing: [0, 0, 0, 0]
+              spacing: [0, 0, 0, 0]
             },
             title: {
               text: '',
@@ -34,9 +36,9 @@
               enabled: false
             },
             xAxis: {
-              lineWidth:0,
+              lineWidth: 0,
               categories: [
-                '4时','8时','12时','16时','20时','24时'
+                '4时', '8时', '12时', '16时', '20时', '24时'
               ],
               labels: {
                 style: {
@@ -46,10 +48,10 @@
               }
             },
             yAxis: {
-              gridLineColor:'#045FE0',
-              gridLineDashStyle:'dash',
-              lineWidth:0,
-              tickAmount:6,
+              gridLineColor: '#045FE0',
+              gridLineDashStyle: 'dash',
+              lineWidth: 0,
+              tickAmount: 6,
               min: 0,
               title: {
                 text: ''
@@ -85,13 +87,13 @@
               {
                 name: '昨日',
                 color: '#4C49EC',
-                borderRadius:'4px',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0]
-              },{
+                borderRadius: '4px',
+                data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+              }, {
                 name: '今日',
                 color: '#00C087',
-                borderRadius:'4px',
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5]
+                borderRadius: '4px',
+                data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
               }
             ],
           },
@@ -99,9 +101,48 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let today = dayjs().format("YYYYMMDD")
+          let yesterday = dayjs().subtract(1, 'day').format("YYYYMMDD")
+
+          let todayChartData = this.chart.option.series[0].data
+          let yesterdayChartData = this.chart.option.series[0].data
+
+          this.data.forEach(item => {
+            let date = dayjs(item.date)
+            let str = date && date.isValid() ? date.format("YYYYMMDD") : ""
+
+            let pData = null
+            if (str == today) {
+              pData = todayChartData
+            } else if (str == yesterday) {
+              pData = yesterdayChartData
+            } else {
+              console.error("时间格式错误", item.date)
+            }
+
+            if (pData) {
+              let index = parseInt(item.timeFrame / 4) - 1
+              if (index < pData.length) {
+                pData[index] = parseFloat(item.vehicleNumber)
+              } else {
+                console.error("小时错误", item)
+              }
+            }
+          })
+        }
+      }
+    }
   }
 </script>
 
@@ -118,7 +159,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 15px;
+      top: 0px;
       font-size: 12px;
       color: #FFFFFF;
     }
