@@ -28,8 +28,8 @@
                     </div>
                 </el-col>
                 <el-col :span="12" class="col" style="width: 52%;margin-right: 1%;margin-left: 1%;">
-                    <div  style="bottom: 10px;height: 100%;" class="map">
-                        <baidu-map  ref="map-qyjg" class="baidu-map-qyjg" :zoom="map.zoom"
+                    <div  style="height: 100%;" class="map">
+                        <baidu-map  ref="map-qyjg" class="baidu-map" :zoom="map.zoom"
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
@@ -223,13 +223,10 @@
             position: relative;
             height:100%;
         }
-        .baidu-map-qyjg{
+        .baidu-map{
             position: absolute;
             width: 100%;
             height:100%;
-            margin-top: 16px;
-            //min-height: 100px;
-
         }
         .jgdt-text{
 
