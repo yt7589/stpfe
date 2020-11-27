@@ -7,6 +7,7 @@
         <page-zdjg-qyjg  :first-item="firstItem" :second-item="curPage.label" v-show="curPage.label=='区域监管'" class="custom-main-content"></page-zdjg-qyjg>
         <page-zdjg-ldjg  :first-item="firstItem" :second-item="curPage.label" v-show="curPage.label=='路段监管'" class="custom-main-content"></page-zdjg-ldjg>
         <page-zdjg-clbk  :first-item="firstItem" :second-item="curPage.label" v-show="curPage.label=='车辆布控'" class="custom-main-content"></page-zdjg-clbk>
+        <page-zdjg-tscl   v-show="curPage.label=='特殊车辆监管'" class="custom-main-content"></page-zdjg-tscl>
     </div>
 
 </template>
@@ -16,11 +17,13 @@
   import PageZdjgQyjg from './components/page-zdjg-qyjg'
   import PageZdjgLdjg from './components/page-zdjg-ldjg'
   import PageZdjgClbk from './components/page-zdjg-clbk'
+  import PageZdjgTscl from './components/page-zdjg-tscl'
   export default {
     components: {
       PageZdjgQyjg,
       PageZdjgLdjg,
       PageZdjgClbk,
+      PageZdjgTscl,
     },
     data(){
       return {
