@@ -1,6 +1,6 @@
 <template>
   <custom-card title="分时段过车统计" class="car-hour-card">
-    <div class="card-body-wrapper" slot="body" v-if="data">
+    <div class="card-body-wrapper" slot="body">
       <highcharts class="chart" :options="chart.option"></highcharts>
       <div class="unit">单位： 万辆</div>
     </div>
@@ -58,7 +58,7 @@
               }
             },
             yAxis: {
-              gridLineColor: '#045FE0',
+              gridLineColor: '#045FE03F',
               gridLineDashStyle: 'dash',
               lineWidth: 0,
               tickAmount: 6,

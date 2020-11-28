@@ -233,7 +233,7 @@
         top: 62px;
         left: 150px;
 
-        font-size: 25px;
+        font-size: 18px;
         color: rgba(63, 181, 228, 1);
       }
 

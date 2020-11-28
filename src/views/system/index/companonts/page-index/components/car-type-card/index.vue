@@ -1,34 +1,37 @@
 <template>
-  <div class="car-type-card">
-    <el-row class="card-wrapper">
-      <el-col :span="6" class="column-title">
-        <div class="local-car">
-          <div class="image-box">
-            <div class="vline"></div>
-            <div class="point" :style="car.localStyle"><span>{{car.local}}%</span></div>
+  <custom-card title="全市车辆类型分布" class="car-type-card">
+    <div class="card-body-wrapper" slot="body">
+      <el-row class="card-wrapper">
+        <el-col :span="6" class="column-title">
+          <div class="local-car">
+            <div class="image-box">
+              <div class="vline"></div>
+              <div class="point" :style="car.localStyle"><span>{{car.local}}%</span></div>
+            </div>
+            本地
           </div>
-          本地
-        </div>
-        <div class="outland-car">
-          <div class="image-box">
-            <div class="vline"></div>
-            <div class="point" :style="car.outlandStyle"><span>{{car.outland}}%</span></div>
+          <div class="outland-car">
+            <div class="image-box">
+              <div class="vline"></div>
+              <div class="point" :style="car.outlandStyle"><span>{{car.outland}}%</span></div>
+            </div>
+            外埠
           </div>
-          外埠
-        </div>
-      </el-col>
-      <el-col :span="18" class="column-chart">
-        <highcharts class="chart" :options="chart.option"></highcharts>
-      </el-col>
-    </el-row>
-  </div>
-
+        </el-col>
+        <el-col :span="18" class="column-chart">
+          <highcharts class="chart" :options="chart.option"></highcharts>
+        </el-col>
+      </el-row>
+    </div>
+  </custom-card>
 </template>
 
 <script>
+  import CustomCard from '../custom-card'
+
   export default {
     props: ['typeData', 'data'],
-    components: {},
+    components: {CustomCard},
     data(){
       return {
         chart: {
@@ -65,7 +68,14 @@
               variablepie: {
                 borderWidth: 0,
                 dataLabels: {
-                  enabled: false,
+                  enabled: true,
+                  formatter: function () {
+                    return this.y + '%'
+                  },
+                  style: {
+                    "color": 'white',
+                    'font-size': '0.0625rem',
+                  }
                 },
                 showInLegend: true,
                 colors: ['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF']
@@ -79,41 +89,25 @@
               verticalAlign: 'middle',
               layout: 'vertical',
               symbolRadius: 0,
-              itemMarginTop: 5,
-              itemMarginBottom: 5,
+              itemMarginTop: 2,
+              itemMarginBottom: 2,
               itemStyle: {
                 "color": "white",
                 'font-size': '0.0625rem',
               }
             },
             series: [{
-              minPointSize: 40,
+              minPointSize: 1,
               data: [{
-                name: '小汽车',
-                y: 25,
-                z: 6
-              }, {
-                name: 'SUV',
-                y: 20,
-                z: 3
-              }, {
-                name: 'MPV',
-                y: 30,
-                z: 7
-              }, {
-                name: '面包车',
-                y: 40,
-                z: 4
-              }, {
-                name: '普通货车',
-                y: 20,
-                z: 5
+                name: '',
+                y: 0,
+                z: 0
               }]
             }],
             responsive: {
               rules: [{
                 condition: {
-                  maxHeight: 150
+                  maxHeight: 120
                 },
                 chartOptions: {
                   series: [{
@@ -195,18 +189,15 @@
 
 <style lang="scss" scoped>
   .car-type-card {
-    background: rgba(0, 115, 255, 0.2);
-    border-radius: 4px;
-
     width: 100%;
     height: 100%;
     position: relative;
     .card-wrapper {
       position: absolute;
-      top: 8px;
-      left: 8px;
-      right: 8px;
-      bottom: 8px;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
     }
 
     .column-title {

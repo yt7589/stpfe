@@ -5,8 +5,8 @@
                :center="map.center" :dragging="true"
                @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                :scroll-wheel-zoom="true" :double-click-zoom="true">
-      <bm-boundary v-for="item in data" :name="item.name" :strokeWeight="2" strokeColor="#06A6FF"
-                   :fillColor="item.color"></bm-boundary>
+      <bm-boundary v-for="item in data" :name="city + item.regionName" :strokeWeight="2" strokeColor="#06A6FF"
+                   :fillColor="getColor(item.passedNumber)"></bm-boundary>
     </baidu-map>
   </div>
 
@@ -16,9 +16,11 @@
   import mapStyle from '@/assets/baiduMapStyleBlueEmpty.js'
 
   export default {
+    props: ['data'],
     components: {},
     data(){
       return {
+        city: '北京市',
         map: {
           instance: null,
           zoom: 12,
@@ -27,13 +29,6 @@
             lat: 39.90421
           },
         },
-        data: [
-          {name: "北京市海淀区", 'latitude': 39.963839, 'longitude': 116.300784, color: '#E69B03'},
-          {name: "北京市丰台区", 'latitude': 39.866439, 'longitude': 116.289286, color: '#058DC8'},
-          {name: "北京市石景山区", 'latitude': 39.910729, 'longitude': 116.216846, color: '#06224F'},
-          {name: "北京市门头沟区", 'latitude': 39.939873, 'longitude': 116.112661, color: '#B26727'},
-          {name: "北京市大兴区", 'latitude': 39.729773, 'longitude': 116.342628, color: '#B26727'},
-        ]
       }
     },
     mounted(){
@@ -42,6 +37,7 @@
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
+        this.getBoundary()
       },
       syncCenterAndZoom (event) {
         const {lng, lat} = event.target.getCenter()
@@ -51,28 +47,6 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-        setTimeout(() => {
-          // 立即聚焦会出现白屏
-          this.zoomFocus()
-        }, 1000)
-      },
-      zoomFocus(){
-        if (this.map.instance) {
-          var points = []
-          this.data.forEach((item) => {
-            if (item.longitude > 0 && item.latitude > 0) {
-              points.push({
-                lng: item.longitude,
-                lat: item.latitude
-              })
-            }
-          })
-          if (points.length > 0) {
-            let view = this.map.instance.getViewport(eval(points))
-            this.map.center = view.center
-            this.map.zoom = view.zoom -2
-          }
-        }
       },
       zoomIn(){
         if (this.map.zoom < 18) {
@@ -84,6 +58,39 @@
           this.map.zoom--
         }
       },
+      getBoundary(){
+        let map = this.map.instance
+        let bdary = new BMap.Boundary();
+        bdary.get(this.city, function (rs) {       //获取行政区域
+          map.clearOverlays();        //清除地图覆盖物
+          var count = rs.boundaries.length; //行政区域的点有多少个
+          for (var i = 0; i < count; i++) {
+            var ply = new BMap.Polygon(rs.boundaries[i], {
+              strokeWeight: 2,
+              strokeColor: "#06A6FF",
+              fillColor: 'transparent',
+              fillOpacity: 100
+            }); //建立多边形覆盖物
+            map.addOverlay(ply);  //添加覆盖物
+            map.setViewport(ply.getPath());    //调整视野
+          }
+        });
+      },
+      getColor(number){
+        let start = [169, 71, 68]
+        let end = [5, 90, 196]
+        let percent = number / (1000 * 10000)
+        let color = this.pickHex(start, end, percent)
+        return 'rgb(' + color.join(', ') + ')';
+      },
+      pickHex(color1, color2, weight) {
+        var w1 = weight;
+        var w2 = 1 - w1;
+        var rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+          Math.round(color1[1] * w1 + color2[1] * w2),
+          Math.round(color1[2] * w1 + color2[2] * w2)];
+        return rgb;
+      }
     }
   }
 </script>

@@ -44,7 +44,7 @@
       .value {
         position: absolute;
         top: 71px;
-        left: 107px;
+        width: 100%;
 
         font-size: 24px;
         font-weight: bold;

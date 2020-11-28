@@ -2,21 +2,24 @@
   <div class="page-index custom-main-content-full">
     <div class="page-wrapper">
       <div class="column-left">
-        <car-type-card :typeData="statisticData.vehicleDistributionList" :data="statisticData.vehicleTypeDTOList" class="line-car-type"></car-type-card>
+        <car-type-card :typeData="statisticData.vehicleDistributionList" :data="statisticData.vehicleTypeDTOList"
+                       class="line-car-type"></car-type-card>
         <car-hour-card :data="statisticData.timeFrameNumberList" class="line"></car-hour-card>
         <car-type-flow-card :data="statisticData.vehicleTypeNumberList" class="line"></car-type-flow-card>
         <car-road-flow-card class="line"></car-road-flow-card>
       </div>
       <div class="column-middle">
         <car-statics-card :data="statisticData.vehiclePassedNumber" class="car-statics-card"></car-statics-card>
-        <car-flow-map class="car-flow-map"></car-flow-map>
-        <area-flow-card class="area-flow-card"></area-flow-card>
+        <car-flow-map :data="statisticData.regionList" class="car-flow-map"></car-flow-map>
+        <area-flow-card :data="statisticData.regionList" class="area-flow-card"></area-flow-card>
         <el-image class="image-car-flow" :src="require('./image/image-car-flow.png')"></el-image>
       </div>
       <div class="column-right">
         <car-break-card :data="trafficData.trafficViolationList" class="car-break-card"></car-break-card>
-        <car-break-type-card :data="trafficData.trafficViolationTypeNumberList"  class="car-break-type-card"></car-break-type-card>
-        <car-break-today-card :data="trafficData.trafficViolationTimeFrameNumberList" class="car-break-today-card"></car-break-today-card>
+        <car-break-type-card :data="trafficData.trafficViolationTypeNumberList"
+                             class="car-break-type-card"></car-break-type-card>
+        <car-break-today-card :data="trafficData.trafficViolationTimeFrameNumberList"
+                              class="car-break-today-card"></car-break-today-card>
       </div>
     </div>
   </div>
@@ -109,29 +112,29 @@
         position: absolute;
         top: 0px;
         width: 100%;
-        height: 142px;
+        height: 13%;
         z-index: 1;
       }
 
       .car-flow-map {
         position: absolute;
-        top: 110px;
+        top: calc(13% - 40px);
         width: 100%;
-        bottom: 194px;
+        bottom: calc(25% - 40px);
         z-index: 0;
       }
 
       .area-flow-card {
         position: absolute;
         bottom: 0px;
-        height: 225px;
+        height: 25%;
         width: 100%;
         z-index: 1;
       }
 
       .image-car-flow {
         position: absolute;
-        bottom: 257px;
+        bottom: calc(25% + 10px);
         height: 164px;
         width: 72px;
         left: 32px;

@@ -11,6 +11,7 @@
 <script>
   import CustomCard from '../custom-card'
   export default {
+    props: ['data'],
     components: {CustomCard},
     data(){
       return {
@@ -27,12 +28,12 @@
               text: '',
             },
             tooltip: {
-              backgroundColor:'transparent',
-              borderWidth:0,
-              shadow:false,
-              padding:-5,
-              style:{
-                color:'#00F6FFFF',
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              shadow: false,
+              padding: -5,
+              style: {
+                color: '#00F6FFFF',
                 fontSize: '0.0625rem',
               },
               formatter: function () {
@@ -47,9 +48,7 @@
             },
             xAxis: {
               lineWidth: 0,
-              categories: [
-                '丰台区', '西城区', '顺义区', '大兴区', '房山区', '门头沟', '昌平区', '平谷区'
-              ],
+              categories: [''],
               labels: {
                 style: {
                   color: 'white',
@@ -58,7 +57,7 @@
               }
             },
             yAxis: {
-              gridLineColor: '#979797',
+              gridLineColor: '#9797973F',
               gridLineDashStyle: 'solid',
               lineWidth: 0,
               tickAmount: 6,
@@ -87,7 +86,7 @@
             },
             series: [
               {
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 127.0, 64],
+                data: [0],
                 color: {
                   linearGradient: [0, 0, 0, '100%'],
                   stops: [
@@ -102,9 +101,29 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let categories = []
+          let data = []
+          this.data.forEach(item => {
+            categories.push(item.regionName)
+            data.push(parseFloat(item.passedNumber))
+          })
+
+          this.chart.option.series[0].data = data
+          this.chart.option.xAxis.categories = categories
+        }
+      }
+    }
   }
 </script>
 

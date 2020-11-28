@@ -1,5 +1,5 @@
 <template>
-  <custom-card title="路段拥堵过车量" class="car-road-flow-card">
+  <custom-card title="拥堵路段过车量" class="car-road-flow-card">
     <div class="card-body-wrapper" slot="body">
       <highcharts class="chart" :options="chart.option"></highcharts>
       <div class="unit">单位： 万辆</div>
@@ -25,12 +25,12 @@
               text: '',
             },
             tooltip: {
-              backgroundColor:'transparent',
-              borderWidth:0,
-              shadow:false,
-              padding:-5,
-              style:{
-                color:'#00F6FFFF',
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              shadow: false,
+              padding: -5,
+              style: {
+                color: '#00F6FFFF',
                 fontSize: '0.0625rem',
               },
               formatter: function () {
@@ -44,9 +44,9 @@
               enabled: false
             },
             xAxis: {
-              lineWidth:0,
+              lineWidth: 0,
               categories: [
-                '路段1','路段2','路段3','路段4','路段5','路段6','路段7','路段8'
+                '路段1', '路段2', '路段3', '路段4', '路段5', '路段6', '路段7', '路段8'
               ],
               labels: {
                 style: {
@@ -56,10 +56,10 @@
               }
             },
             yAxis: {
-              gridLineColor:'#979797',
-              gridLineDashStyle:'solid',
-              lineWidth:0,
-              tickAmount:6,
+              gridLineColor: '#9797973F',
+              gridLineDashStyle: 'solid',
+              lineWidth: 0,
+              tickAmount: 6,
               min: 0,
               title: {
                 text: ''
@@ -85,7 +85,8 @@
             },
             series: [
               {
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0,127.0,64],
+                //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0,127.0,64],
+                data: [0, 0, 0, 0, 0, 0, 0, 0],
                 color: {
                   linearGradient: [0, 0, 0, '100%'],
                   stops: [

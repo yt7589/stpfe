@@ -43,7 +43,7 @@
               title: {
                 text: ''
               },
-              gridLineColor: '#045FE0',
+              gridLineColor: '#045FE03F',
               gridLineDashStyle: 'dash',
               tickAmount: 6,
               labels: {

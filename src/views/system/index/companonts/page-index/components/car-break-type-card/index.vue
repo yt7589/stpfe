@@ -69,8 +69,7 @@
               tickInterval: 36,
               min: 0,
               max: 360,
-              categories: ['遮挡车牌', '主驾驶抽烟', '副驾驶未系安全带', '主驾驶看手机', '遮挡车牌',
-                '主驾驶未系安全带', '摩托车载人', '主驾驶打电话', '主驾驶抽烟', '摩托车嘉诚人员未带头盔'],
+              categories: [''],
               lineWidth: 1,
               gridLineColor: '#0445A6',
               gridLineWidth: 1,
@@ -87,7 +86,7 @@
                 },
                 style: {
                   color: 'white',
-                  'font-size': '14px'
+                  'font-size': '0.0625rem',
                 }
               }
             },
@@ -119,9 +118,8 @@
               name: '',
               type: 'area',
               color: '#00F6FF80',
-              //color:'transparent',
               //data: [43000, 19000, 60000, 35000, 17000, 10000,20001,2312,44412,123345],
-              data: [2000, 6000, 3000, 6000, 6000, 6000, 6000, 6000]
+              data: [0]
             }]
           },
           instance: null
@@ -139,8 +137,15 @@
     methods: {
       updateChartData(){
         if (this.data) {
+          let categories = []
+          let data = []
+          this.data.forEach(item => {
+            categories.push(item.trafficViolationType)
+            data.push(parseInt(item.trafficViolationNum))
+          })
 
-
+          this.chart.option.xAxis.categories = categories
+          this.chart.option.series[0].data = data
         }
       }
     }
