@@ -2,9 +2,20 @@
   <div class="car-type-card">
     <el-row class="card-wrapper">
       <el-col :span="6" class="column-title">
-        <div class="title">车辆类型分布</div>
-        <div class="outland-value">外地 30%</div>
-        <div class="local-value">本地车辆 <br> 70%</div>
+        <div class="local-car">
+          <div class="image-box">
+            <div class="vline"></div>
+            <div class="point" :style="car.localStyle"><span>{{car.local}}%</span></div>
+          </div>
+          本地
+        </div>
+        <div class="outland-car">
+          <div class="image-box">
+            <div class="vline"></div>
+            <div class="point" :style="car.outlandStyle"><span>{{car.outland}}%</span></div>
+          </div>
+          外埠
+        </div>
       </el-col>
       <el-col :span="18" class="column-chart">
         <highcharts class="chart" :options="chart.option"></highcharts>
@@ -16,6 +27,7 @@
 
 <script>
   export default {
+    props: ['typeData', 'data'],
     components: {},
     data(){
       return {
@@ -31,7 +43,17 @@
               text: '',
             },
             tooltip: {
-              enabled: false,
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              shadow: false,
+              padding: -5,
+              style: {
+                color: '#00F6FFFF',
+                fontSize: '0.0625rem',
+              },
+              formatter: function () {
+                return this.y + '%';
+              }
             },
             credits: {
               enabled: false
@@ -112,11 +134,62 @@
           },
           instance: null
         },
+        car: {
+          local: 0,
+          localStyle: {},
+          outland: 0,
+          outlandStyle: {}
+        }
+      }
+    },
+    watch: {
+      data(){
+        this.updateChartData()
+      },
+      typeData(){
+        this.updateCarTypeData()
       }
     },
     mounted(){
+      this.updateCarTypeData()
+      this.updateChartData()
     },
-    methods: {}
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let chartSeries = this.chart.option.series[0]
+          let data = []
+          this.data.forEach(item => {
+            let value = parseFloat(item.vehicleTypePercentage)
+            data.push({
+              name: item.vehicleTypeName,
+              y: parseInt(value * 100),
+              z: value
+            })
+          })
+          chartSeries.data = data
+        }
+      },
+      updateCarTypeData(){
+        // 0 - 80 %
+        if (this.typeData) {
+          this.typeData.forEach(item => {
+            let percent = parseInt(parseFloat(item.vehicleDistributionPercntage) * 100)
+            let style = {
+              top: percent * 80 / 100.0 + '%'
+            }
+
+            if (item.vehicleDistributionName == '本市车辆') {
+              this.car.localStyle = style
+              this.car.local = percent
+            } else if (item.vehicleDistributionName == '外埠') {
+              this.car.outlandStyle = style
+              this.car.outland = percent
+            }
+          })
+        }
+      }
+    }
   }
 </script>
 
@@ -138,37 +211,76 @@
 
     .column-title {
       height: 100%;
-      .title {
-        font-size: 18px;
-        color: white;
-        margin-bottom: 9px;
+
+      display: flex;
+      font-size: 12px;
+      .local-car {
+        color: #06A6FFFF;
+        .vline {
+          background: #06A6FF;
+          border: solid 2px #048DDA;
+        }
+        .point {
+          background: url(../../image/image-point-blue.png) no-repeat;
+          background-size: 100% 100%;
+          -moz-background-size: 100% 100%;
+
+          span {
+            margin-bottom: 3px;
+            font-size: 12px;
+            color: #06A6FFFF;
+            transform: scale(0.8);
+            margin-right: 3px;
+          }
+        }
       }
 
-      .outland-value {
-        width: 100%;
-        height: calc(40% - 17px);
-
-        background: #00F6FF;
-        font-size: 12px;
-        color: #001537;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .outland-car {
+        color: #00C087FF;
+        .vline {
+          background: #06B699;
+          border: solid 2px #01AE71;
+        }
+        .point {
+          background: url(../../image/image-point-green.png) no-repeat;
+          background-size: 100% 100%;
+          -moz-background-size: 100% 100%;
+          span {
+            margin-bottom: 3px;
+            font-size: 12px;
+            color: #00C087FF;
+            transform: scale(0.8);
+            margin-right: 3px;
+          }
+        }
       }
 
-      .local-value {
-        width: 100%;
-        height: calc(60% - 17px);
-
-        color: white;
-        background: #045FE0;
-        font-size: 12px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .local-car, .outland-car {
+        display: inline-block;
+        width: 50%;
+        height: 100%;
         text-align: center;
+        .image-box {
+          height: calc(100% - 20px);
+          margin-bottom: 5px;
+          position: relative;
+          .vline {
+            position: absolute;
+            width: 20px;
+            height: 100%;
+            border-radius: 10px;
+            left: calc(50% - 10px);
+          }
+          .point {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            left: calc(50% - 20px);
+          }
+        }
       }
     }
 

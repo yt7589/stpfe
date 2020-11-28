@@ -10,6 +10,7 @@
 <script>
   import CustomCard from '../custom-card'
   export default {
+    props: ['data'],
     components: {CustomCard},
     data(){
       return {
@@ -44,7 +45,7 @@
               },
               gridLineColor: '#045FE0',
               gridLineDashStyle: 'dash',
-              tickAmount:6,
+              tickAmount: 6,
               labels: {
                 style: {
                   color: 'white'
@@ -63,7 +64,17 @@
               }
             },
             tooltip: {
-              enabled: false,
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              shadow: false,
+              padding: -5,
+              style: {
+                color: '#00F6FFFF',
+                fontSize: '0.0625rem',
+              },
+              formatter: function () {
+                return this.y;
+              }
             },
             plotOptions: {
               area: {
@@ -74,9 +85,9 @@
               }
             },
             series: [{
-//                enabled:false,
               name: '小型车',
-              data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+              //data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#045FE0',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -95,7 +106,8 @@
               }
             }, {
               name: '中型车',
-              data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
+              // data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#D1494E',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -114,7 +126,8 @@
               }
             }, {
               name: '大型车',
-              data: [1.9, 3.2, 4.7, 8.5, 11.9, 15.2, 13.0, 12, 11.2, 10.3, 6.6, 4.8],
+//              data: [1.9, 3.2, 4.7, 8.5, 11.9, 15.2, 13.0, 12, 11.2, 10.3, 6.6, 4.8],
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#E69B03',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -137,9 +150,40 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          this.data.forEach(item => {
+            let charData = null
+            if (item.vehicleTypeName == '小型车') {
+              charData = this.chart.option.series[0].data
+            } else if (item.vehicleTypeName == '中型车') {
+              charData = this.chart.option.series[1].data
+            } else if (item.vehicleTypeName == '大型车') {
+              charData = this.chart.option.series[2].data
+            }
+
+            if (charData) {
+              let index = parseInt(item.timeFrame / 2) - 1
+              if (index < charData.length) {
+                this.$set(charData, index, parseFloat(item.vehicleNumber))
+              } else {
+                console.error("小时错误", item)
+              }
+            }
+          })
+          this.$forceUpdate()
+        }
+      }
+    }
   }
 </script>
 

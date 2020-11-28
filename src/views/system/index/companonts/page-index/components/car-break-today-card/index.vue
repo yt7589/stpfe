@@ -56,7 +56,17 @@
               enabled: false,
             },
             tooltip: {
-              enabled: false,
+              backgroundColor:'transparent',
+              borderWidth:0,
+              shadow:false,
+              padding:-5,
+              style:{
+                color:'#00F6FFFF',
+                fontSize: '0.0625rem',
+              },
+              formatter: function () {
+                return this.y;
+              }
             },
             plotOptions: {
               area: {

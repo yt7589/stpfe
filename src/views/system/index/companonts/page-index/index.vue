@@ -2,9 +2,9 @@
   <div class="page-index custom-main-content-full">
     <div class="page-wrapper">
       <div class="column-left">
-        <car-type-card class="line-car-type"></car-type-card>
+        <car-type-card :typeData="statisticData.vehicleDistributionList" :data="statisticData.vehicleTypeDTOList" class="line-car-type"></car-type-card>
         <car-hour-card :data="statisticData.timeFrameNumberList" class="line"></car-hour-card>
-        <car-type-flow-card class="line"></car-type-flow-card>
+        <car-type-flow-card :data="statisticData.vehicleTypeNumberList" class="line"></car-type-flow-card>
         <car-road-flow-card class="line"></car-road-flow-card>
       </div>
       <div class="column-middle">
@@ -15,7 +15,7 @@
       </div>
       <div class="column-right">
         <car-break-card :data="trafficData.trafficViolationList" class="car-break-card"></car-break-card>
-        <car-break-type-card class="car-break-type-card"></car-break-type-card>
+        <car-break-type-card :data="trafficData.trafficViolationTypeNumberList"  class="car-break-type-card"></car-break-type-card>
         <car-break-today-card :data="trafficData.trafficViolationTimeFrameNumberList" class="car-break-today-card"></car-break-today-card>
       </div>
     </div>
@@ -133,9 +133,10 @@
         position: absolute;
         bottom: 257px;
         height: 164px;
-        width: 20px;
+        width: 72px;
         left: 32px;
         z-index: 1;
+        pointer-events: none;
       }
     }
 
