@@ -51,25 +51,27 @@
               startAngle: 0,
               endAngle: 360,
               size: '80%',
-              background: [
-                {
-                  backgroundColor: '#0A367F',
-                  borderWidth: 0,
-                  innerRadius: '80%',
-                  outerRadius: '100%',
-                },
-                {
-                  backgroundColor: '#0A367F',
-                  borderWidth: 0,
-                  innerRadius: '40%',
-                  outerRadius: '60%',
-                }]
+              // TODO: 数据刷新时 背景也会刷新
+//              background: [
+//                {
+//                  backgroundColor: '#0A367F',
+//                  borderWidth: 0,
+//                  innerRadius: '80%',
+//                  outerRadius: '100%',
+//                },
+//                {
+//                  backgroundColor: '#0A367F',
+//                  borderWidth: 0,
+//                  innerRadius: '40%',
+//                  outerRadius: '60%',
+//                }]
             },
             xAxis: {
               tickInterval: 36,
               min: 0,
               max: 360,
-              categories: [''],
+              categories: ['遮挡车牌', '主驾驶抽烟', '副驾驶未系安全带', '主驾驶看手机', '遮挡车牌2',
+                '主驾驶未系安全带', '摩托车载人', '主驾驶打电话', '主驾驶抽烟', '摩托车嘉诚人员未带头盔'],
               lineWidth: 1,
               gridLineColor: '#0445A6',
               gridLineWidth: 1,
@@ -77,7 +79,7 @@
               labels: {
                 distance: 18,
                 formatter: function () {
-                  let index = this.pos / 36
+                  let index = this.pos / this.axis.tickInterval
                   let options = this.axis.categories
                   let name = index < options.length ? options[index] : ''
                   let colors = ['#E69B03', '#D1494E', '#42FF00', '#00F6FF', '#00C087', '#06A6FF', '#FF5200', '#4C49EC', '#045FE0', '#041FE0']
@@ -107,7 +109,7 @@
             plotOptions: {
               series: {
                 pointStart: 0,
-                pointInterval: 45
+                pointInterval: 36
               },
               column: {
                 pointPadding: 0,
@@ -119,10 +121,10 @@
               type: 'area',
               color: '#00F6FF80',
               //data: [43000, 19000, 60000, 35000, 17000, 10000,20001,2312,44412,123345],
-              data: [0]
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             }]
           },
-          instance: null
+          instance: null,
         },
       }
     },
@@ -137,15 +139,29 @@
     methods: {
       updateChartData(){
         if (this.data) {
-          let categories = []
-          let data = []
+          let categories = this.chart.option.xAxis.categories
+          let data = this.chart.option.series[0].data
+          // 合并类型
           this.data.forEach(item => {
-            categories.push(item.trafficViolationType)
-            data.push(parseInt(item.trafficViolationNum))
+            let found = categories.find(name => name == item.trafficViolationType)
+            if (!found) {
+              categories.push(item.trafficViolationType)
+              data.push(0)
+            }
           })
+          this.chart.option.plotOptions.series.pointInterval = this.chart.option.xAxis.tickInterval = 360.0 / categories.length
 
-          this.chart.option.xAxis.categories = categories
-          this.chart.option.series[0].data = data
+          //  合并数据
+
+          categories.forEach((name, index) => {
+            let found = this.data.find((item) => item.trafficViolationType == name)
+            if (found) {
+              let value = parseInt(found.trafficViolationNum)
+              this.$set(data, index, value)
+            } else {
+              data[index] = 0;
+            }
+          })
         }
       }
     }

@@ -34,7 +34,7 @@
     </div>
 
     <div class="main-content-box">
-      <page-index v-show="page=='index'" @open="openPage"></page-index>
+      <page-index v-if="page=='index'" @open="openPage"></page-index>
       <page-lwsk v-show="page=='lwsk'"></page-lwsk>
       <page-wzgl v-show="page=='wzgl'"></page-wzgl>
       <page-zdjg v-show="page=='zdjg'"></page-zdjg>

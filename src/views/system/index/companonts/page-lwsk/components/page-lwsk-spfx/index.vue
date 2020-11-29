@@ -11,20 +11,20 @@
       </bm-marker>
     </baidu-map>
     <div class="camera-info">
-      <div class="success-info" @click="zoomFocus">
+      <div class="success-info info-box" @click="zoomFocus">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
         共接入摄像头 0 个
       </div>
-      <div class="success-info">
+      <div class="success-info info-box">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
         共接入抓拍机 0  个
       </div>
       <br>
-      <div class="error-info">
+      <div class="error-info info-box">
         <el-image :src="require('../../image/image-warning.png')"></el-image>
         异常摄像头 0  个
       </div>
-      <div class="error-info">
+      <div class="error-info info-box">
         <el-image :src="require('../../image/image-warning.png')"></el-image>
         异常抓拍机 0  个
       </div>
@@ -37,6 +37,8 @@
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
   import CameraInfoWindow from './components/camera-info-window'
+
+  import API from '@/api'
 
   export default {
     components: {
@@ -107,28 +109,19 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
+//        this.zoomFocus()
         setTimeout(() => {
-          // 立即聚焦会出现白屏
+          //TODO: 立即聚焦会出现白屏
           this.zoomFocus()
         }, 1000)
       },
       zoomFocus(){
         if (this.map.instance) {
           var points = []
-          this.pointList.forEach((camera) => {
-            if (camera.longitude > 0 && camera.latitude > 0) {
-              points.push({
-                lng: camera.longitude,
-                lat: camera.latitude
-              })
-            }
+          this.pointList.forEach((item) => {
+            points.push(new BMap.Point(item.longitude, item.latitude))
           })
-          if (points.length > 0) {
-            let view = this.map.instance.getViewport(eval(points))
-            this.map.center = view.center
-            this.map.zoom = view.zoom
-          }
-          console.log("zoomFocus", points, this.map.center)
+          this.map.instance.setViewport(points);
         }
       },
       zoomIn(){
@@ -179,34 +172,29 @@
       top: 164px;
       right: 70px;
 
-      .success-info {
+      .info-box {
+        display: flex;
+        font-size: 14px;
         width: 214px;
-        padding: 8px 15px;
+        padding: 8px 18px;
         margin-top: 6px;
-
-        color: #FFFFFF;
-        background: #045FE0;
-        border-radius: 18px;
 
         .el-image {
           width: 20px;
-          margin-right: 1px;
+          margin-right: 11px;
         }
       }
 
-      .error-info {
-        width: 214px;
-        padding: 8px 15px;
-        margin-top: 6px;
+      .success-info {
+        color: #FFFFFF;
+        background: #045FE0;
+        border-radius: 18px;
+      }
 
+      .error-info {
         color: #FFFFFF;
         background: #D1494E;
         border-radius: 18px;
-
-        .el-image {
-          width: 20px;
-          margin-right: 1px;
-        }
       }
     }
 

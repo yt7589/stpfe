@@ -1,86 +1,66 @@
 <template>
-  <div class="page-wzgl-wzjg" flex="dir:top">
+  <div class="page-wzgl-wzfb" flex="dir:top">
     <div class="header-crumb">
-      <span>违章管理>违章监管</span>
+      <span>违章管理>违章分布</span>
     </div>
     <div flex-box="1" class="body">
       <div class="column-1">
         <el-form class="search-form">
           <el-form-item>
-            <el-select placeholder="类别" v-model="table.filter.type">
+            <el-date-picker
+              v-model="table.filter.time"
+              type="daterange"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-select placeholder="类别" v-model="table.filter.type" class="type-select">
 
             </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="车辆类型" v-model="table.filter.carType">
-
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="违章类型" v-model="table.filter.wzlx">
-
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input placeholder="车牌号" v-model="table.filter.cph">
-
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-input placeholder="地点" v-model="table.filter.location">
-
-            </el-input>
-          </el-form-item>
-
-          <el-form-item>
             <el-button class="button-search">
               搜索
               <el-image :src="require('../../image/image-search.png')"></el-image>
             </el-button>
           </el-form-item>
-          <el-form-item>
-            <el-button class="button-export">
-              导出
-              <el-image :src="require('../../image/image-export.png')"></el-image>
-            </el-button>
-          </el-form-item>
         </el-form>
+
+        <div class="wrapper" v-if="visible">
+          <area-violation-top10-card class="area-violation-top10-card "></area-violation-top10-card>
+          <camera-violation-top10-card class="camera-violation-top10-card"></camera-violation-top10-card>
+        </div>
       </div>
       <div class="column-2">
-        <el-container class="table-container">
-          <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-            <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-              <el-table-column align="center" prop="" label="时间" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="地点" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="车牌号" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="类别" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="车辆类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="违章类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="详情" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="操作" minWidth="60"></el-table-column>
-            </el-table>
-          </el-main>
-          <el-footer>
-            <el-pagination
-              class="custom-pagination"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="table.pagination.currentPage"
-              :page-sizes="[20, 50, 100, 200]"
-              :page-size="table.pagination.pageSize"
-              layout="prev, pager,sizes, next,total"
-              :total="table.pagination.total">
-            </el-pagination>
-          </el-footer>
-        </el-container>
+        <div class="wrapper">
+          <baidu-map ref="map" class="baidu-map" :zoom="map.zoom"
+                     :center="map.center" :dragging="true"
+                     @ready="onMapReady">
+            <!--<bm-marker v-for="(point,index) in pointList" :key="index"-->
+            <!--:position="{lng: point.longitude, lat: point.latitude}"-->
+            <!--v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">-->
+            <!--</bm-marker>-->
+          </baidu-map>
+        </div>
+      </div>
+      <div class="column-3">
+        <violation-table class="violation-table"></violation-table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import AreaViolationTop10Card from './componnets/area-violation-top10-card'
+  import CameraViolationTop10Card from './componnets/camera-violation-top10-card'
+  import ViolationTable from './componnets/violation-table'
+
+
+  import mapStyle from '@/assets/baiduMapStyle'
+
   export default {
-    components: {},
+    props: ['visible'],
+    components: {AreaViolationTop10Card, CameraViolationTop10Card, ViolationTable},
     data(){
       return {
         loading: false,
@@ -96,26 +76,47 @@
             total: 1000,
             pageSize: 20
           }
-        }
+        },
+        map: {
+          instance: null,
+          zoom: 12,
+          center: {
+            lng: 116.495843,
+            lat: 39.90421
+          }
+        },
       }
     },
     mounted(){
     },
     methods: {
-      handleSizeChange(size){
-        this.table.pagination.pageSize = size
-        this.fetchData()
+      onMapReady ({BMap, map}) {
+        this.map.instance = map
+        this.initMap()
       },
-      handleCurrentChange(page){
-        this.table.pagination.page = page
-        this.fetchData(page)
-      }
+      initMap () {
+        this.map.instance.setMapStyleV2(mapStyle)
+//        this.zoomFocus()
+        setTimeout(() => {
+          //TODO: 立即聚焦会出现白屏
+          this.zoomFocus()
+        }, 1000)
+      },
+      zoomFocus(){
+        if (this.map.instance) {
+//          var points = []
+//          this.pointList.forEach((item) => {
+//            points.push(new BMap.Point(item.longitude, item.latitude))
+//          })
+//          this.map.instance.setViewport(points);
+        }
+      },
     }
   }
 </script>
 
 <style lang="scss">
-  .page-wzgl-wzjg {
+  .page-wzgl-wzfb {
     .header-crumb {
       width: 100%;
       height: 64px;
@@ -136,9 +137,10 @@
       margin-top: 8px;
       width: 100%;
       display: flex;
+      justify-content: space-between;
 
       .column-1 {
-        width: 16%;
+        width: 23%;
         height: 100%;
         display: inline-block;
 
@@ -148,9 +150,9 @@
         position: relative;
         .search-form {
           position: absolute;
-          top: 24px;
-          left: 24px;
-          right: 24px;
+          top: 20px;
+          left: 20px;
+          right: 20px;
 
           .el-form-item {
             margin-bottom: 8px;
@@ -164,8 +166,31 @@
             color: white;
           }
 
+          .el-date-editor {
+            width: calc(100% - 110px);
+            padding: 9px 12px;
+            .el-input__icon {
+              padding-bottom: 11px;
+            }
+            .el-range-input {
+              font-size: 14px;
+              color: #FFFFFF;
+              background: transparent;
+            }
+            .el-range-separator {
+              line-height: 14px;
+              color: #FFFFFF;
+            }
+          }
+
+          .type-select {
+            width: calc(100% - 110px);
+          }
+
           .button-search {
-            width: 100%;
+            width: 96px;
+            margin-left: 9px;
+            display: inline-block;
 
             background: #045FE0;
             border-radius: 4px;
@@ -183,51 +208,49 @@
               float: right;
             }
           }
+        }
 
-          .button-export {
-            width: 100%;
-
-            background: #00C087;
-            border-radius: 4px;
-            border: unset;
-
-            font-size: 14px;
-            color: #FFFFFF;
-
-            &:active {
-              opacity: 0.8;
-            }
-
-            .el-image {
-              width: 16px;
-              float: right;
-            }
-          }
+        > .wrapper {
+          position: absolute;
+          top: 125px;
+          left: 20px;
+          right: 20px;
+          bottom: 20px;
+        }
+        .area-violation-top10-card {
+          height: 50%;
+        }
+        .camera-violation-top10-card {
+          height: 50%;
         }
       }
 
       .column-2 {
-        width: calc(84% - 8px);
+        width: calc(57% - 16px);
         height: 100%;
-        margin-left: 8px;
-        display: inline-block;
 
-        background: rgba(0, 115, 255, 0.2);
+        background: rgba(4, 95, 224, 0.2);
         border-radius: 4px;
 
         position: relative;
-        .table-container {
+        .wrapper {
           position: absolute;
-          top: 4px;
-          right: 4px;
-          bottom: 4px;
-          left: 4px;
-
-          .el-footer {
-            height: 50px !important;
-            text-align: right;
-          }
+          top: 8px;
+          bottom: 8px;
+          left: 8px;
+          right: 8px
         }
+        .baidu-map {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .column-3 {
+        width: 20%;
+
+        background: rgba(0, 115, 255, 0.2);
+        border-radius: 4px;
       }
     }
   }

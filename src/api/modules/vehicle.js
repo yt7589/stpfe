@@ -77,5 +77,19 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       url: '/traffic/violation',
       method: 'get',
     })
+  },
+
+  GetCameraSiteList(){
+    return request({
+      url: '/camera/site',
+      method: 'get',
+    })
+  },
+  GetCameraList(params){
+    return request({
+      url: '/camera/site/device',
+      method: 'get',
+      params
+    })
   }
 })

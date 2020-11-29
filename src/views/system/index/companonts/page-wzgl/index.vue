@@ -5,7 +5,8 @@
             :class="curPage===option?'is-active':''" @click="curPage=option">{{option.label}}</span>
     </div>
     <page-wzgl-wzjg v-show="curPage.label=='违章监管'" class="custom-main-content"></page-wzgl-wzjg>
-    <page-wzgl-wzfb v-show="curPage.label=='违章分布'" class="custom-main-content"></page-wzgl-wzfb>
+    <page-wzgl-wzfb v-show="curPage.label=='违章分布'" :visible="curPage.label=='违章分布'"
+                    class="custom-main-content"></page-wzgl-wzfb>
   </div>
 </template>
 

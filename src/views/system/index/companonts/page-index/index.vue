@@ -49,11 +49,18 @@
     data () {
       return {
         statisticData: {},
-        trafficData: {}
+        trafficData: {},
+        timer: null
       }
     },
     mounted(){
       this.fetchData()
+      this.timer = setInterval(() => {
+        this.fetchData()
+      }, 3000)
+    },
+    beforeDestroy(){
+        clearInterval(this.timer)
     },
     methods: {
       fetchData(){
