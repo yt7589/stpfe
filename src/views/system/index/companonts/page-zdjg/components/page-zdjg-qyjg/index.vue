@@ -225,8 +225,9 @@
         }
         .baidu-map{
             position: absolute;
-            width: 100%;
-            height:100%;
+            width: 98%;
+            height:97%;
+            padding: 1%;
         }
         .jgdt-text{
 
