@@ -4,8 +4,12 @@
         <div style="margin-top: 4px; width: 100%;height: 100%">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;height: 100%;">
-                    <el-row style="height: 60%"></el-row>
-                    <el-row style="height: 40%"></el-row>
+                    <el-row style="height: 65%">
+                        <fsdtj id="fsdtj"></fsdtj>
+                    </el-row>
+                    <el-row style="height: 35%">
+                        <fqytj id="fqytj"></fqytj>
+                    </el-row>
                 </el-col>
                 <el-col :span="12" class="col" style="width: 52%;margin-right: 1%;margin-left: 1%;">
                     <div  style="height: 100%;width:100%;" class="map">
@@ -48,9 +52,11 @@
                     <el-row style="height: 50%">
                         <div style="padding: 16px 16px 0px 16px; position: relative;">
                             <el-row>
-                                <el-col :span="3">  <el-avatar  :src="require('../../image/clbkdt@1x.png')"></el-avatar></el-col>
-                                <el-col :span="6" class="jgdt-text" >  <span class="jgdt-span">过车记录</span></el-col>
-                                <el-col :span="15" class="col-more"><span class="clbk-more">更多>></span></el-col>
+                                <div class="head-title">
+                                    <div class="icon"></div>
+                                    <div class="content">过车记录</div>
+                                    <div class="more">更多>></div>
+                                </div>
                             </el-row>
                         </div>
                         <div class="dt-list">
@@ -71,11 +77,9 @@
 
                         </div>
                     </el-row>
-                    <el-row  style="height: 50%">
-
+                    <el-row  style="height: 50%;display: flex;justify-content: center">
+                        <el-image class="image" :src="src"></el-image>
                     </el-row>
-
-
                 </el-col>
             </el-row>
         </div>
@@ -86,6 +90,8 @@
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
   import HeaderCrumb from '../common/header-crumb'
+  import Fsdtj from './components/fsdtj'
+  import Fqytj from './components/fqytj'
   export default {
     name: 'page-zdjg-pzyc',
     props:{
@@ -101,7 +107,9 @@
       }
     },
     components:{
-      HeaderCrumb
+      HeaderCrumb,
+      Fsdtj,
+      Fqytj
     },
     data(){
       return {
@@ -145,6 +153,7 @@
             num:"累计出现11次",
           },
         ],
+        src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606650551241&di=8378d72dc6414bfa9a243c2e75db511a&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Fauto%2Fpics%2Fhv1%2F246%2F190%2F1582%2F102918246.jpg',
       }
     },
     methods:{
@@ -263,18 +272,7 @@
         position: relative;
         padding: 16px 16px 0 16px;
     }
-    .col-more{
-        text-align: end;
-    }
-    .clbk-more{
-        width: 58px;
-        height: 25px;
-        font-size: 18px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 500;
-        color: #00F6FF;
-        cursor: pointer;
-    }
+
 
     .col-2-row-1 {
         padding-left: 10%;
@@ -312,5 +310,35 @@
     .area_total_car {
         background: url("../../image/area_total_car@1.png") no-repeat;
         background-size: cover;
+    }
+    .image{
+        width: 80%;
+        height: 90%;
+    }
+
+    .head-title {
+        font-family: PingFangSC-Medium, PingFang SC;
+        color: #ffffff;
+        height: 25px;
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            background: url('../../image/sfdtj-icon.png') no-repeat;
+            background-size: cover;
+        }
+        display: flex;
+        .content {
+            line-height: 20px;
+            font-size: 18px;
+        }
+        .more {
+            font-size: 18px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            color: #00F6FF;
+            cursor: pointer;
+            line-height: 20px;
+            margin-left: auto;
+        }
     }
 </style>
