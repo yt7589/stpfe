@@ -4,196 +4,111 @@
             <div class="icon"></div>
             <div class="content">本日重点监控车辆车型构成</div>
         </div>
-        <div class="div-chart">
-            <highcharts class="chart" :options="chart.option"></highcharts>
-        </div>
+        <div :id="id" :class="className" :style="{height:height,width:width}" />
 
     </div>
 </template>
 
 <script>
+  var m2R2Data= [
+
+
+  ];
+  import echarts from 'echarts'
   export default {
     name: 'constitute_pie',
+    props: {
+      className: {
+        type: String,
+        default: 'chart'
+      },
+      id: {
+        type: String,
+        default: 'chart'
+      },
+      width: {
+        type: String,
+        default: '100%'
+      },
+      height: {
+        type: String,
+        default: '100%'
+      }
+    },
     data(){
       return {
-        chart:{
-          option:{
-
-          }
-        }
       }
     },
     mounted(){
-      this.getChartData()
+      this.initChart()
     },
     methods:{
-      getChartData(){
-        this.chart.option = {}
-        this.chart.option = {
-          chart: {
-            plotBackgroundColor: 'transparent',
-            backgroundColor: 'transparent',
-            spacing: [0, 0, 0, 0]
-          },
-          title: {
-            text: ''
-          },
+      initChart(){
+        this.chart = echarts.init(document.getElementById(this.id))
+        this.setOptions()
+      },
+      setOptions(){
+        this.chart.setOption({
           tooltip: {
-            pointFormat: ' <b>{point.percentage:.1f}%</b>'
+            trigger: 'item',
+
           },
           legend: {
-
-            enabled: true,
-            labelFormat: "{name}",
-            useHTML: true,
-            align: 'right',
-            verticalAlign: 'middle',
-            layout: 'vertical',
-            symbolRadius: 0,
-            itemMarginTop: 0,
-            itemMarginBottom: 0,
-            itemStyle: {
-              "color": "white",
-              'font-size': '0.0125rem',
+            type:"scroll",
+            orient: 'vertical',
+            left:'60%',
+            align:'left',
+            top:'5',
+            textStyle: {
+              color:'#ffffff',
+              fontSize:"12px",
             },
-            y:-20,
-            x:-20
+
           },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                distance: 1,
-                enabled: true,
-                useHTML:true,
-                style:{
-                  "color": "#ffffff","width":"500px", "display":"inline-block","white-space":"pre-wrap","fontSize": "12px", "fontFamily": "PingFangSC-Regular, PingFang SC"
+          series: [
+            {
+              name:'',
+              type:'pie',
+              center: ['35%', '50%'],
+              radius: ['40%', '65%'],
+              clockwise: false, //饼图的扇区是否是顺时针排布
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  color:'#ffffff',
+                  fontSize:"12px",
+                  show: true,
+                  position: 'outter',
+                  formatter:function (parms){
+                    return parms.data.legendname
+                  }
                 }
               },
-              showInLegend: true
+              labelLine: {
+                normal: {
+                  length:2,
+                  length2:3,
+                  smooth:true,
+                }
+              },
+              data:[
+                {
+                  value:335,
+                  legendname:'平板式货车',
+                  name:"平板式货车",
+                  itemStyle:{
+                    color:"#552873",
+                  }
+                },
+                {value:310, legendname:'厢式货车',name:"厢式货车",itemStyle:{color:"#E69B03"}},
+                {value:234, legendname:'罐式货车',name:"罐式货车",itemStyle:{color:"#045FE0"}},
+                {value:154, legendname:'栏板式货车',name:"栏板式货车",itemStyle:{color:"#D1494E"}},
+                {value:335, legendname:'普通货车',name:"普通货车",itemStyle:{color:"#D8D8D8"}},
+                {value:335, legendname:'仓栅式货车',name:"仓栅式货车",itemStyle:{color:"#00C087"}},
+              ]
             }
-          },
-          series: [{
-            type: 'pie',
-            innerSize: '65%',
-            name: '',
-            size: '50%',
-            center: [80, 40],
-            data: [{
-              name: '平板式货车',
-              y: 61.41,
-              color:'#552873',
-            }, {
-              name: '仓栅式货车',
-              y: 11.84,
-              color:'#00C087'
-            }, {
-              name: '普通货车',
-              y: 10.85,
-              color:'#D8D8D8'
-            }, {
-              name: '栏板式货车',
-              y: 4.67,
-              color:'#D1494E'
-            }, {
-              name: '罐式货车',
-              y: 4.18,
-              color:'#045FE0'
-            }, {
-              name: '厢式货车',
-              y: 7.05,
-              color:'#E69B03',
-            }]
-          }]
-        }
-        // this.chart.option = {
-        //   chart: {
-        //     plotBackgroundColor: 'transparent',
-        //     backgroundColor: 'transparent',
-        //     spacing: [0, 0, 0, 0]
-        //   },
-        //   title: {
-        //     text: ''
-        //   },
-        //   tooltip: {
-        //     pointFormat: ' <b>{point.percentage:.1f}%</b>'
-        //   },
-        //   legend: {
-        //     //width:200,
-        //
-        //     enabled: true,
-        //     labelFormat: "{name}",
-        //     useHTML: true,
-        //     align: 'right',
-        //     verticalAlign: 'middle',
-        //     layout: 'vertical',
-        //     symbolRadius: 0,
-        //     itemMarginTop: 0,
-        //     itemMarginBottom: 0,
-        //     itemStyle: {
-        //       "color": "white",
-        //       'font-size': '0.0125rem',
-        //     },
-        //     x:20,
-        //     y:-20,
-        //   },
-        //   plotOptions: {
-        //     series: {
-        //       showInLegend: true
-        //     },
-        //     pie: {
-        //       allowPointSelect: true,
-        //       cursor: 'pointer',
-        //       dataLabels: {
-        //         distance: 1,
-        //         enabled: true,
-        //         //useHTML: true, // 一定要加上
-        //         // formatter : function() {
-        //         //   return "<p style=' color: #ffffff;font-size:3px;'>"+this.point.name+"</p>"; // 重点在white-space:pre-wrap
-        //         // }
-        //
-        //         style:{
-        //           "color": "#ffffff","width":"60px","display":"inline-block","white-space":"pre-wrap", "fontSize": "8px", "font-family": "PingFangSC-Regular, PingFang SC"
-        //         }
-        //       },
-        //       showInLegend: true
-        //     }
-        //   },
-        //   series: [{
-        //     type: 'pie',
-        //     innerSize: '65%',
-        //     name: '',
-        //     size: '50%',
-        //     center: [70, 30],
-        //     data: [{
-        //       name: '平板式货车',
-        //       y: 61.41,
-        //       color:'#552873',
-        //     }, {
-        //       name: '仓栅式货车',
-        //       y: 11.84,
-        //       color:'#00C087'
-        //     }, {
-        //       name: '普通货车',
-        //       y: 10.85,
-        //       color:'#D8D8D8'
-        //     }, {
-        //       name: '栏板式货车',
-        //       y: 4.67,
-        //       color:'#D1494E'
-        //     }, {
-        //       name: '罐式货车',
-        //       y: 4.18,
-        //       color:'#045FE0'
-        //     }, {
-        //       name: '厢式货车',
-        //       y: 7.05,
-        //       color:'#E69B03',
-        //     }]
-        //   }]
-        //
-        // }
+          ]
+        })
       }
     }
   }
@@ -220,15 +135,7 @@
         }
     }
     .div-chart{
-        height: 100%;
 
-        .chart {
-            width: 100%;
-            height: 100%;
-            margin-top: 24px;
-            margin-left: 23px;
-            margin-bottom: 24px;
-        }
     }
 
 
