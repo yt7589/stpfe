@@ -36,8 +36,24 @@
   color: #FFFFFF;
 }
 
+.search-form {
+  padding: 16px;
+  position: relative;
+  display: flex;
+}
+
 .custom-table .el-table__header th, .custom-table .el-table__header tr{
   background-color: #00F6FF !important;
+}
+
+.custom-table  .el-table tr {
+  background-color: transparent !important;
+}
+.custom-table td {
+  padding: 6px 0;
+}
+.custom-table {
+
 }
 .button-page-group{
   left: 20%;

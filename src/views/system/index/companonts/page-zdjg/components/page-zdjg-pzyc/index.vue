@@ -1,7 +1,7 @@
 <template>
     <div class="page-zdjg-pzyc" >
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
-        <div style="margin-top: 4px; width: 100%;height: 100%">
+        <div  class="body">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;height: 100%;">
                     <el-row style="height: 65%">
@@ -14,7 +14,7 @@
                 <el-col :span="12" class="col" style="width: 52%;margin-right: 1%;margin-left: 1%;">
                     <div  style="height: 100%;width:100%;" class="map">
                         <baidu-map  ref="map-qyjg" class="baidu-map" :zoom="map.zoom"
-                                    :center="map.center" :dragging="true"
+                                    :center="map.center" :dragging="false"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
                             <bm-marker :position="markerPoint" :dragging="true" @click="infoWindowOpen">
@@ -192,7 +192,11 @@
     .page-zdjg-pzyc {
         height: calc(100% - 170px);
         overflow-y: hidden;
-
+        .body {
+            margin-top: 8px;
+            width: 100%;
+            height: 100%
+        }
     }
     .qy-row{
         height:85%;

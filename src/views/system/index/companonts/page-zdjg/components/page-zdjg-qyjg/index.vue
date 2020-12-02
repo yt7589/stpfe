@@ -1,17 +1,17 @@
 <template>
     <div class="page-zdjg-qyjg" >
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
-        <div style="margin-top: 4px; width: 100%;height: 100%">
+        <div class="body" style="">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
-                    <div style="padding: 16px; position: relative;display: flex;" >
+                    <div class="search-form" >
                         <el-input placeholder="地区名称" class="search-input"></el-input>
                         <button class="search-button"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
                     </div>
                     <div>
                         <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-                            <el-table class="custom-table" :data="tableData">
+                            <el-table class="custom-table" :data="tableData" :row-style="{height:'0.037rem'}">
                                 <el-table-column align="center" prop="area_name" label="地区名称" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
@@ -21,7 +21,7 @@
                                 </el-table-column>
                             </el-table>
                         </el-main>
-                        <div  class="button-page-group">
+                        <div  class="button-page-group" v-show="this.tableData.length >= 10">
                             <el-button class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
                             <el-button class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
@@ -46,13 +46,13 @@
                     </div>
                 </el-col >
                 <el-col :span="5" class="col" style="width: 23%">
-                    <div style="padding: 16px; position: relative;">
+                    <div class="dt-title">
                         <el-row>
                             <el-col :span="3">  <el-avatar  :src="require('../../image/dt@1x.png')"></el-avatar></el-col>
                             <el-col :span="6" class="jgdt-text">  <span class="jgdt-span">监管动态</span></el-col>
                         </el-row>
                     </div>
-                    <div class="dt-list" style="position: relative;padding: 0 16px 0 16px;">
+                    <div class="dt-list ">
                         <el-row :gutter="2">
                             <el-col :span="12">
                                 <el-input placeholder="请输入地区名称" class="search-input"></el-input>
@@ -122,10 +122,45 @@
     components:{
       HeaderCrumb
     },
+    computed:{
+      showPaging:function () {
+        return this.tableData.length >= 5
+      }
+    },
     data(){
       return {
         loading:false,
         tableData:[
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
+          {
+            area_name:"海淀区上地8街12号"
+          },
           {
             area_name:"海淀区上地8街12号"
           }
@@ -146,6 +181,7 @@
           desc:"海淀区上地8街12号",
           card:"京A12345累计"
         },
+        showPaging:false,
         show: true,
         dialogVisible:false,
         dialogData:{
@@ -207,6 +243,12 @@
     .page-zdjg-qyjg {
         height: calc(100% - 170px);
         overflow-y: hidden;
+
+        .body {
+            margin-top: 8px;
+            width: 100%;
+            height: 100%
+        }
 
     }
     .qy-row{
@@ -282,9 +324,14 @@
         line-height: 20px;
 
     }
+    .dt-title {
+        padding: 16px;
+        position: relative;
+    }
+
     .dt-list{
         position: relative;
-        padding: 16px 16px 0 16px;
+        padding: 0px 16px 16px 16px;
     }
 </style>
 
@@ -334,6 +381,9 @@
             font-weight: 400;
             color: #FFFFFF;
 
+        }
+        .el-main {
+            padding: 16px !important;
         }
     }
 
