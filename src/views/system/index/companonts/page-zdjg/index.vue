@@ -1,5 +1,23 @@
 <template>
     <div class="page-zdjg">
+        <baidu-map
+                v-if="curPage.label=='特殊车辆监管'"
+                ref="map-tscl"
+                class="baidu-map"
+                :dragging="false"
+                @ready="onMapReady"
+                :zoom="map.zoom"
+                :center="map.center" >
+            <bm-marker class="bm-marker" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
+                <bm-info-window class="bm-info-window" :show="show" @close="infoWindowClose" @open="infoWindowOpen">
+                    <div class="bm-info-content">
+                        <p>{{markerData.desc}}</p>
+                        <p>{{markerData.card}}</p>
+                    </div>
+
+                </bm-info-window>
+            </bm-marker>
+        </baidu-map>
         <div class="custom-menu-box">
         <span class="menu" v-for="(option,index) in pageOptions" :key="index"
             :class="curPage===option?'is-active':''"  @click="tsclCli(option)" >{{option.label}}</span>
@@ -15,6 +33,7 @@
 
 <script>
     import './common.scss'
+    import mapStyle from '@/assets/baiduMapStyle'
   import PageZdjgQyjg from './components/page-zdjg-qyjg'
   import PageZdjgLdjg from './components/page-zdjg-ldjg'
   import PageZdjgClbk from './components/page-zdjg-clbk'
@@ -39,12 +58,54 @@
           {label: '特殊车辆监管'},
           {label: '牌照异常'},
         ],
+        map: {
+          instance: null,
+          zoom: 12,
+          center: {
+            lng: 116.404,
+            lat: 39.915
+          },
+        },
+        markerPoint: {
+          lng: 116.404,
+          lat: 39.915
+        },
+        show: true,
+        markerData:{
+          desc:"海淀区上地8街12号",
+          card:"京A12345累计"
+        },
       }
     },
     mounted(){
       this.curPage = this.pageOptions[0]
     },
     methods: {
+      onMapReady ({BMap, map}) {
+        this.map.instance = map
+        this.initMap()
+        this.infoWindowOpen()
+
+      },
+      initMap () {
+        this.map.instance.setMapStyleV2(mapStyle)
+        this.$nextTick(() => {
+          this.infoWindowOpen()
+        })
+      },
+      syncCenterAndZoom (event) {
+        const {lng, lat} = event.target.getCenter()
+        this.map.center.lat = lat
+        this.map.center.lng = lng
+        this.map.zoom = event.target.getZoom()
+      },
+      infoWindowClose () {
+        this.show = false
+      },
+      infoWindowOpen () {
+        console.log("open")
+        this.show = true
+      },
       tsclCli(val){
         this.curPage = val
 
@@ -59,5 +120,10 @@
         position: relative;
         width: 100%;
         height: 100%;
+    }
+    .baidu-map{
+        height: 100%;
+        width: 100%;
+        position: absolute;
     }
 </style>

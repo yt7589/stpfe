@@ -1,23 +1,23 @@
 <template>
     <div class="page-zdjg-tscl">
         <el-row class="row">
-            <baidu-map
-                    ref="map-tscl"
-                    class="baidu-map"
-                    :dragging="false"
-                      @ready="onMapReady"
-                      :zoom="map.zoom"
-                      :center="map.center" >
-                <bm-marker class="bm-marker" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
-                    <bm-info-window class="bm-info-window" :show="show" @close="infoWindowClose" @open="infoWindowOpen">
-                        <div class="bm-info-content">
-                            <p>{{markerData.desc}}</p>
-                            <p>{{markerData.card}}</p>
-                        </div>
+            <!--<baidu-map-->
+                    <!--ref="map-tscl"-->
+                    <!--class="baidu-map"-->
+                    <!--:dragging="false"-->
+                      <!--@ready="onMapReady"-->
+                      <!--:zoom="map.zoom"-->
+                      <!--:center="map.center" >-->
+                <!--<bm-marker class="bm-marker" :position="markerPoint" :dragging="true" @click="infoWindowOpen">-->
+                    <!--<bm-info-window class="bm-info-window" :show="show" @close="infoWindowClose" @open="infoWindowOpen">-->
+                        <!--<div class="bm-info-content">-->
+                            <!--<p>{{markerData.desc}}</p>-->
+                            <!--<p>{{markerData.card}}</p>-->
+                        <!--</div>-->
 
-                    </bm-info-window>
-                </bm-marker>
-            </baidu-map>
+                    <!--</bm-info-window>-->
+                <!--</bm-marker>-->
+            <!--</baidu-map>-->
                 <el-col class="col-1">
                     <el-row class="col-common col-1-1">
                         <constitute-pie ref="pie"></constitute-pie>
