@@ -10,10 +10,7 @@
 </template>
 
 <script>
-  var m2R2Data= [
 
-
-  ];
   import echarts from 'echarts'
   export default {
     name: 'constitute_pie',

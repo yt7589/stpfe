@@ -4,196 +4,222 @@
             <div class="icon"></div>
             <div class="content">本日重点监控车辆车型构成</div>
         </div>
-        <div class="div-chart">
-            <highcharts class="chart" :options="chart.option"></highcharts>
-        </div>
-
+        <div :id="id" :class="className" :style="{height:height,width:width}" />
     </div>
 </template>
 
 <script>
+  import echarts from 'echarts'
+
+  let lineData = [100, 160, 110, 200, 200, 220, 190 ];
+  let lineData2 = [80, 120, 100, 180, 160, 230, 160 ]
+  let xAxisData =  ['1', '2', '3', '4', '5', '6', '7']
   export default {
     name: 'constitute_pie',
+    props: {
+      className: {
+        type: String,
+        default: 'chart'
+      },
+      id: {
+        type: String,
+        default: 'con-line-chart'
+      },
+      width: {
+        type: String,
+        default: '100%'
+      },
+      height: {
+        type: String,
+        default: '100%'
+      }
+    },
     data(){
       return {
-        chart:{
-          option:{
 
-          }
-        }
       }
     },
     mounted(){
-      this.getChartData()
+      this.initChart()
     },
     methods:{
-      getChartData(){
-        this.chart.option = {}
-        this.chart.option = {
-          chart: {
-            plotBackgroundColor: 'transparent',
-            backgroundColor: 'transparent',
-            spacing: [0, 0, 0, 0]
-          },
-          title: {
-            text: ''
-          },
+      initChart(){
+        this.chart = echarts.init(document.getElementById(this.id))
+        this.setOptions()
+      },
+      setOptions(){
+        this.chart.setOption({
           tooltip: {
-            pointFormat: ' <b>{point.percentage:.1f}%</b>'
-          },
-          legend: {
-
-            enabled: true,
-            labelFormat: "{name}",
-            useHTML: true,
-            align: 'right',
-            verticalAlign: 'middle',
-            layout: 'vertical',
-            symbolRadius: 0,
-            itemMarginTop: 0,
-            itemMarginBottom: 0,
-            itemStyle: {
-              "color": "white",
-              'font-size': '0.0125rem',
-            },
-            y:-20,
-            x:-20
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                distance: 1,
-                enabled: true,
-                useHTML:true,
-                style:{
-                  "color": "#ffffff","width":"500px", "display":"inline-block","white-space":"pre-wrap","fontSize": "12px", "fontFamily": "PingFangSC-Regular, PingFang SC"
-                }
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
               },
-              showInLegend: true
             }
           },
-          series: [{
-            type: 'pie',
-            innerSize: '65%',
-            name: '',
-            size: '50%',
-            center: [80, 40],
-            data: [{
-              name: '平板式货车',
-              y: 61.41,
-              color:'#552873',
-            }, {
-              name: '仓栅式货车',
-              y: 11.84,
-              color:'#00C087'
-            }, {
-              name: '普通货车',
-              y: 10.85,
-              color:'#D8D8D8'
-            }, {
-              name: '栏板式货车',
-              y: 4.67,
-              color:'#D1494E'
-            }, {
-              name: '罐式货车',
-              y: 4.18,
-              color:'#045FE0'
-            }, {
-              name: '厢式货车',
-              y: 7.05,
-              color:'#E69B03',
-            }]
-          }]
-        }
-        // this.chart.option = {
-        //   chart: {
-        //     plotBackgroundColor: 'transparent',
-        //     backgroundColor: 'transparent',
-        //     spacing: [0, 0, 0, 0]
-        //   },
-        //   title: {
-        //     text: ''
-        //   },
-        //   tooltip: {
-        //     pointFormat: ' <b>{point.percentage:.1f}%</b>'
-        //   },
-        //   legend: {
-        //     //width:200,
-        //
-        //     enabled: true,
-        //     labelFormat: "{name}",
-        //     useHTML: true,
-        //     align: 'right',
-        //     verticalAlign: 'middle',
-        //     layout: 'vertical',
-        //     symbolRadius: 0,
-        //     itemMarginTop: 0,
-        //     itemMarginBottom: 0,
-        //     itemStyle: {
-        //       "color": "white",
-        //       'font-size': '0.0125rem',
-        //     },
-        //     x:20,
-        //     y:-20,
-        //   },
-        //   plotOptions: {
-        //     series: {
-        //       showInLegend: true
-        //     },
-        //     pie: {
-        //       allowPointSelect: true,
-        //       cursor: 'pointer',
-        //       dataLabels: {
-        //         distance: 1,
-        //         enabled: true,
-        //         //useHTML: true, // 一定要加上
-        //         // formatter : function() {
-        //         //   return "<p style=' color: #ffffff;font-size:3px;'>"+this.point.name+"</p>"; // 重点在white-space:pre-wrap
-        //         // }
-        //
-        //         style:{
-        //           "color": "#ffffff","width":"60px","display":"inline-block","white-space":"pre-wrap", "fontSize": "8px", "font-family": "PingFangSC-Regular, PingFang SC"
-        //         }
-        //       },
-        //       showInLegend: true
-        //     }
-        //   },
-        //   series: [{
-        //     type: 'pie',
-        //     innerSize: '65%',
-        //     name: '',
-        //     size: '50%',
-        //     center: [70, 30],
-        //     data: [{
-        //       name: '平板式货车',
-        //       y: 61.41,
-        //       color:'#552873',
-        //     }, {
-        //       name: '仓栅式货车',
-        //       y: 11.84,
-        //       color:'#00C087'
-        //     }, {
-        //       name: '普通货车',
-        //       y: 10.85,
-        //       color:'#D8D8D8'
-        //     }, {
-        //       name: '栏板式货车',
-        //       y: 4.67,
-        //       color:'#D1494E'
-        //     }, {
-        //       name: '罐式货车',
-        //       y: 4.18,
-        //       color:'#045FE0'
-        //     }, {
-        //       name: '厢式货车',
-        //       y: 7.05,
-        //       color:'#E69B03',
-        //     }]
-        //   }]
-        //
-        // }
+          grid: {
+            left: '15%',
+            top: '20%',
+            // right: '4%',
+            // bottom: '3%',
+            // containLabel: true
+          },
+          legend: {
+            icon: 'Rect',
+            orient: 'horizontal',
+            itemWidth:20,
+            itemHeight:3,
+            textStyle: {
+              fontSize: 12, //字体大小
+              color: '#ffffff', //字体颜色
+            },
+            right: '3%' //距离右侧
+          },
+          xAxis: [{
+            type: 'category',
+
+            boundaryGap: false,
+            axisTick: {
+              show: false,
+
+            },
+            axisLine: {
+              lineStyle: {
+                color: ''
+
+              }
+            },
+            axisLabel: {
+              interval: 0, //设置x轴的标签显示可自适应
+              show: true,
+              textStyle: {
+                color: '#ffffff',
+                fontSize: 12,
+              }
+            },
+            splitLine: {
+              show: false,
+              lineStyle: {
+                color: '#376487'
+              }
+            },
+            data:xAxisData
+
+          }],
+          yAxis: [{
+            type: 'value',
+            name: '数量 / 辆',
+            nameGap:10,
+            nameTextStyle: { //y轴上方单位的颜色
+              color: '#ffffff'
+            },
+            axisTick: {
+              show: false,
+
+            },
+            axisLine: {
+              show: false, //y轴线
+              lineStyle: {
+                color: '#376487'
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                fontSize: 12,
+                fontFamily:'',
+                color: '#ffffff',
+              }
+            },
+            splitLine: {
+              show: false,
+
+            },
+
+
+          }],
+          series: [
+            {
+              name: '重点车',
+              type: 'line',
+              symbol: 'circle',
+              symbolSize: 2,
+              showSymbol: false,
+              lineStyle: {
+                normal: {
+                  width: 2,
+                  color: '#045FE0',
+                }
+              },
+              areaStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#00F6FF'
+                  },
+                    {
+                      offset: 0.5,
+                      color: '#045FE0'
+                    }
+                  ], false),
+                  // shadowColor: 'rgba(232,246,254,0.2)',
+                  shadowBlur: 30
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#045FE0',
+                  borderColor: '#045FE0',
+                  borderWidth: 0
+
+                }
+              },
+
+              data:lineData ,
+            },
+            {
+              name: '大货车',
+              type: 'line',
+              symbol: 'circle',
+              symbolSize: 2,
+              showSymbol: false,
+              lineStyle: {
+                normal: {
+                  width: 2,
+                  color: '#00FBFF',
+                }
+              },
+              areaStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(6,188,255,0.4)'
+                  },
+
+                    {
+                      offset: 1,
+                      color: '#00FBFF'
+                    }
+                  ], false),
+                  // shadowColor: 'rgba(232,246,254,0.2)',
+                  shadowBlur: 30
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#00FBFF',
+                  borderColor: '#00FBFF',
+                  borderWidth: 0
+
+                }
+              },
+
+              data:lineData2 ,
+            },
+
+
+          ]
+        })
       }
     }
   }

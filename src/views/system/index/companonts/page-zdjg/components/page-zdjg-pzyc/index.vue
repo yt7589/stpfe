@@ -274,7 +274,7 @@
     }
     .dt-list{
         position: relative;
-        padding: 16px 16px 0 16px;
+        padding: 16px 16px 16px 16px;
     }
 
 
@@ -345,4 +345,13 @@
             margin-left: auto;
         }
     }
+</style>
+
+<style lang="scss">
+    .page-zdjg-pzyc {
+        .el-card__body{
+            padding: 12px 16px 12px 16px;
+        }
+    }
+
 </style>

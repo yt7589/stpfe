@@ -4,58 +4,110 @@
             <div class="icon"></div>
             <div class="content">本日重点监控车辆区域分布图</div>
         </div>
-        <div class="div-chart">
-            <highcharts class="chart" :options="chart.option"></highcharts>
-        </div>
+        <div :id="id" :class="className" :style="{height:height,width:width}" />
+
     </div>
 </template>
 
 <script>
+  import echarts from 'echarts'
   export default {
     name: 'area_bar',
+    props: {
+      className: {
+        type: String,
+        default: 'chart'
+      },
+      id: {
+        type: String,
+        default: 'area-bar-chart'
+      },
+      width: {
+        type: String,
+        default: '100%'
+      },
+      height: {
+        type: String,
+        default: '100%'
+      }
+    },
     data(){
       return {
-        chart:{
-          option:{
 
-          }
-        }
       }
     },
     mounted(){
-      this.getChartData()
+      this.initChart()
     },
     methods:{
-      getChartData(){
-        this.chart.option = {}
-        this.chart.option = {
-          chart: {
-            plotBackgroundColor: 'transparent',
-            backgroundColor: 'transparent',
-            spacing: [0, 0, 0, 0],
-            type: 'column'
-          },
-          title: {
-            text: ''
-          },
-          xAxis: {
-            categories: [
-              '区域一','区域二','区域三','区域四','区域五','区域六','区域七'
-            ],
-            crosshair: true
-          },
+      initChart(){
+        this.chart = echarts.init(document.getElementById(this.id))
+        this.setOptions()
+      },
+      setOptions(){
+        this.chart.setOption({
           tooltip: {
-          },
-          plotOptions: {
-            column: {
-              showInLegend: false,
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
             }
           },
-          series: [{
+          grid: {
+            top: '10%',
+            // right: '3%',
+            left: '15%',
+            // bottom: '12%'
+          },
+          xAxis: [{
+            type: 'category',
+            data: ['区域一', '区域二', '区域三', '区域四', '区域五', '区域六','区域七'],
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(255,255,255,0.12)'
+              }
+            },
+            axisLabel: {
+              //margin: 10,
+              interval:0,
+              color: '#ffffff',
+              textStyle: {
+                fontSize: 12
+              },
+            },
+          }],
+          yAxis: [{
             name: '',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6]
+            axisLabel: {
+
+              color: '#ffffff',
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: '#ffffff'
+              }
+            },
+
+          }],
+          series: [{
+            type: 'bar',
+            barWidth: 15,
+            data: [5000, 2600, 1300, 1300, 1250, 1500,1000],
+
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: ' rgba(0, 246, 255, 0.7)' // 0% 处的颜色
+                }, {
+                  offset: 1,
+                  color: ' #091221' // 100% 处的颜色
+                }], false),
+              }
+            },
+
           }]
-        }
+        })
       }
     }
   }
@@ -82,17 +134,7 @@
             font-size: 18px;
         }
     }
-    .div-chart{
-        height: 100%;
 
-        .chart {
-            width: 80%;
-            height: 80%;
-            margin-top: 24px;
-            margin-left: 23px;
-            margin-bottom: 24px;
-        }
-    }
 
 
 </style>
