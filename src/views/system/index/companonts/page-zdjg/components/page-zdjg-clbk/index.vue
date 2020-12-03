@@ -33,7 +33,7 @@
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :position="markerPoint" :dragging="true" @click="infoWindowOpen">
+                            <bm-marker :icon="bmMarkerStyle" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
                                 <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
                                     <div class="bm-info-content">
                                         <p>{{markerData.desc}}</p>
@@ -161,6 +161,13 @@
         markerData:{
           desc:"海淀区上地8街12号",
           card:"京A12345累计"
+        },
+        bmMarkerStyle:{
+          url: require('../../image/mark_point2.png'),
+          size: {
+            width: 39,
+            height: 18
+          },
         },
         show: true,
         dialogVisible:false,

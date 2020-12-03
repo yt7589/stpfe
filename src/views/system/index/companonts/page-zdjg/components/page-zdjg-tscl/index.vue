@@ -130,7 +130,6 @@
     },
     mounted(){
       this.infoWindowOpen()
-      console.log("tscl infoWindowOpen")
     },
     methods:{
       onMapReady ({BMap, map}) {
@@ -139,10 +138,7 @@
         this.infoWindowOpen()
 
       },
-      reloadMap(){
-        this.map.instance.reset()
-        console.log(this.map.instance)
-      },
+
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
         this.$nextTick(() => {
@@ -162,9 +158,7 @@
         console.log("open")
         this.show = true
       },
-      reloadPie(){
 
-      },
 
     }
   }

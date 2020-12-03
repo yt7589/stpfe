@@ -8,7 +8,7 @@
                 @ready="onMapReady"
                 :zoom="map.zoom"
                 :center="map.center" >
-            <bm-marker class="bm-marker" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
+            <bm-marker :icon="bmMarkerStyle" class="bm-marker" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
                 <bm-info-window class="bm-info-window" :show="show" @close="infoWindowClose" @open="infoWindowOpen">
                     <div class="bm-info-content">
                         <p>{{markerData.desc}}</p>
@@ -75,6 +75,13 @@
           desc:"海淀区上地8街12号",
           card:"京A12345累计"
         },
+        bmMarkerStyle:{
+          url: require('./image/mark_point3.png'),
+          size: {
+            width: 65,
+            height: 66
+          },
+        },
       }
     },
     mounted(){
@@ -84,13 +91,12 @@
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
-        this.infoWindowOpen()
-
+      
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
         this.$nextTick(() => {
-          this.infoWindowOpen()
+
         })
       },
       syncCenterAndZoom (event) {
@@ -103,7 +109,6 @@
         this.show = false
       },
       infoWindowOpen () {
-        console.log("open")
         this.show = true
       },
       tsclCli(val){

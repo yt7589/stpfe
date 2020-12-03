@@ -33,7 +33,7 @@
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :position="markerPoint" :dragging="true" @click="infoWindowOpen">
+                            <bm-marker :icon=bmMarkerStyle  :position="markerPoint" :dragging="true" @click="infoWindowOpen">
                                 <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
                                     <div class="bm-info-content">
                                         <p>{{markerData.desc}}</p>
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+  const EXAMPLE_URL = "http://api.map.baidu.com/library/MarkerClusterer/1.2/examples/"
   import mapStyle from '@/assets/baiduMapStyle'
     import HeaderCrumb from '../common/header-crumb'
   export default {
@@ -123,9 +124,7 @@
       HeaderCrumb
     },
     computed:{
-      showPaging:function () {
-        return this.tableData.length >= 5
-      }
+
     },
     data(){
       return {
@@ -180,6 +179,13 @@
         markerData:{
           desc:"海淀区上地8街12号",
           card:"京A12345累计"
+        },
+        bmMarkerStyle:{
+          url: require('../../image/mark_point1.png'),
+          size: {
+            width: 30,
+            height: 43
+          },
         },
         showPaging:false,
         show: true,
