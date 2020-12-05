@@ -1,16 +1,19 @@
 <template>
-  <custom-card title="拥堵路段过车量" class="car-road-flow-card">
-    <div class="card-body-wrapper" slot="body">
+  <div class="chart-recognize">
+    <div class="header">
+      <el-image :src="require('../../image/image-chart-2.png')"></el-image>
+      <span>识别量走势图</span>
+    </div>
+    <div class="chart-box">
       <highcharts class="chart" :options="chart.option"></highcharts>
       <div class="unit">单位： 万辆</div>
     </div>
-  </custom-card>
+  </div>
 </template>
 
 <script>
-  import CustomCard from '../custom-card'
   export default {
-    components: {CustomCard},
+    components: {},
     data(){
       return {
         chart: {
@@ -19,18 +22,18 @@
               type: 'column',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
-              spacing: [20, 0, 0, 0]
+              spacing: [20, 20, 20, 20]
             },
             title: {
               text: '',
             },
             tooltip: {
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              shadow: false,
-              padding: -5,
-              style: {
-                color: '#00F6FFFF',
+              backgroundColor:'transparent',
+              borderWidth:0,
+              shadow:false,
+              padding:-5,
+              style:{
+                color:'#00F6FFFF',
                 fontSize: '0.0625rem',
               },
               formatter: function () {
@@ -45,19 +48,17 @@
             },
             xAxis: {
               lineWidth: 0,
-              categories: [
-                '路段1', '路段2', '路段3', '路段4', '路段5', '路段6', '路段7', '路段8'
-              ],
+              categories: ['1', '2', '3', '4', '5', '6', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem',
+                  'font-size': '0.0625rem',
                 }
               }
             },
             yAxis: {
-              gridLineColor: '#9797973F',
-              gridLineDashStyle: 'solid',
+              gridLineColor: '#045FE03F',
+              gridLineDashStyle: 'dash',
               lineWidth: 0,
               tickAmount: 6,
               min: 0,
@@ -67,7 +68,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem',
+                  'font-size': '0.0625rem',
                 }
               }
             },
@@ -85,15 +86,16 @@
             },
             series: [
               {
-                //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0,127.0,64],
-                data: [0, 0, 0, 0, 0, 0, 0, 0],
+                name: '',
                 color: {
                   linearGradient: [0, 0, 0, '100%'],
                   stops: [
-                    [0, '#6174CF'],
-                    [1, '#0C9C97']
+                    [0, '#27FFFC'],
+                    [1, '#FCEC0E']
                   ]
                 },
+                borderRadius: '4px',
+                data: [252,221,313,556,777,123,223,221,123,456,252,221,313,556,777,123,223,221,123,456,252,221,313,556,777,123,223,221,123,456]
               }
             ],
           },
@@ -108,21 +110,40 @@
 </script>
 
 <style lang="scss" scoped>
-  .car-road-flow-card {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    .chart {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-    .unit {
-      position: absolute;
-      right: 15px;
-      top: -5px;
-      font-size: 12px;
+  .chart-recognize {
+    .header {
+      font-size: 18px;
       color: #FFFFFF;
+      line-height: 25px;
+
+      margin: 17px 24px;
+
+      .el-image {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+    }
+    .chart-box {
+      width: 100%;
+      height: calc(100% - 60px);
+      position: relative;
+
+      .chart {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        /*padding: 10px;*/
+      }
+
+      .unit {
+        position: absolute;
+        right:40px;
+        top: -20px;
+        font-size: 12px;
+        color: white;
+      }
     }
   }
 </style>

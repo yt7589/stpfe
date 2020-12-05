@@ -32,10 +32,12 @@ import Highcharts from 'highcharts'
 import solidGaugeInit from 'highcharts/modules/solid-gauge'
 import highchartsMore from 'highcharts/highcharts-more';
 import HighchartsVariablePie from 'highcharts/modules/variable-pie';
+import Highcharts3d from 'highcharts/highcharts-3d';
 
 highchartsMore(Highcharts)
 HighchartsVariablePie(Highcharts)
 solidGaugeInit(Highcharts)
+Highcharts3d(Highcharts)
 Vue.use(HighchartsVue)
 
 // PingFang 字体

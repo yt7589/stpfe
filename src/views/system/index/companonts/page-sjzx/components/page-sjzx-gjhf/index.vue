@@ -1,12 +1,12 @@
 <template>
   <div class="page-wzgl-wzfb" flex="dir:top">
     <div class="header-crumb">
-      <span>违章管理>违章分布</span>
+      <span>数据中心>轨迹回放</span>
     </div>
     <div flex-box="1" class="body">
       <div class="column-1">
         <el-form class="search-form">
-          <el-form-item>
+          <el-form-item label="预测时间">
             <el-date-picker
               v-model="table.filter.time"
               type="daterange"
@@ -15,21 +15,17 @@
               end-placeholder="结束日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item>
-            <el-select placeholder="类别" v-model="table.filter.type" class="type-select">
+          <el-form-item label="车牌号码">
+            <el-input placeholder="" v-model="table.filter.type" class="type-select">
 
-            </el-select>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
             <el-button class="button-search">
-              搜索
-              <el-image :src="require('../../image/image-search.png')"></el-image>
+              回放
             </el-button>
           </el-form-item>
         </el-form>
-
-        <div class="wrapper" v-if="visible">
-          <area-violation-top10-card class="area-violation-top10-card "></area-violation-top10-card>
-          <camera-violation-top10-card class="camera-violation-top10-card"></camera-violation-top10-card>
-        </div>
       </div>
       <div class="column-2">
         <div class="wrapper">
@@ -43,24 +39,17 @@
           </baidu-map>
         </div>
       </div>
-      <div class="column-3">
-        <violation-table class="violation-table"></violation-table>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import AreaViolationTop10Card from './componnets/area-violation-top10-card'
-  import CameraViolationTop10Card from './componnets/camera-violation-top10-card'
-  import ViolationTable from './componnets/violation-table'
-
 
   import mapStyle from '@/assets/baiduMapStyle'
 
   export default {
     props: ['visible'],
-    components: {AreaViolationTop10Card, CameraViolationTop10Card, ViolationTable},
+    components: {},
     data(){
       return {
         loading: false,
@@ -117,7 +106,6 @@
 
 <style lang="scss">
   .page-wzgl-wzfb {
-
     .body {
       margin-top: 8px;
       width: 100%;
@@ -141,6 +129,11 @@
 
           .el-form-item {
             margin-bottom: 8px;
+          }
+
+          .el-form-item__label {
+            font-size: 14px;
+            color: #FFFFFF;
           }
 
           .el-input__inner {
@@ -173,8 +166,9 @@
           }
 
           .button-search {
-            width: 96px;
-            margin-left: 9px;
+            width: calc(100% - 108px);
+            margin-left: 66px;
+            margin-top: 4px;
             display: inline-block;
 
             background: #045FE0;
@@ -211,7 +205,7 @@
       }
 
       .column-2 {
-        width: calc(57% - 16px);
+        width: calc(77% - 16px);
         height: 100%;
 
         background: rgba(4, 95, 224, 0.2);
@@ -229,13 +223,6 @@
           width: 100%;
           height: 100%;
         }
-      }
-
-      .column-3 {
-        width: 20%;
-
-        background: rgba(0, 115, 255, 0.2);
-        border-radius: 4px;
       }
     }
   }

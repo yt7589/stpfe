@@ -17,7 +17,7 @@
         chart: {
           option: {
             chart: {
-              type: 'area',
+              type: 'areaspline',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
               spacing: [0, 0, 0, 0]

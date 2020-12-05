@@ -113,7 +113,7 @@
         setTimeout(() => {
           //TODO: 立即聚焦会出现白屏
           this.zoomFocus()
-        }, 1000)
+        }, 3000)
       },
       zoomFocus(){
         if (this.map.instance) {

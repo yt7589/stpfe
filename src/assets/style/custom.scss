@@ -1,20 +1,14 @@
 .custom-input {
-  width: 100%;
   .el-input__inner {
-    background: rgba(17, 113, 180, 1) !important;
-    border: unset;
+    background: rgba(4, 95, 224, 0.5);
+    border-radius: 4px;
+    border: 1px solid #045FE0;
 
     height: 62px;
     line-height: 62px;
-    padding-left: 60px !important;
 
-    color: rgba(135, 208, 255, 1);
+    color: #FFFFFF;
     font-size: 20px;
-
-    &:hover {
-      background: rgba(17, 113, 180, 1);
-      border: 1px solid rgba(0, 246, 255, 1);
-    }
   }
 
   .el-input__prefix {
@@ -24,6 +18,37 @@
       height: 24px !important;
     }
   }
+
+  &-mini {
+    .el-input__inner {
+      height: 36px;
+      line-height: 36px;
+
+      font-size: 14px;
+    }
+  }
+}
+
+.custom-date-editor {
+  padding: 9px 12px !important;
+  background: rgba(4, 95, 224, 0.5) !important;
+  border-radius: 4px !important;
+  border: 1px solid #045FE0 !important;
+  color: white !important;
+
+  .el-input__icon {
+    padding-bottom: 11px;
+  }
+  .el-range-input {
+    font-size: 14px;
+    color: #FFFFFF !important;
+    background: transparent !important;
+  }
+  .el-range-separator {
+    line-height: 14px !important;
+    color: #FFFFFF !important;
+  }
+
 }
 
 .custom-button {
@@ -84,6 +109,7 @@
 }
 
 .custom-pagination {
+  text-align: right;
   .el-pager li {
     color: #87D0FF !important;
     background: transparent !important;
@@ -114,6 +140,20 @@
     background: #5887a6 !important;
     color: #000205 !important;
   }
+}
+
+.header-crumb {
+  width: calc(100% - 23px);
+  height: 64px;
+
+  background: rgba(0, 115, 255, 0.2);
+  border-radius: 4px;
+
+  font-size: 18px;
+  color: #00F6FF;
+
+  padding-left: 23px;
+  line-height: 64px;
 }
 
 .custom-table {

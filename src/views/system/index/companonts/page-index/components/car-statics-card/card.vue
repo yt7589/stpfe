@@ -36,23 +36,25 @@
 
       .title {
         position: absolute;
-        top: 31px;
+        top: 20px;
         width: 100%;
 
         font-size: 18px;
       }
       .value {
         position: absolute;
-        top: 71px;
+        top: 52px;
         width: 100%;
 
         font-size: 24px;
-        font-weight: bold;
+        /*font-weight: bold;*/
+        font-family: Impact;
+
       }
       .image {
         position: absolute;
-        top: 59px;
-        left: 4px;
+        bottom: 0px;
+        left: 0px;
         width: 95px;
         height: 79px;
       }

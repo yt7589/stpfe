@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import CustomCard from '../../../../../page-index/components/custom-card'
+  import CustomCard from '@/components/chart-card'
   export default {
     props: ['data'],
     components: {CustomCard},

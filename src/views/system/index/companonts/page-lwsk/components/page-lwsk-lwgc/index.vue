@@ -272,26 +272,10 @@
 
 <style lang="scss">
   .page-lwsk-lwgc {
-    .header-crumb {
-      width: 100%;
-      height: 64px;
-      margin-bottom: 8px;
-
-      background: rgba(0, 115, 255, 0.2);
-      border-radius: 4px;
-
-      font-size: 18px;
-      color: #00F6FF;
-
-      span {
-        margin-left: 23px;
-        line-height: 64px;
-      }
-    }
-
     .body {
       width: 100%;
       height: calc(100% - 72px);
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
 

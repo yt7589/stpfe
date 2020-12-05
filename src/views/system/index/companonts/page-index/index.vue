@@ -60,7 +60,7 @@
       }, 3000)
     },
     beforeDestroy(){
-        clearInterval(this.timer)
+      clearInterval(this.timer)
     },
     methods: {
       fetchData(){
@@ -125,9 +125,9 @@
 
       .car-flow-map {
         position: absolute;
-        top: calc(13% - 40px);
+        top: calc(13% + 10px);
         width: 100%;
-        bottom: calc(25% - 40px);
+        bottom: calc(25% + 10px);
         z-index: 0;
       }
 
@@ -141,7 +141,7 @@
 
       .image-car-flow {
         position: absolute;
-        bottom: calc(25% + 10px);
+        bottom: calc(25% + 20px);
         height: 164px;
         width: 72px;
         left: 32px;
