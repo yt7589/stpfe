@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wzgl-wzfb" flex="dir:top">
+  <div class="page-sjzx-ytsc" flex="dir:top">
     <div class="header-crumb">
       <span>数据中心>以图搜车</span>
     </div>
@@ -172,7 +172,7 @@
 </script>
 
 <style lang="scss">
-  .page-wzgl-wzfb {
+  .page-sjzx-ytsc {
     .body {
       margin-top: 8px;
       width: 100%;

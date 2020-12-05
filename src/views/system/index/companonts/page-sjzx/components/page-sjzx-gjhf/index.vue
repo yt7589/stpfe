@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wzgl-wzfb" flex="dir:top">
+  <div class="page-sjzx-gjhf" flex="dir:top">
     <div class="header-crumb">
       <span>数据中心>轨迹回放</span>
     </div>
@@ -105,7 +105,7 @@
 </script>
 
 <style lang="scss">
-  .page-wzgl-wzfb {
+  .page-sjzx-gjhf {
     .body {
       margin-top: 8px;
       width: 100%;

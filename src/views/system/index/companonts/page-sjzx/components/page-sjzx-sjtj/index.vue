@@ -3,6 +3,7 @@
     <div class="column-1">
       <system-status style="height:33%;"></system-status>
       <car-flow style="height:67%;"></car-flow>
+      <!--<div class="decoration-left"></div>-->
     </div>
 
     <div class="column-2">
@@ -52,6 +53,16 @@
 
       background: #001537;
       border-radius: 4px;
+
+      .decoration-left {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+        /*background: url(../page-photo/image/background-result.png) no-repeat;*/
+        /*background-size: 100% 100%;*/
+        /*-moz-background-size: 100% 100%;*/
+      }
     }
 
     .column-2 {
