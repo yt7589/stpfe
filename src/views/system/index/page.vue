@@ -13,6 +13,7 @@
       <el-image class="logo" :src="require('./image/image-logo.png')"></el-image>
       <div class="title">AI交通大数据平台</div>
       <div class="sub-title"><span style="color:#FFFFFF">城市:</span> <span>{{city}}</span></div>
+      <div class="overview" @click="showOverviewPage">数据看板</div>
       <div class="header-box">
         <span class="header-title" :class="page=='index'?'is-active':''" @click="page='index'">首页</span>
         <span class="header-title" :class="page=='lwsk'?'is-active':''" @click="page='lwsk'">路网实况</span>
@@ -55,9 +56,12 @@
   import PageSjzx from './companonts/page-sjzx'
   import PageCamera from './companonts/page-camera'
   import PageSystem from './companonts/page-system'
+  import util from '@/libs/util'
 
   import dayjs from 'dayjs'
   import {mapActions} from 'vuex'
+
+
   export default {
     components: {
       PageIndex, PageLwsk, PageWzgl, PageZdjg, PageJtyc, PageSjzx, PageCamera, PageSystem
@@ -78,6 +82,10 @@
       ]),
       openPage(page){
         this.page = page
+      },
+      showOverviewPage(){
+        let basePath = process.env.VUE_APP_PUBLIC_PATH
+        util.open(basePath + "/#/overview");
       }
     }
   }
@@ -232,6 +240,15 @@
         position: absolute;
         top: 62px;
         left: 150px;
+
+        font-size: 18px;
+        color: rgba(63, 181, 228, 1);
+      }
+
+      > .overview {
+        position: absolute;
+        top: 62px;
+        left: 300px;
 
         font-size: 18px;
         color: rgba(63, 181, 228, 1);
