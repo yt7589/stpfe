@@ -1,82 +1,85 @@
-.search-input {
-  width: 50%;
-  .el-input__inner{
-    width: 182px;
-    height: 37px;
-    padding: 15px;
-    background: rgba(4, 95, 224, 0.5);
-    border-radius: 4px;
-    border: 1px solid #045FE0;
-    color: white;
+.page-zdjg{
+  .search-input {
+    width: 50%;
+    .el-input__inner{
+      width: 182px;
+      height: 37px;
+      padding: 15px;
+      background: rgba(4, 95, 224, 0.5);
+      border-radius: 4px;
+      border: 1px solid #045FE0;
+      color: white;
+    }
+
   }
 
-}
-
-.search-button {
-  cursor: pointer;
-  margin-left: 2px;
-  width: 64px;
-  height: 36px;
-  background: #045FE0;
-  border-radius: 4px;
-  border: unset;
-  font-size: 14px;
-  color: #FFFFFF;
-
-}
-.create-button{
-  cursor: pointer;
-  margin-left: 30px;
-  width: 64px;
-  height: 36px;
-  background: #00C087;
-  border-radius: 4px;
-  border: unset;
-  font-size: 14px;
-  color: #FFFFFF;
-}
-
-.search-form {
-  padding: 16px;
-  position: relative;
-  display: flex;
-}
-
-.custom-table .el-table__header th, .custom-table .el-table__header tr{
-  background-color: #00F6FF !important;
-}
-
-.custom-table  .el-table tr {
-  background-color: transparent !important;
-}
-.custom-table td {
-  padding: 6px 0;
-}
-.custom-table {
-
-}
-.button-page-group{
-  left: 20%;
-  padding-bottom: 0.29167rem;
-  text-align: center;
-  position: absolute;
-  bottom: 0%;
-  .button-page{
-    text-align: center;
-    width: 120px;
-    height: 40px;
-    background: #0073FF;
+  .search-button {
+    cursor: pointer;
+    margin-left: 2px;
+    width: 64px;
+    height: 36px;
+    background: #045FE0;
     border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: unset;
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    line-height: 20px;
-    color: #000205;
+    color: #FFFFFF;
+
+  }
+  .create-button{
+    cursor: pointer;
+    margin-left: 30px;
+    width: 64px;
+    height: 36px;
+    background: #00C087;
+    border-radius: 4px;
+    border: unset;
+    font-size: 14px;
+    color: #FFFFFF;
   }
 
-}
+  .search-form {
+    padding: 16px;
+    position: relative;
+    display: flex;
+  }
 
-.anchorBL{
-  display: none;
+  .custom-table .el-table__header th, .custom-table .el-table__header tr{
+    background-color: #00F6FF !important;
+  }
+
+  .custom-table  .el-table tr {
+    background-color: transparent !important;
+  }
+  .custom-table td {
+    padding: 6px 0;
+  }
+  .custom-table {
+
+  }
+  .button-page-group{
+    left: 20%;
+    padding-bottom: 0.29167rem;
+    text-align: center;
+    position: absolute;
+    bottom: 0%;
+    .button-page{
+      text-align: center;
+      width: 120px;
+      height: 40px;
+      background: #0073FF;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      line-height: 20px;
+      color: #000205;
+    }
+
+  }
+
+  .anchorBL{
+    display: none;
+  }
+
 }
