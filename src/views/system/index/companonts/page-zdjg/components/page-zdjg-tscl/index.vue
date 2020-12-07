@@ -172,7 +172,7 @@
         .row{
             height: 100%;
             position: relative;
-            margin-top: 1%;
+            //margin-top: 1%;
         }
         .baidu-map{
             height: 100%;
@@ -236,9 +236,9 @@
         }
         .col-common {
             width: 100%;
-            height: 30%;
+            height: 32%;
             background: url("../../image/col-1-1.png") no-repeat;
-            background-size: cover;
+            background-size: 95% 98%;
         }
         .col-3 {
             width: 27%;

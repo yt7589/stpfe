@@ -155,11 +155,11 @@
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                     offset: 0,
-                    color: '#00F6FF'
+                    color: 'rgba(4, 95, 224, 0.49)'
                   },
                     {
-                      offset: 0.5,
-                      color: '#045FE0'
+                      offset: 1,
+                      color: 'rgba(4, 95, 224, 0)'
                     }
                   ], false),
                   // shadowColor: 'rgba(232,246,254,0.2)',
@@ -186,22 +186,21 @@
               lineStyle: {
                 normal: {
                   width: 2,
-                  color: '#00FBFF',
+                  color: '#00F6FFFF',
                 }
               },
               areaStyle: {
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                     offset: 0,
-                    color: 'rgba(6,188,255,0.4)'
+                    color: 'rgba(0, 251, 255, 0.5)'
                   },
-
                     {
                       offset: 1,
-                      color: '#00FBFF'
+                      color: 'rgba(0, 246, 255, 0)'
                     }
                   ], false),
-                  // shadowColor: 'rgba(232,246,254,0.2)',
+
                   shadowBlur: 30
                 }
               },
