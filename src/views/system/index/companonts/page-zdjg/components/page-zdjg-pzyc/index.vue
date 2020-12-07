@@ -4,14 +4,14 @@
         <div  class="body">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;height: 100%;">
-                    <el-row style="height: 65%">
+                    <el-row class="fsdtj" >
                         <fsdtj id="fsdtj"></fsdtj>
                     </el-row>
-                    <el-row style="height: 35%">
+                    <el-row class="fqytj">
                         <fqytj id="fqytj"></fqytj>
                     </el-row>
                 </el-col>
-                <el-col :span="12" class="col" style="width: 52%;margin-right: 1%;margin-left: 1%;">
+                <el-col :span="12" class="col bg-color" style="width: 52%;margin-right: 1%;margin-left: 1%;">
                     <div  style="height: 100%;width:100%;" class="map">
                         <baidu-map  ref="map-qyjg" class="baidu-map" :zoom="map.zoom"
                                     :center="map.center" :dragging="false"
@@ -48,7 +48,7 @@
                         </el-row>
                     </div>
                 </el-col >
-                <el-col :span="5" class="col" style="width: 23%;height: 100%">
+                <el-col :span="5" class="col bg-color"  style="width: 23%;height: 100%">
                     <el-row style="height: 50%">
                         <div style="padding: 16px 16px 0px 16px; position: relative;">
                             <el-row>
@@ -210,7 +210,7 @@
         position: relative;
     }
     .col{
-        background: rgba(0, 115, 255, 0.2);
+
         border-radius: 4px;
         min-height: 100px;
         height: 100%;
@@ -234,6 +234,18 @@
             color: white;
 
         }
+        .fsdtj{
+            background: rgba(0, 115, 255, 0.2);
+            height: 63%;
+            margin-bottom: 2%;
+        }
+        .fqytj{
+            background: rgba(0, 115, 255, 0.2);
+            height: 35%;
+        }
+    }
+    .bg-color{
+        background: rgba(0, 115, 255, 0.2);
     }
     .bt {
         width: 64px;
@@ -359,6 +371,7 @@
         .el-card__body{
             padding: 12px 16px 12px 16px;
         }
+
     }
 
 </style>
