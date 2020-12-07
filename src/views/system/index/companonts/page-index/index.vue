@@ -13,6 +13,12 @@
         <car-flow-map :data="statisticData.regionList" class="car-flow-map"></car-flow-map>
         <area-flow-card :data="statisticData.regionList" class="area-flow-card"></area-flow-card>
         <el-image class="image-car-flow" :src="require('./image/image-car-flow.png')"></el-image>
+        <div class="background-border">
+          <div class="border-piece-1"></div>
+          <div class="border-piece-2"></div>
+          <div class="border-piece-3"></div>
+          <div class="border-piece-4"></div>
+        </div>
       </div>
       <div class="column-right">
         <car-break-card :data="trafficData.trafficViolationList" class="car-break-card"></car-break-card>
@@ -147,6 +153,69 @@
         left: 32px;
         z-index: 1;
         pointer-events: none;
+      }
+
+      .background-border {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        .border-piece-1 {
+          position: absolute;
+
+          top: calc(13% + 7px);
+          left: -3px;
+
+          width: 42px;
+          height: 37px;
+
+          background: url(./image/image-border-piece-1.png) no-repeat;
+          background-size: 100% 100%;
+          -moz-background-size: 100% 100%;
+        }
+
+        .border-piece-2 {
+          position: absolute;
+
+          bottom: -3px;
+          left: -3px;
+
+          width: 42px;
+          height: 37px;
+
+          background: url(./image/image-border-piece-2.png) no-repeat;
+          background-size: 100% 100%;
+          -moz-background-size: 100% 100%;
+        }
+
+        .border-piece-3 {
+          position: absolute;
+
+          bottom: -3px;
+          right: -3px;
+
+          width: 42px;
+          height: 37px;
+
+          background: url(./image/image-border-piece-3.png) no-repeat;
+          background-size: 100% 100%;
+          -moz-background-size: 100% 100%;
+        }
+
+        .border-piece-4 {
+          position: absolute;
+
+          top: calc(13% + 7px);
+          right: -3px;
+
+          width: 42px;
+          height: 37px;
+
+          background: url(./image/image-border-piece-4.png) no-repeat;
+          background-size: 100% 100%;
+          -moz-background-size: 100% 100%;
+        }
       }
     }
 
