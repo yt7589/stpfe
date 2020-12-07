@@ -91,7 +91,7 @@
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
-      
+
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)

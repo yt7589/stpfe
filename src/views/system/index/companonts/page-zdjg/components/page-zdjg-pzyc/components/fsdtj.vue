@@ -43,7 +43,7 @@
           grid: {
             left:'50',
             top:'5',
-            bottom:'33'
+            bottom:'45'
           },
           xAxis: [{
             type: 'value',
