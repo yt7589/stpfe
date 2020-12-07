@@ -286,6 +286,7 @@
         -moz-background-size: 100% 100%;
 
         font-size: 18px;
+        line-height: 18px;
         color: #00F6FF;
         text-align: center;
 
@@ -296,6 +297,7 @@
 
         .el-image {
           width: 25px;
+          margin-top: 4px;
         }
       }
 
@@ -307,6 +309,7 @@
         top: 3px;
 
         font-size: 18px;
+        line-height: 18px;
         color: #00F6FF;
         text-align: center;
 
@@ -320,6 +323,7 @@
         }
 
         .el-image {
+          margin-top: 4px;
           width: 25px;
         }
       }

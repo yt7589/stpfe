@@ -60,7 +60,7 @@
               symbolRadius: 0,
               itemStyle: {
                 "color": "white",
-                'font-size': '0.0625rem',
+                fontSize: '0.0625rem',
               }
             },
             tooltip: {
@@ -200,7 +200,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 0px;
+      top: -5px;
       font-size: 12px;
       color: #FFFFFF;
     }

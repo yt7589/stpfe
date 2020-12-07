@@ -74,7 +74,7 @@
                   },
                   style: {
                     "color": 'white',
-                    'font-size': '0.0625rem',
+                    fontSize: '0.0425rem',
                   }
                 },
                 showInLegend: true,
@@ -89,20 +89,20 @@
               verticalAlign: 'middle',
               layout: 'vertical',
               symbolRadius: 0,
-              itemMarginTop: 2,
-              itemMarginBottom: 2,
               itemStyle: {
-                "color": "white",
-                'font-size': '0.0625rem',
+                color: "white",
+                fontSize: '0.0625rem',
               }
             },
             series: [{
               minPointSize: 1,
-              data: [{
-                name: '',
-                y: 0,
-                z: 0
-              }]
+              data: [
+//                {
+//                  name: '',
+//                  y: 0,
+//                  z: 0
+//                }
+              ]
             }],
             responsive: {
               rules: [{
@@ -113,15 +113,6 @@
                   series: [{
                     minPointSize: 15,
                   }],
-                  legend: {
-                    enabled: true,
-                    itemMarginTop: 0,
-                    itemMarginBottom: 0,
-                    itemStyle: {
-                      "color": "white",
-                      'font-size': '0.0528rem',
-                    }
-                  },
                 }
               }]
             }

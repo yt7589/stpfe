@@ -96,7 +96,8 @@
       .chart-line {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
+        height: 13%;
+        align-items: center;
 
         .chart-name {
           font-size: 12px;

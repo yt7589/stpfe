@@ -49,10 +49,10 @@
       return {
         map: {
           instance: null,
-          zoom: 12,
+          zoom: 15,
           center: {
-            lng: 116.495843,
-            lat: 39.90421
+            lng: 116.48491949999993,
+            lat: 39.87675224621402
           },
           marker: {
             url: markerIcon,
@@ -109,7 +109,7 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-//        this.zoomFocus()
+        this.zoomFocus()
         setTimeout(() => {
           //TODO: 立即聚焦会出现白屏
           this.zoomFocus()
@@ -121,7 +121,11 @@
           this.pointList.forEach((item) => {
             points.push(new BMap.Point(item.longitude, item.latitude))
           })
-          this.map.instance.setViewport(points);
+          let v = this.map.instance.getViewport(points);
+          this.map.center = v.center
+          this.map.zoom = v.zoom
+
+          console.log(v)
         }
       },
       zoomIn(){

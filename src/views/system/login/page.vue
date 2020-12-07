@@ -6,7 +6,8 @@
           <!--<span class="logo"></span>-->
           <span class="title">用户登录</span>
         </div>
-        <el-form class="form-body custom-form" ref="loginForm" :model="loginForm.form" :rules="loginForm.rules" @submit.native.prevent>
+        <el-form class="form-body custom-form" ref="loginForm" :model="loginForm.form" :rules="loginForm.rules"
+                 @submit.native.prevent>
           <el-form-item prop="username">
             <el-input placeholder="请输入您的用户名" class="custom-input" v-model="loginForm.form.username">
               <el-image slot="prefix" :src="require('./image/img-username.png')"></el-image>
@@ -34,7 +35,8 @@
     </div>
     <div class="register-form-box" v-if="page=='register'">
       <div class="register-form">
-        <el-form class="form-body custom-form" ref="registerForm" :model="registerForm.form" :rules="registerForm.rules" label-width="0.65rem" @submit.native.prevent>
+        <el-form class="form-body custom-form" ref="registerForm" :model="registerForm.form" :rules="registerForm.rules"
+                 label-width="0.65rem" @submit.native.prevent>
           <el-form-item prop="userCode" label="用户名">
             <span slot="label" class="form-item-prefix">
               <el-image slot="prefix" :src="require('./image/img-username.png')"></el-image>
@@ -79,7 +81,9 @@
               验证码
             </span>
             <el-input placeholder="请输入验证码" class="custom-input" v-model="registerForm.form.verifyCode">
-              <el-button class="button-code" type="password" show-password slot="suffix" @click="getMobileCode" :disabled="!registerForm.mobileCode.enable">{{registerForm.mobileCode.text}}</el-button>
+              <el-button class="button-code" type="password" show-password slot="suffix" @click="getMobileCode"
+                         :disabled="!registerForm.mobileCode.enable">{{registerForm.mobileCode.text}}
+              </el-button>
             </el-input>
           </el-form-item>
           <el-form-item prop="userPassword" label="密码">
@@ -87,7 +91,8 @@
               <el-image slot="prefix" :src="require('./image/img-password.png')"></el-image>
               密码
             </span>
-            <el-input placeholder="请输入密码" type="password" show-password class="custom-input" v-model="registerForm.form.userPassword">
+            <el-input placeholder="请输入密码" type="password" show-password class="custom-input"
+                      v-model="registerForm.form.userPassword">
             </el-input>
           </el-form-item>
           <el-form-item prop="password_check" label="确认密码">
@@ -109,7 +114,8 @@
         </div>
       </div>
       <el-dialog class="register-success-dialog" :visible.sync="registerForm.dialog.visible" width="2.6rem">
-        <el-image class="image-close" :src="require('./image/image-close.png')" @click="registerForm.dialog.visible=false"></el-image>
+        <el-image class="image-close" :src="require('./image/image-close.png')"
+                  @click="registerForm.dialog.visible=false"></el-image>
         <el-image class="image-cloud" :src="require('./image/image-cloud.png')"></el-image>
         <div class="text-1">恭喜您已成功注册转睛云<br>认证审核时间w为1-2个工作日</div>
         <div class="text-2">我们客服会尽快联系您，请保持电话畅通<br>如有急需，请拨打客服热线<span style="color:#00F6FF;">133 6603 7936</span></div>
@@ -304,6 +310,12 @@
         bottom: 125px;
         left: 160px;
         right: 160px;
+
+        .custom-input {
+          .el-input__inner {
+            padding-left: 60px;
+          }
+        }
 
         .form-title {
           /*display: flex;*/

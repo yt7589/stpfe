@@ -64,11 +64,11 @@
     },
     methods: {
       fetchData(){
-        API.VehicleStatistic().then((res) => {
+        API.VehicleStatistic(true).then((res) => {
           this.statisticData = res.data
         })
 
-        API.TrafficViolation().then((res) => {
+        API.TrafficViolation(true).then((res) => {
           this.trafficData = res.data
         })
       }
@@ -97,13 +97,13 @@
 
       .line-car-type {
         width: 100%;
-        height: calc(19% - 10px);
+        height: calc(25% - 10px);
         margin-bottom: 10px;
       }
 
       .line {
         width: 100%;
-        height: calc(27% - 10px);
+        height: calc(25% - 10px);
         margin-bottom: 10px;
       }
     }

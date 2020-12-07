@@ -1,7 +1,7 @@
 <template>
   <custom-card title="实时违章记录" class="car-break-card">
     <div class="card-body-wrapper" slot="body">
-      <div v-for="(item,index) in data" :key="index" v-if="index<2" style="height:50%; width:100%;">
+      <div v-for="(item,index) in data" :key="index" v-if="index<2" style="height:50%; width:100%;display: flex;">
         <el-image :src="item.imgUrl" fit="contain"></el-image>
         <div :span="12" class="result-box">
           <div>位置： {{item.location}}</div>
@@ -46,8 +46,9 @@
       margin: 5px;
     }
     .result-box {
-      display: inline-block;
-      vertical-align: middle;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       margin-left: 17px;
 
       font-size: 12px;

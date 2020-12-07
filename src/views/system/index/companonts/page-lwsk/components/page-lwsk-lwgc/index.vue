@@ -100,7 +100,7 @@
                   allowOverlap: true,
                   style: {
                     "color": 'white',
-                    'font-size': '0.0625rem',
+                    fontSize: '0.0625rem',
                   }
                 }
               }
@@ -164,7 +164,7 @@
               symbolRadius: 0,
               itemStyle: {
                 "color": "white",
-                'font-size': '0.0625rem',
+                fontSize: '0.0625rem',
               }
             },
             tooltip: {

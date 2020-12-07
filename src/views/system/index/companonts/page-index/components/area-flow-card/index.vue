@@ -52,7 +52,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -68,7 +68,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -154,7 +154,7 @@
     .unit {
       position: absolute;
       right: 15px;
-      top: 15px;
+      top: -10px;
       font-size: 12px;
       color: #FFFFFF;
     }

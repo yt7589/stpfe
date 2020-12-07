@@ -121,9 +121,9 @@
         }
 
         .text-value {
-          font-size: 24px;
+          font-size: 22px;
           color: #FFFFFF;
-          line-height: 33px;
+          line-height: 28px;
         }
       }
     }

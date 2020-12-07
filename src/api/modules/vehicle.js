@@ -65,17 +65,19 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     })
   },
 
-  VehicleStatistic(){
+  VehicleStatistic(silent = false){
     return request({
       url: '/vehicle/statistic',
       method: 'get',
+      silent: silent
     })
   },
 
-  TrafficViolation(){
+  TrafficViolation(silent = false){
     return request({
       url: '/traffic/violation',
       method: 'get',
+      silent: silent
     })
   },
 

@@ -88,7 +88,7 @@
                 },
                 style: {
                   color: 'white',
-                  'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -180,7 +180,7 @@
     }
     .unit {
       position: absolute;
-      left: 15px;
+      right: 15px;
       top: -5px;
       font-size: 12px;
       color: #FFFFFF;

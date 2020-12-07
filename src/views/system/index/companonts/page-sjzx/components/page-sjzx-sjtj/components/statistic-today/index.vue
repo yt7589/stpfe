@@ -85,7 +85,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  //'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -99,7 +99,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  //'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -110,7 +110,8 @@
             plotOptions: {
               column: {
                 stacking: 'normal',
-                depth: 40
+                depth: 40,
+                pointPadding: 0.3,
               }
             },
             series: [{
@@ -166,7 +167,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  //'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -180,7 +181,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  //'font-size': '0.0625rem',
+                  fontSize: '0.0625rem',
                 }
               }
             },
@@ -191,7 +192,8 @@
             plotOptions: {
               column: {
                 stacking: 'normal',
-                depth: 40
+                depth: 40,
+                pointPadding: 0.3,
               }
             },
             series: [{
@@ -236,8 +238,8 @@
 
       .value-box {
         position: absolute;
-        top: 50px;
-        left: 43px;
+        bottom: 16%;
+        left: 5%;
 
         .line {
           font-size: 14px;
