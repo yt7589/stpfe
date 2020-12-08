@@ -27,12 +27,12 @@
               text: '',
             },
             tooltip: {
-              backgroundColor:'transparent',
-              borderWidth:0,
-              shadow:false,
-              padding:-5,
-              style:{
-                color:'#00F6FFFF',
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              shadow: false,
+              padding: -5,
+              style: {
+                color: '#00F6FFFF',
                 fontSize: '0.0625rem',
               },
               formatter: function () {
@@ -97,12 +97,12 @@
               {
                 name: '昨日',
                 color: '#4C49EC',
-                borderRadius: '4px',
+                borderRadius: 4,
                 data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
               }, {
                 name: '今日',
                 color: '#00C087',
-                borderRadius: '4px',
+                borderRadius: 4,
                 data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
               }
             ],
@@ -125,6 +125,7 @@
           let today = dayjs().format("YYYYMMDD")
           let yesterday = dayjs().subtract(1, 'day').format("YYYYMMDD")
 
+
           let todayChartData = this.chart.option.series[0].data
           let yesterdayChartData = this.chart.option.series[0].data
 
@@ -138,13 +139,13 @@
             } else if (str == yesterday) {
               pData = yesterdayChartData
             } else {
-              console.error("时间格式错误", item.date)
+              console.error("时间格式错误", item.date, str, today, yesterday)
             }
 
             if (pData) {
               let index = parseInt(item.timeFrame / 4) - 1
               if (index < pData.length) {
-                pData[index] = parseFloat(item.vehicleNumber)
+                this.$set(pData, index, parseFloat(item.vehicleNumber))
               } else {
                 console.error("小时错误", item)
               }

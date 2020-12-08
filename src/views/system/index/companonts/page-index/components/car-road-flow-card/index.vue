@@ -10,6 +10,7 @@
 <script>
   import CustomCard from '../custom-card'
   export default {
+    props: ['data'],
     components: {CustomCard},
     data(){
       return {
@@ -46,7 +47,7 @@
             xAxis: {
               lineWidth: 0,
               categories: [
-                '路段1', '路段2', '路段3', '路段4', '路段5', '路段6', '路段7', '路段8'
+
               ],
               labels: {
                 style: {
@@ -86,7 +87,7 @@
             series: [
               {
                 //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0,127.0,64],
-                data: [0, 0, 0, 0, 0, 0, 0, 0],
+                data: [],
                 color: {
                   linearGradient: [0, 0, 0, '100%'],
                   stops: [
@@ -101,9 +102,29 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let categories = []
+          let data = []
+          this.data.forEach(item => {
+            categories.push(item.streetName)
+            data.push(parseFloat(item.passedNumber))
+          })
+
+          this.chart.option.series[0].data = data
+          this.chart.option.xAxis.categories = categories
+        }
+      }
+    }
   }
 </script>
 

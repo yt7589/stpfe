@@ -6,7 +6,7 @@
                        class="line-car-type"></car-type-card>
         <car-hour-card :data="statisticData.timeFrameNumberList" class="line"></car-hour-card>
         <car-type-flow-card :data="statisticData.vehicleTypeNumberList" class="line"></car-type-flow-card>
-        <car-road-flow-card class="line"></car-road-flow-card>
+        <car-road-flow-card class="line" :data="statisticData.streetList"></car-road-flow-card>
       </div>
       <div class="column-middle">
         <car-statics-card :data="statisticData.vehiclePassedNumber" class="car-statics-card"></car-statics-card>

@@ -56,12 +56,12 @@
               enabled: false,
             },
             tooltip: {
-              backgroundColor:'transparent',
-              borderWidth:0,
-              shadow:false,
-              padding:-5,
-              style:{
-                color:'#00F6FFFF',
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              shadow: false,
+              padding: -5,
+              style: {
+                color: '#00F6FFFF',
                 fontSize: '0.0625rem',
               },
               formatter: function () {
@@ -115,9 +115,9 @@
         if (this.data) {
           let chartData = this.chart.option.series[0].data
           this.data.forEach(item => {
-            let index = parseInt(item / 2) - 1;
+            let index = parseInt(item.timeFrame / 2) - 1;
             if (index < chartData.length) {
-              chartData[index] = parseFloat(charData.trafficViolationNum)
+              this.$set(chartData, index, parseFloat(item.trafficViolationNum))
             }
           })
         }
