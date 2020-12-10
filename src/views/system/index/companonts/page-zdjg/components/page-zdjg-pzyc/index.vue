@@ -3,7 +3,7 @@
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
         <div  class="body">
             <el-row class="qy-row" >
-                <el-col :span="5" class="col" style="width: 23%;height: 100%;">
+                <el-col :span="5" class="col col-1">
                     <el-row class="fsdtj" >
                         <fsdtj id="fsdtj"></fsdtj>
                     </el-row>
@@ -11,8 +11,8 @@
                         <fqytj id="fqytj"></fqytj>
                     </el-row>
                 </el-col>
-                <el-col :span="12" class="col bg-color" style="width: 52%;margin-right: 1%;margin-left: 1%;">
-                    <div  style="height: 100%;width:100%;" class="map">
+                <el-col :span="12" class="col bg-color col-2">
+                    <div  class="map">
                         <baidu-map  ref="map-qyjg" class="baidu-map" :zoom="map.zoom"
                                     :center="map.center" :dragging="false"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
@@ -48,7 +48,7 @@
                         </el-row>
                     </div>
                 </el-col >
-                <el-col :span="5" class="col bg-color"  style="width: 23%;height: 100%">
+                <el-col :span="5" class="col bg-color col-3" >
                     <el-row style="height: 50%">
                         <div style="padding: 16px 16px 0px 16px; position: relative;">
                             <el-row>
@@ -184,7 +184,7 @@
         this.show = false
       },
       infoWindowOpen () {
-        this.show = true
+
       },
       addArea(){
         this.dialogVisible = true
@@ -208,6 +208,19 @@
     .qy-row{
         height:85%;
         position: relative;
+        .col-1{
+            width: 23%;
+            height: 100%;
+        }
+        .col-2{
+            width: 52%;
+            margin-right: 1%;
+            margin-left: 1%;
+        }
+        .col-3{
+            width: 23%;
+            height: 100%
+        }
     }
     .col{
 
@@ -216,8 +229,10 @@
         height: 100%;
         position: relative;
         .map{
+            height: 100%;
+            width:100%;
             position: relative;
-            height:100%;
+
         }
         .baidu-map{
             position: absolute;
