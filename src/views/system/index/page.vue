@@ -39,8 +39,9 @@
       <page-lwsk v-show="page=='lwsk'"></page-lwsk>
       <page-wzgl v-show="page=='wzgl'"></page-wzgl>
       <page-zdjg v-show="page=='zdjg'"></page-zdjg>
-      <page-jtyc v-show="page=='jtyc'"></page-jtyc>
+      <page-jtyc v-if="page=='jtyc'"></page-jtyc>
       <page-sjzx v-if="page=='sjzx'"></page-sjzx>
+
       <page-camera v-show="page=='camera'"></page-camera>
     </div>
   </div>

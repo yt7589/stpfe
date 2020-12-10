@@ -154,6 +154,7 @@ module.exports = {
     // 重新设置 alias
     config.resolve.alias
       .set('@api', resolve('src/api'))
+      .set('@components', resolve('src/components'))
     // 分析工具
     if (process.env.npm_config_report) {
       config

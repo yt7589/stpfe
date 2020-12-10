@@ -2,7 +2,7 @@
     <div style="width: 100%;height: 100%">
         <div class="title">
             <div class="icon"></div>
-            <div class="content">分时段统计</div>
+            <div class="content">本时段路网车辆点位流量预测</div>
         </div>
         <div :id="id" :class="className" :style="{height:height,width:width}" />
     </div>
@@ -11,15 +11,15 @@
 <script>
   import echarts from 'echarts'
   export default {
-    name: 'fsdtj',
+    name: 'llyc-charts',
     props: {
       className: {
         type: String,
-        default: 'chart'
+        default: 'llyc-charts'
       },
       id: {
         type: String,
-        default: 'chart'
+        default: 'llyc-charts'
       },
       width: {
         type: String,
@@ -33,6 +33,13 @@
     mounted() {
       this.initChart()
     },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
+    },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
@@ -41,7 +48,7 @@
       setOptions(){
         this.chart.setOption({
           grid: {
-            left:'50',
+            left:'55',
             top:'5',
             bottom:'68'
           },
@@ -92,21 +99,38 @@
                 color: '#979797'
               }
             },
-            data: ['23:00','22:00','21:00','20:00','19:00','18:00','17:00','16:00','15:00','14:00','13:00','12:00','11:00','10:00','09:00', '08:00', '07:00', '06:00', '04:00', '03:00', '02:00', '01:00', '00:00', '09:00']
-          }],
+            data: ['朝阳区','东城区','房山区','通州区','海淀区','思明区','湖里区','集美区']
+          },
+            {
+              type: 'category',
+              inverse: true,
+              axisTick: 'none',
+              axisLine: 'none',
+              show: true,
+              axisLabel: {
+                textStyle: {
+                  color: '#ffffff',
+                  fontSize: '12'
+                },
+              },
+              data:[11,12,12,34,12,12,12,11]
+            }
+
+          ],
           series: [{
             name: '值',
             type: 'bar',
-            zlevel: 1,
-            xAxisIndex: 0,
+            showBackground: true,
+            backgroundStyle: {
+              color: '#000000',
+            },
             itemStyle: {
               normal: {
-                color:"#06A6FF",
-                barBorderRadius: [0, 5, 5, 0],
+                color: '#00C087',
               },
             },
-            barWidth: 5,
-            data: [88,12,23,45,33,23,56,12,55,67,23,11,78,23,86, 90, 77, 63, 55, 25, 98, 65, 55, 66]
+            barWidth: 20,
+            data: [78,56,63,123,22,330,11,22]
           }
           ]
         })
@@ -120,13 +144,13 @@
     .title {
 
         font-family: PingFangSC-Medium, PingFang SC;
-        color: #D1494E;
+        color: #FFFFFF;
         height: 25px;
         .icon {
             width: 20px;
             height: 20px;
             margin-right: 10px;
-            background: url('../../../image/sfdtj-icon.png') no-repeat;
+            background: url('../../image/zst.png') no-repeat;
             background-size: cover;
         }
         margin-top: 24px;
