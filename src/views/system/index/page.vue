@@ -38,11 +38,11 @@
       <page-index v-if="page=='index'" @open="openPage"></page-index>
       <page-lwsk v-show="page=='lwsk'"></page-lwsk>
       <page-wzgl v-show="page=='wzgl'"></page-wzgl>
-      <page-zdjg v-show="page=='zdjg'"></page-zdjg>
+      <page-zdjg v-if="page=='zdjg'"></page-zdjg>
       <page-jtyc v-if="page=='jtyc'"></page-jtyc>
       <page-sjzx v-if="page=='sjzx'"></page-sjzx>
 
-      <page-camera v-show="page=='camera'"></page-camera>
+      <page-camera v-if="page=='camera'"></page-camera>
     </div>
   </div>
 </template>

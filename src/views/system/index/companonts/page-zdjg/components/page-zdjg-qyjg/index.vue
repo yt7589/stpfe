@@ -351,6 +351,8 @@
             text-align: center;
             border-radius: 4px;
             border: 1px solid #0073FF;
+            padding: 0;
+            height: 56px;
         }
         .el-dialog{
 
@@ -365,7 +367,7 @@
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             color: #001537;
-            line-height: 25px;
+            line-height: 56px;
 
         }
         .el-dialog__wrapper{
@@ -373,12 +375,15 @@
             top: 7%;
             right: 0;
             bottom: 0;
-            left: -22%;
+
             overflow: auto;
             margin: 0;
         }
         .el-dialog__body{
-
+            .el-input__inner {
+                background-color: rgba(4, 95, 224, 0.5) !important;
+                border-color: rgba(4, 95, 224, 0.5) !important;
+            }
         }
         .el-dialog__footer{
 
