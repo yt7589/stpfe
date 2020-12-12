@@ -79,6 +79,8 @@
 </template>
 
 <script>
+  import API from '@/api'
+
   export default {
     components: {},
     data(){
@@ -102,6 +104,11 @@
     mounted(){
     },
     methods: {
+      fetchData(){
+        API.GetTrafficViolationList().then(res => {
+
+        })
+      },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
         this.fetchData()

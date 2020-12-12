@@ -125,6 +125,10 @@
           let today = dayjs().format("YYYYMMDD")
           let yesterday = dayjs().subtract(1, 'day').format("YYYYMMDD")
 
+          // TODO:
+          today = "20201126"
+          yesterday = "20201125"
+
 
           let todayChartData = this.chart.option.series[0].data
           let yesterdayChartData = this.chart.option.series[0].data

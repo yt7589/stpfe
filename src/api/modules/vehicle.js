@@ -93,5 +93,12 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       method: 'get',
       params
     })
+  },
+  GetTrafficViolationList(params){
+    return request({
+      url: '/traffic/violation/list',
+      method: 'post',
+      params
+    })
   }
 })
