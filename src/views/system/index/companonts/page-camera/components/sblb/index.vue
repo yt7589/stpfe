@@ -67,9 +67,9 @@
                 title="添加"
                 :visible.sync="dialogVisible"
         >
-            <el-form ref="dialogForm" :model="dialogData" label-width="56px">
+            <el-form ref="dialogForm" :model="dialogData" >
                 <el-form-item label="设备编号">
-                    <el-input v-model="dialogData.num"name="area" width="266" />
+                    <el-input v-model="dialogData.num"name="area" />
                 </el-form-item>
                 <el-form-item label="设备类型">
                     <el-select v-model="dialogData.type" placeholder="请选择">
@@ -112,7 +112,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="车辆方向">
-                    <el-input v-model="dialogData.num"name="area" width="266" />
+                    <el-input v-model="dialogData.num"name="area"  />
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -330,6 +330,10 @@
             background: #001537;
             border-radius: 4px;
             border: 1px solid #0073FF;
+
+            .el-form-item__label{
+                width: 70px;
+            }
         }
         .el-dialog__title {
             width: 108px;
@@ -361,6 +365,11 @@
                 background-color: rgba(4, 95, 224, 0.5) !important;
                 border-color: rgba(4, 95, 224, 0.5) !important;
                 color: #ffffff;
+                // width: 206px;
+
+            }
+            .el-input{
+                width: 250px !important;
             }
         }
         .confirm {
