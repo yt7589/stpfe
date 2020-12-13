@@ -43,6 +43,7 @@
       <page-sjzx v-if="page=='sjzx'"></page-sjzx>
 
       <page-camera v-if="page=='camera'"></page-camera>
+      <page-system v-if="page=='system'"></page-system>
     </div>
   </div>
 </template>
