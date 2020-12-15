@@ -164,6 +164,7 @@
     .body {
       width: 100%;
       height: calc(100% - 72px);
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
 
@@ -188,28 +189,7 @@
           background: #045FE0;
           border-radius: 4px;
           border: unset;
-
-          font-size: 14px;
-          color: #FFFFFF;
-
-          &:active {
-            opacity: 0.8;
-          }
-
-          .el-image {
-            width: 16px;
-            float: right;
-          }
-        }
-
-        .button-export {
-          width: 96px;
-          background: #00C087;
-          border-radius: 4px;
-          border: unset;
-
-          font-size: 14px;
-          color: #FFFFFF;
+   /**/
 
           &:active {
             opacity: 0.8;

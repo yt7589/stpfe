@@ -3,7 +3,7 @@
     <div class="header-crumb">
       <span>违章管理>违章监管</span>
     </div>
-    <div flex-box="1" class="body">
+    <div class="body">
       <div class="column-1">
         <el-form class="search-form">
           <el-form-item>
@@ -125,8 +125,9 @@
   .page-wzgl-wzjg {
 
     .body {
-      margin-top: 8px;
       width: 100%;
+      height: calc(100% - 72px);
+      margin-top: 8px;
       display: flex;
 
       .column-1 {

@@ -114,6 +114,7 @@
         .body {
             margin-top: 8px;
             width: 100%;
+            height: calc(100% - 72px);
             display: flex;
 
             .column-1 {

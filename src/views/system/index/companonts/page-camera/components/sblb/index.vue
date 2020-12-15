@@ -1,7 +1,7 @@
 <template>
     <div class="page-sbgl-sblb"  flex="dir:top">
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
-        <div flex-box="1" class="body">
+        <div class="body">
             <div class="column-1">
                 <el-form class="search-form">
                     <el-form-item>
@@ -211,6 +211,7 @@
         .body {
             margin-top: 8px;
             width: 100%;
+            height: calc(100% - 72px);
             display: flex;
 
             .column-1 {

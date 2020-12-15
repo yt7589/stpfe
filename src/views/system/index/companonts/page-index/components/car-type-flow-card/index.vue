@@ -180,7 +180,6 @@
               }
             }
           })
-          this.$forceUpdate()
         }
       }
     }

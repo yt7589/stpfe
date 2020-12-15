@@ -3,7 +3,7 @@
     <div class="header-crumb">
       <span>数据中心>以图搜车</span>
     </div>
-    <div flex-box="1" class="body">
+    <div  class="body">
       <div class="column-1">
         <el-form class="search-form">
           <el-form-item label="日期范围">
@@ -174,8 +174,9 @@
 <style lang="scss">
   .page-sjzx-ytsc {
     .body {
-      margin-top: 8px;
       width: 100%;
+      height: calc(100% - 72px);
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
 

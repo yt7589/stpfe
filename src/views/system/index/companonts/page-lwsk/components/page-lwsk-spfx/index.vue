@@ -5,28 +5,28 @@
                :center="map.center" :dragging="true"
                @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                :scroll-wheel-zoom="true">
-      <bm-marker v-for="(point,index) in pointList" :key="index"
-                 :position="{lng: point.longitude, lat: point.latitude}"
+      <bm-marker v-for="(point,index) in siteList" :key="index"
+                 :position="{lng: point.lng, lat: point.lat}"
                  v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">
       </bm-marker>
     </baidu-map>
     <div class="camera-info">
       <div class="success-info info-box" @click="zoomFocus">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
-        共接入摄像头 0 个
+        共接入摄像头 {{cameraInfo.allCamera}} 个
       </div>
       <div class="success-info info-box">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
-        共接入抓拍机 0  个
+        共接入抓拍机 {{cameraInfo.allSnapMachine}}  个
       </div>
       <br>
       <div class="error-info info-box">
         <el-image :src="require('../../image/image-warning.png')"></el-image>
-        异常摄像头 0  个
+        异常摄像头 {{cameraInfo.brokenCamera}}  个
       </div>
       <div class="error-info info-box">
         <el-image :src="require('../../image/image-warning.png')"></el-image>
-        异常抓拍机 0  个
+        异常抓拍机 {{cameraInfo.brokenSnapMachine}}  个
       </div>
     </div>
     <camera-info-window class="camera-info-window" v-if="cameraDialog.visible"
@@ -62,6 +62,8 @@
             }
           }
         },
+        siteList: [],
+        cameraInfo: {},
         pointList: [
           {
             longitude: 116.479745,
@@ -95,6 +97,7 @@
       }
     },
     mounted(){
+      this.getSiteList()
     },
     methods: {
       onMapReady ({BMap, map}) {
@@ -109,11 +112,11 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-        this.zoomFocus()
-        setTimeout(() => {
-          //TODO: 立即聚焦会出现白屏
-          this.zoomFocus()
-        }, 3000)
+//        this.zoomFocus()
+//        setTimeout(() => {
+//          //TODO: 立即聚焦会出现白屏
+//          this.zoomFocus()
+//        }, 3000)
       },
       zoomFocus(){
         if (this.map.instance) {
@@ -122,6 +125,7 @@
             points.push(new BMap.Point(item.longitude, item.latitude))
           })
           let v = this.map.instance.getViewport(points);
+
           this.map.center = v.center
           this.map.zoom = v.zoom
 
@@ -139,9 +143,25 @@
         }
       },
       onPointClick(point){
-        this.cameraDialog.visible = true
-        this.cameraDialog.data = point.cameraList
-      }
+        API.GetCameraList({siteId: 1}).then(res => {
+          this.cameraDialog.visible = true
+          this.cameraDialog.data = res.data
+        })
+      },
+      getSiteList(){
+        API.GetCameraSiteList().then(res => {
+          this.siteList = res.data.siteInfoList
+          this.cameraInfo = res.data.cameraInfo
+
+          let longitude = 116.490094
+          let latitude = 39.857702
+          this.siteList.forEach((item, i) => {
+            item.lng = longitude + i * 0.01
+            item.lat = latitude + i * 0.01
+          })
+        })
+      },
+
     }
   }
 </script>

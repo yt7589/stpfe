@@ -88,13 +88,14 @@
         .body {
             margin-top: 8px;
             width: 100%;
+            height: calc(100% - 72px);
             display: flex;
 
 
             .column-2 {
                 width: 100%;
                 height: 100%;
-                margin-left: 8px;
+                /*margin-left: 8px;*/
                 display: inline-block;
 
                 background: rgba(0, 115, 255, 0.2);

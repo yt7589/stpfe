@@ -3,7 +3,7 @@
     <div class="header-crumb">
       <span>数据中心>轨迹回放</span>
     </div>
-    <div flex-box="1" class="body">
+    <div  class="body">
       <div class="column-1">
         <el-form class="search-form">
           <el-form-item label="预测时间">
@@ -107,8 +107,9 @@
 <style lang="scss">
   .page-sjzx-gjhf {
     .body {
-      margin-top: 8px;
       width: 100%;
+      height: calc(100% - 72px);
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
 

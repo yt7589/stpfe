@@ -131,7 +131,7 @@
 
 
           let todayChartData = this.chart.option.series[0].data
-          let yesterdayChartData = this.chart.option.series[0].data
+          let yesterdayChartData = this.chart.option.series[1].data
 
           this.data.forEach(item => {
             let date = dayjs(item.date)

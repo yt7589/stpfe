@@ -36,13 +36,13 @@
 
     <div class="main-content-box">
       <page-index v-if="page=='index'" @open="openPage"></page-index>
-      <page-lwsk v-show="page=='lwsk'"></page-lwsk>
-      <page-wzgl v-show="page=='wzgl'"></page-wzgl>
+      <page-lwsk v-if="page=='lwsk'"></page-lwsk>
+      <page-wzgl v-if="page=='wzgl'"></page-wzgl>
       <page-zdjg v-if="page=='zdjg'"></page-zdjg>
       <page-jtyc v-if="page=='jtyc'"></page-jtyc>
       <page-sjzx v-if="page=='sjzx'"></page-sjzx>
-
       <page-camera v-if="page=='camera'"></page-camera>
+      <page-system v-if="page=='system'"></page-system>
     </div>
   </div>
 </template>

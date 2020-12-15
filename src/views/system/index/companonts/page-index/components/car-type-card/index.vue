@@ -78,7 +78,7 @@
                   }
                 },
                 showInLegend: true,
-                colors: ['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF']
+                colors: ['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF','#045FE0','#FFFFFF']
               }
             },
             legend: {

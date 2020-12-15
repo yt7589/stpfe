@@ -4,20 +4,22 @@
       <div class="header">
         <span>
           <div>该点位共有： </div>
-          1个摄像头、2个抓拍机
+          {{data.cameraNum}}个摄像头、{{data.snapMachineNum}}个抓拍机
         </span>
         <i class="el-icon-close icon-close" @click="close"></i>
       </div>
-      <el-table :data="data" v-if="data" class="custom-table camera-table" flex-box="1">
-        <el-table-column prop="location" label="设备位置" minWidth="80"></el-table-column>
-        <el-table-column prop="to" label="朝向" minWidth="40"></el-table-column>
-        <el-table-column prop="type" label="类别" minWidth="80"></el-table-column>
-        <el-table-column prop="status" label="状态" minWidth="40"></el-table-column>
+      <el-table :data="data.cameraList" v-if="data.cameraList" class="custom-table camera-table" flex-box="1" :row-click="onRowClick">
+        <el-table-column prop="regionName" align="center" label="设备位置" minWidth="80"></el-table-column>
+        <el-table-column prop="to" align="center" label="朝向" minWidth="40"></el-table-column>
+        <el-table-column prop="cameraTypeName" align="center" label="类别" minWidth="80"></el-table-column>
+        <el-table-column prop="status" align="center" label="状态" minWidth="40">
+          <template slot-scope="scope"><div :style="scope.row.status>0?{}:{color:'red'}">{{scope.row.status>0?"正常":"异常"}}</div></template>
+        </el-table-column>
       </el-table>
-      <div class="button-box">
-        <el-button type="text" icon="el-icon-arrow-up">上一页</el-button>
-        <el-button type="text" icon="el-icon-arrow-down">下一页</el-button>
-      </div>
+      <!--<div class="button-box">-->
+      <!--<el-button type="text" icon="el-icon-arrow-up">上一页</el-button>-->
+      <!--<el-button type="text" icon="el-icon-arrow-down">下一页</el-button>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
@@ -32,6 +34,9 @@
     mounted(){
     },
     methods: {
+      onRowClick(row, column, event){
+        console.log(row,column,event)
+      },
       close(){
         this.$emit("close")
       }
