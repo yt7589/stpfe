@@ -22,6 +22,18 @@
         type: String,
         default: 'area-bar-chart'
       },
+      seriesData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
+      xData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
       width: {
         type: String,
         default: '100%'
@@ -33,18 +45,33 @@
     },
     data(){
       return {
-
+        chart: null
+      }
+    },
+    watch: {
+      seriesData: {
+        deep: true,
+        handler(val) {
+          this.setOptions(this.xData,this.seriesData)
+        }
       }
     },
     mounted(){
       this.initChart()
     },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
+    },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions()
+        this.setOptions(this.xData,this.seriesData)
       },
-      setOptions(){
+      setOptions(xData,seriesData){
         this.chart.setOption({
           tooltip: {
             trigger: 'axis',
@@ -60,7 +87,7 @@
           },
           xAxis: [{
             type: 'category',
-            data: ['区域一', '区域二', '区域三', '区域四', '区域五', '区域六','区域七'],
+            data: xData,
             axisLine: {
               lineStyle: {
                 color: 'rgba(255,255,255,0.12)'
@@ -92,7 +119,7 @@
           series: [{
             type: 'bar',
             barWidth: 15,
-            data: [5000, 2600, 1300, 1300, 1250, 1500,1000],
+            data: seriesData,
 
             itemStyle: {
               normal: {

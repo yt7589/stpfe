@@ -1,5 +1,6 @@
 <template>
     <div class="page-zdjg">
+        <div class="menu-bg"></div>
         <baidu-map
                 v-if="curPage.label=='特殊车辆监管'"
                 ref="map-tscl"
@@ -125,10 +126,19 @@
         position: relative;
         width: 100%;
         height: 100%;
+        .menu-bg {
+            width: 100%;
+            height: 163px;
+            position: absolute;
+
+            z-index: 1;
+            background: url("./image/menu-bg.png") no-repeat;
+        }
+        .baidu-map{
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
     }
-    .baidu-map{
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
+
 </style>

@@ -2,7 +2,7 @@
     <div style="width: 100%;height: 100%">
         <div class="title">
             <div class="icon"></div>
-            <div class="content">本日重点监控车辆车型构成</div>
+            <div class="content">本日重点监控车辆小时分布图</div>
         </div>
         <div :id="id" :class="className" :style="{height:height,width:width}" />
     </div>

@@ -30,21 +30,43 @@
       height: {
         type: String,
         default: '100%'
-      }
+      },
+      sData:{
+        type:Array,
+        default:function () {
+          return []
+        }
+      },
     },
     data(){
       return {
+        chart: null
       }
     },
     mounted(){
       this.initChart()
     },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
+    },
+    watch: {
+      sData: {
+        deep: true,
+        handler(val) {
+          this.setOptions(this.sData)
+        }
+      }
+    },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions()
+        this.setOptions(this.sData)
       },
-      setOptions(){
+      setOptions(sData){
         this.chart.setOption({
           tooltip: {
             trigger: 'item',
@@ -66,7 +88,7 @@
             {
               name:'',
               type:'pie',
-              center: ['35%', '50%'],
+              center: ['35%', '40%'],
               radius: ['40%', '65%'],
               clockwise: false, //饼图的扇区是否是顺时针排布
               avoidLabelOverlap: false,
@@ -77,7 +99,7 @@
                   show: true,
                   position: 'outter',
                   formatter:function (parms){
-                    return parms.data.legendname
+                    return parms.data.name
                   }
                 }
               },
@@ -88,21 +110,15 @@
                   smooth:true,
                 }
               },
-              data:[
-                {
-                  value:335,
-                  legendname:'平板式货车',
-                  name:"平板式货车",
-                  itemStyle:{
-                    color:"#552873",
-                  }
-                },
-                {value:310, legendname:'厢式货车',name:"厢式货车",itemStyle:{color:"#E69B03"}},
-                {value:234, legendname:'罐式货车',name:"罐式货车",itemStyle:{color:"#045FE0"}},
-                {value:154, legendname:'栏板式货车',name:"栏板式货车",itemStyle:{color:"#D1494E"}},
-                {value:335, legendname:'普通货车',name:"普通货车",itemStyle:{color:"#D8D8D8"}},
-                {value:335, legendname:'仓栅式货车',name:"仓栅式货车",itemStyle:{color:"#00C087"}},
-              ]
+              data:sData,
+              // data:[
+              //   {value:335, name:"平板式货车",itemStyle:{ color:"#552873"}},
+              //   {value:310, name:"厢式货车",itemStyle:{color:"#E69B03"}},
+              //   {value:234, name:"罐式货车",itemStyle:{color:"#045FE0"}},
+              //   {value:154, name:"栏板式货车",itemStyle:{color:"#D1494E"}},
+              //   {value:335, name:"普通货车",itemStyle:{color:"#D8D8D8"}},
+              //   {value:335, name:"仓栅式货车",itemStyle:{color:"#00C087"}},
+              // ]
             }
           ]
         })
