@@ -170,8 +170,7 @@
 
       getData(){
         API.GetSpecialVehicleList().then((res) => {
-          let tmpTsclData = res.data.emphasisVehiclePercentageList
-          tmpTsclData.forEach((item,idx)=>{
+          res.data.emphasisVehiclePercentageList.forEach((item,idx)=>{
             let tmp =  {}
             tmp.value = item.emphasisVehicleNum
             tmp.name = item.emphasisVehicleTypeName
