@@ -163,21 +163,23 @@
         if (this.data) {
           this.data.forEach(item => {
             let charData = null
-            if (item.vehicleTypeName == '小型车') {
+            if (item.seriesName == '小型车') {
               charData = this.chart.option.series[0].data
-            } else if (item.vehicleTypeName == '中型车') {
+            } else if (item.seriesName == '中型车') {
               charData = this.chart.option.series[1].data
-            } else if (item.vehicleTypeName == '大型车') {
+            } else if (item.seriesName == '大型车') {
               charData = this.chart.option.series[2].data
             }
 
-            if (charData) {
-              let index = parseInt(item.timeFrame / 2) - 1
-              if (index < charData.length) {
-                this.$set(charData, index, parseFloat(item.vehicleNumber))
-              } else {
-                console.error("小时错误", item)
-              }
+            if (charData && item.datas) {
+              item.datas.forEach(subItem => {
+                let index = parseInt(subItem.timeInterval / 2) - 1
+                if (index < charData.length) {
+                  this.$set(charData, index, parseFloat(subItem.count))
+                } else {
+                  console.error("小时错误", item)
+                }
+              })
             }
           })
         }

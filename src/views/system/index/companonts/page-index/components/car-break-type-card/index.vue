@@ -70,8 +70,9 @@
               tickInterval: 36,
               min: 0,
               max: 360,
-              categories: ['遮挡车牌', '主驾驶抽烟', '副驾驶未系安全带', '主驾驶看手机', '遮挡车牌2',
-                '主驾驶未系安全带', '摩托车载人', '主驾驶打电话', '主驾驶抽烟', '摩托车嘉诚人员未带头盔'],
+//              categories: ['遮挡车牌', '主驾驶抽烟', '副驾驶未系安全带', '主驾驶看手机', '遮挡车牌2',
+//                '主驾驶未系安全带', '摩托车载人', '主驾驶打电话', '主驾驶抽烟', '摩托车嘉诚人员未带头盔'],
+              categories: [],
               lineWidth: 1,
               gridLineColor: '#0445A6',
               gridLineWidth: 1,
@@ -121,7 +122,8 @@
               type: 'area',
               color: '#00F6FF80',
               //data: [43000, 19000, 60000, 35000, 17000, 10000,20001,2312,44412,123345],
-              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+              data:[]
             }]
           },
           instance: null,
@@ -143,9 +145,9 @@
           let data = this.chart.option.series[0].data
           // 合并类型
           this.data.forEach(item => {
-            let found = categories.find(name => name == item.trafficViolationType)
+            let found = categories.find(name => name == item.name)
             if (!found) {
-              categories.push(item.trafficViolationType)
+              categories.push(item.name)
               data.push(0)
             }
           })
@@ -154,9 +156,9 @@
           //  合并数据
 
           categories.forEach((name, index) => {
-            let found = this.data.find((item) => item.trafficViolationType == name)
+            let found = this.data.find((item) => item.name == name)
             if (found) {
-              let value = parseInt(found.trafficViolationNum)
+              let value = parseInt(found.count)
               this.$set(data, index, value)
             } else {
               data[index] = 0;

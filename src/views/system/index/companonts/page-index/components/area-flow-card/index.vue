@@ -115,8 +115,8 @@
           let categories = []
           let data = []
           this.data.forEach(item => {
-            categories.push(item.regionName)
-            data.push(parseFloat(item.passedNumber))
+            categories.push(item.name)
+            data.push(parseFloat(item.count))
           })
 
           this.chart.option.series[0].data = data

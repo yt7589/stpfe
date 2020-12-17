@@ -115,9 +115,9 @@
         if (this.data) {
           let chartData = this.chart.option.series[0].data
           this.data.forEach(item => {
-            let index = parseInt(item.timeFrame / 2) - 1;
+            let index = parseInt(item.name / 2) - 1;
             if (index < chartData.length) {
-              this.$set(chartData, index, parseFloat(item.trafficViolationNum))
+              this.$set(chartData, index, parseFloat(item.count))
             }
           })
         }

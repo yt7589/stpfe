@@ -122,39 +122,29 @@
     methods: {
       updateChartData(){
         if (this.data) {
-          let today = dayjs().format("YYYYMMDD")
-          let yesterday = dayjs().subtract(1, 'day').format("YYYYMMDD")
-
-          // TODO:
-          today = "20201126"
-          yesterday = "20201125"
-
-
-          let todayChartData = this.chart.option.series[0].data
-          let yesterdayChartData = this.chart.option.series[1].data
-
-          this.data.forEach(item => {
-            let date = dayjs(item.date)
-            let str = date && date.isValid() ? date.format("YYYYMMDD") : ""
-
-            let pData = null
-            if (str == today) {
-              pData = todayChartData
-            } else if (str == yesterday) {
-              pData = yesterdayChartData
-            } else {
-              console.error("时间格式错误", item.date, str, today, yesterday)
-            }
-
-            if (pData) {
-              let index = parseInt(item.timeFrame / 4) - 1
+          if(this.data.todayTraffics){
+            let pData = this.chart.option.series[0].data
+            this.data.todayTraffics.forEach(item=>{
+              let index = parseInt(item.reportTime / 4) - 1
               if (index < pData.length) {
-                this.$set(pData, index, parseFloat(item.vehicleNumber))
+                this.$set(pData, index, parseFloat(item.count))
               } else {
                 console.error("小时错误", item)
               }
-            }
-          })
+            })
+          }
+
+          if(this.data.yesterdayTraffics){
+            let pData = this.chart.option.series[1].data
+            this.data.yesterdayTraffics.forEach(item=>{
+              let index = parseInt(item.reportTime / 4) - 1
+              if (index < pData.length) {
+                this.$set(pData, index, parseFloat(item.count))
+              } else {
+                console.error("小时错误", item)
+              }
+            })
+          }
         }
       }
     }

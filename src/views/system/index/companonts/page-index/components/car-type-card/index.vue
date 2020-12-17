@@ -55,7 +55,7 @@
                 fontSize: '0.0625rem',
               },
               formatter: function () {
-                return this.y + '%';
+                return parseInt(this.percentage) + '%';
               }
             },
             credits: {
@@ -70,7 +70,7 @@
                 dataLabels: {
                   enabled: true,
                   formatter: function () {
-                    return this.y + '%'
+                    return parseInt(this.percentage) + '%';
                   },
                   style: {
                     "color": 'white',
@@ -78,7 +78,7 @@
                   }
                 },
                 showInLegend: true,
-                colors: ['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF','#045FE0','#FFFFFF']
+                colors: ['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF', '#045FE0', '#FFFFFF']
               }
             },
             legend: {
@@ -145,10 +145,10 @@
           let chartSeries = this.chart.option.series[0]
           let data = []
           this.data.forEach(item => {
-            let value = parseFloat(item.vehicleTypePercentage)
+            let value = parseFloat(item.count)
             data.push({
-              name: item.vehicleTypeName,
-              y: parseInt(value * 100),
+              name: item.name,
+              y: value,
               z: value
             })
           })
@@ -156,22 +156,17 @@
         }
       },
       updateCarTypeData(){
-        // 0 - 80 %
         if (this.typeData) {
-          this.typeData.forEach(item => {
-            let percent = parseInt(parseFloat(item.vehicleDistributionPercntage) * 100)
-            let style = {
-              top: percent * 80 / 100.0 + '%'
-            }
+          // 0 - 80 %
+          this.car.local = parseInt(this.typeData.internalPercent)
+          this.car.localStyle = {
+            top: this.car.local * 80 / 100.0 + '%'
+          }
 
-            if (item.vehicleDistributionName == '本市车辆') {
-              this.car.localStyle = style
-              this.car.local = percent
-            } else if (item.vehicleDistributionName == '外埠') {
-              this.car.outlandStyle = style
-              this.car.outland = percent
-            }
-          })
+          this.car.outland = parseInt(this.typeData.externalPercent)
+          this.car.outlandStyle = {
+            top: this.car.outland * 80 / 100.0 + '%'
+          }
         }
       }
     }

@@ -5,10 +5,11 @@
         <el-image :src="item.imgUrl" fit="contain"></el-image>
         <div :span="12" class="result-box">
           <div>位置： {{item.location}}</div>
-          <div>车型： {{item.vehicleType}}</div>
-          <div>车款： {{item.vehicleStyle}}</div>
+          <div>车型： {{item.clpp}}</div>
+          <div>车款： {{item.ppcx}}</div>
+          <div>号牌： {{item.hphm}}</div>
           <div style="color:#00F6FF">违章类型： {{item.violationTypeName}}</div>
-          <div>拍摄时间： {{item.trafficViolationTime}}</div>
+          <div>拍摄时间： {{item.time}}</div>
         </div>
       </div>
 
@@ -53,7 +54,7 @@
 
       font-size: 12px;
       color: #FFFFFF;
-      line-height: 20px;
+      /*line-height: 20px;*/
     }
   }
 

@@ -5,8 +5,8 @@
                :center="map.center" :dragging="true"
                @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                :scroll-wheel-zoom="true" :double-click-zoom="true">
-      <bm-boundary v-for="item in data" :name="city + item.regionName" :strokeWeight="2" strokeColor="#06A6FF"
-                   :fillColor="getColor(item.passedNumber)"></bm-boundary>
+      <bm-boundary v-for="item in data" :name="city + item.name" :strokeWeight="2" strokeColor="#06A6FF"
+                   :fillColor="getColor(item.count)"></bm-boundary>
     </baidu-map>
   </div>
 
