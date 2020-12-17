@@ -25,6 +25,18 @@
         type: String,
         default: '100%'
       },
+      seriesData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
+      xData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
       height: {
         type: String,
         default: '100%'
@@ -32,18 +44,33 @@
     },
     data(){
       return {
-
+        chart: null
+      }
+    },
+    watch: {
+      seriesData: {
+        deep: true,
+        handler(val) {
+          this.setOptions(this.xData,this.seriesData)
+        }
       }
     },
     mounted(){
       this.initChart()
     },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
+    },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions()
+        this.setOptions(this.xData,this.seriesData)
       },
-      setOptions(){
+      setOptions(xData,seriesData){
         this.chart.setOption({
           grid: {
             top: '10%',
@@ -96,7 +123,7 @@
                 color: '#979797'
               }
             },
-            data: ['点位一','点位二','点位三','点位四','点位五','点位六','点位七']
+            data: xData
           }],
           series: [{
             name: '值',
@@ -127,7 +154,7 @@
               }
             },
             barWidth: 5,
-            data: [78,56,63,123,22,330,11]
+            data: seriesData
           }
           ]
         })

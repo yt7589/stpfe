@@ -20,31 +20,31 @@
             <!--</baidu-map>-->
                 <el-col class="col-1">
                     <el-row class="col-common col-1-1">
-                        <constitute-pie ref="pie"></constitute-pie>
+                        <constitute-pie ref="pie" :s-data="cPieData"></constitute-pie>
                     </el-row>
                     <el-row class="col-common col-1-2">
-                        <area-bar ref="bar"></area-bar>
+                        <area-bar ref="bar" :x-data="cBarXData" :series-data="cBarSData"></area-bar>
                     </el-row>
                     <el-row class="col-common col-1-3">
-                        <monitor-realtime-image></monitor-realtime-image>
+                        <monitor-realtime-image :images="images"></monitor-realtime-image>
                     </el-row>
                 </el-col>
                 <el-col  class="col-2">
                     <el-row  class="col-2-row-1">
                         <el-col :span="6" class="common_stat total_car">
-                            <div class="car_num">12345</div>
+                            <div class="car_num">{{currentEmphasisVehicleNum}}</div>
                             <div class="car_info">本日重点车辆总数</div>
                         </el-col>
                         <el-col :span="6" class="common_stat total_dev">
-                            <div class="car_num">12345</div>
+                            <div class="car_num">{{onlineDevice}}</div>
                             <div class="car_info">本日在线设备总数</div>
                         </el-col>
                         <el-col :span="6" class="common_stat total_warn">
-                            <div class="car_num">12345</div>
+                            <div class="car_num">{{alarmNum}}</div>
                             <div class="car_info">本日报警总数</div>
                         </el-col>
                         <el-col :span="6" class="common_stat area_total_car">
-                            <div class="car_num">12345</div>
+                            <div class="car_num">{{emphasisVehicleEmphasisRegionNum}}</div>
                             <div class="car_info">重点区域重点车辆总数</div>
                         </el-col>
 
@@ -54,12 +54,12 @@
                     </el-row>
                     <el-row class="col-2-row-3">
                       <el-table class="col-2-row-3-table" :data="tableData" v-loading="loading">
-                          <el-table-column prop="id"  align="center" label="序号" width="40"></el-table-column>
-                          <el-table-column prop="car_num"  align="center" label="车牌号" width="70"></el-table-column>
-                          <el-table-column prop="car_brand"  align="center" label="车辆品牌" ></el-table-column>
-                          <el-table-column prop="warn"  align="center" label="违法预警" ></el-table-column>
-                          <el-table-column prop="pos"  align="center" label="点位" ></el-table-column>
-                          <el-table-column prop="time"  align="center" label="拍摄时间" ></el-table-column>
+                          <el-table-column prop="id"  align="center" label="序号" minWidth="20"></el-table-column>
+                          <el-table-column prop="vehiclePlate"  align="center" label="车牌号" minWidth="70"></el-table-column>
+                          <el-table-column prop="vehicleType"  align="center" label="车辆品牌" ></el-table-column>
+                          <el-table-column prop="violationTypeName"  align="center" label="违法预警" ></el-table-column>
+                          <el-table-column prop="siteName"  align="center" label="点位" ></el-table-column>
+                          <el-table-column prop="trafficViolationTime"  align="center" label="拍摄时间" ></el-table-column>
                       </el-table>
                     </el-row>
                 </el-col>
@@ -68,7 +68,7 @@
                         <constitute-line ref="line"></constitute-line>
                     </el-row>
                     <el-row class="col-common col-3-2">
-                        <point-bar></point-bar>
+                        <point-bar :x-data="pBarXData" :series-data="pBarSData"></point-bar>
                     </el-row>
                     <el-row class="col-common col-3-3">
                         <violation-realtime-image></violation-realtime-image>
@@ -86,6 +86,7 @@
   import PointBar from './components/point_bar'
   import MonitorRealtimeImage from './components/monitor_realtime_image'
   import ViolationRealtimeImage from './components/violation_realtime_image'
+  import API from '@/api'
   export default {
     name: 'page-zdjg-tscl',
     components:{
@@ -107,16 +108,7 @@
           },
         },
         loading:false,
-        tableData: [
-          {
-            id:'01',
-            car_num:'京B12345',
-            car_brand:"北奔V3MT重卡",
-            warn:"驾驶员未系安全带",
-            pos:"海淀区上地八街12号点位",
-            time:"2020-02-02 12:12:12"
-          }
-        ],
+        tableData: [],
         markerPoint: {
           lng: 116.404,
           lat: 39.915
@@ -126,10 +118,27 @@
           desc:"海淀区上地8街12号",
           card:"京A12345累计"
         },
+        //重点监控车辆车型构成
+        cPieData:[],
+        //本日重点监控车辆区域分布图
+        cBarXData:[],
+        cBarSData:[],
+        //本日重点监控车辆实时图片
+        images:[],
+        //各个车辆总数
+        emphasisVehicleEmphasisRegionNum:0,
+        currentEmphasisVehicleNum:0,
+        alarmNum:0,
+        onlineDevice:0,
+
+        //本日重点监控车辆点位分布图
+        pBarXData:[],
+        pBarSData:[],
       }
     },
     mounted(){
       this.infoWindowOpen()
+      this.getData()
     },
     methods:{
       onMapReady ({BMap, map}) {
@@ -159,6 +168,38 @@
         this.show = true
       },
 
+      getData(){
+        API.GetSpecialVehicleList().then((res) => {
+          let tmpTsclData = res.data.emphasisVehiclePercentageList
+          tmpTsclData.forEach((item,idx)=>{
+            let tmp =  {}
+            tmp.value = item.emphasisVehicleNum
+            tmp.name = item.emphasisVehicleTypeName
+            this.cPieData.push(tmp)
+          })
+
+          res.data.regionEmphasisVehicleList.forEach((item)=>{
+            this.cBarXData.push(item.regionName)
+            this.cBarSData.push(item.emphasisVehicleNum)
+          })
+
+          res.data.emphasisVehicleImgUrlList.forEach((item)=>{
+            this.images.push(item.imgUrl)
+          })
+
+          this.onlineDevice = res.data.emphasisVehicleNumber.onlineDevice
+          this.currentEmphasisVehicleNum = res.data.emphasisVehicleNumber.currentEmphasisVehicleNum
+          this.emphasisVehicleEmphasisRegionNum = res.data.emphasisVehicleNumber.emphasisVehicleEmphasisRegionNum
+          this.alarmNum = res.data.emphasisVehicleNumber.alarmNum
+
+          this.tableData = res.data.emphasisVehicleViolationList
+
+          res.data.siteEmphasisVehicleList.forEach((item)=>{
+            this.pBarXData.push(item.siteName)
+            this.pBarSData.push(item.emphasisVehicleNum)
+          })
+        })
+      }
 
     }
   }

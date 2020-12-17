@@ -1,16 +1,21 @@
 <template>
-    <div class="page-sbgl-sblb"  flex="dir:top">
+    <div class="page-system-zhlb"  flex="dir:top">
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
-        <div class="body">
+        <div flex-box="1" class="body">
             <div class="column-1">
                 <el-form class="search-form">
                     <el-form-item>
-                        <el-input placeholder="设备类型" v-model="table.filter.type">
+                        <el-input placeholder="用户名" v-model="table.filter.user">
 
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="设备编号" v-model="table.filter.num">
+                        <el-input placeholder="姓名" v-model="table.filter.name">
+
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input placeholder="手机号" v-model="table.filter.phone">
 
                         </el-input>
                     </el-form-item>
@@ -33,17 +38,15 @@
                 <el-container class="table-container">
                     <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
                         <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-                            <el-table-column align="center" prop="city" label="城市" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="num" label="设备编号" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="type" label="设备类型" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="node" label="所属节点" minWidth="80"></el-table-column>
-                            <el-table-column align="center" prop="orientation" label="朝向" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="car_orientation" label="车辆方向" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="addr" label="视频流地址" minWidth="80"></el-table-column>
+                            <el-table-column align="center" prop="user" label="用户名" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="name" label="姓名" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="phone" label="手机号" minWidth="60"></el-table-column>
+                            <el-table-column align="center" show-overflow-tooltip prop="permission" label="权限" minWidth="80"></el-table-column>
                             <el-table-column align="center" prop="" label="操作" minWidth="40">
                                 <template slot-scope="scope">
-                                    <el-button type="text" size="mini">修改</el-button>
+                                    <el-button type="text" size="mini">修改资料</el-button>
                                     <el-button type="text" size="mini" @click="delConfirm(scope.row.id)">删除</el-button>
+                                    <el-button type="text" size="mini">修改密码</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -68,52 +71,29 @@
                 :visible.sync="dialogVisible"
         >
             <el-form ref="dialogForm" :model="dialogData" >
-                <el-form-item label="设备编号">
-                    <el-input v-model="dialogData.num"name="area" />
+                <el-form-item label="用户名">
+                    <el-input v-model="dialogData.user"name="area" />
                 </el-form-item>
-                <el-form-item label="设备类型">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
+                <el-form-item label="姓名">
+                    <el-input v-model="dialogData.name"name="area" />
+                </el-form-item>
+                <el-form-item label="手机号">
+                    <el-input v-model="dialogData.phone"name="area" />
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input v-model="dialogData.password"name="area" />
+                </el-form-item>
+                <el-form-item label="权限">
+                    <el-select v-model="dialogData.permission" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
+                                v-for="item in permissionOptions"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备节点">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="设备朝向">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="车辆方向">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="车辆方向">
-                    <el-input v-model="dialogData.num"name="area"  />
-                </el-form-item>
+
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -121,11 +101,11 @@
             </span>
         </el-dialog>
         <el-dialog
-            class="confirm"
-            title="提示"
-            :visible.sync="dialogVisibleConfirm"
-            width="256px"
-            height = "200px"
+                class="confirm"
+                title="提示"
+                :visible.sync="dialogVisibleConfirm"
+                width="256px"
+                height = "200px"
         >
             <div>确定要删除吗？</div>
             <span slot="footer" class="dialog-footer">
@@ -139,7 +119,7 @@
 <script>
   import HeaderCrumb from '@components/custom/header-crumb'
   export default {
-    name: 'sbgl-sblb',
+    name: 'system-zhlb',
     props:{
       firstItem:{
         type:String,
@@ -160,11 +140,12 @@
         loading: false,
         table: {
           data: [
-            {id:1,city:"北京",num:'001',type:"视频监控",node:"海淀区上地8街1号位",orientation:"东南",car_orientation:"车头",addr:"rtsp://11.12.13.14/1"}
+            {id:1,user:"ligong123",name:'李工',phone:"13312341234",permission:"路网实况、违章管理、车辆布控、拍照异常、路网实况、违章管理、车辆布控、拍照异常、"}
           ],
           filter: {
-            num: '',
-            type: ''
+            user: '',
+            name: '',
+            phone: ''
           },
           pagination: {
             currentPage: 1,
@@ -174,14 +155,17 @@
         },
         dialogVisible:false,
         dialogData:{
-          area:"",
-          type:"卡口相机/视频监控"
+          user:"",
+          name:"",
+          phone:"",
+          password:"",
+          permission:""
         },
         dialogVisibleConfirm:false,
         delId:0,
-        options: [{
-          value: '卡口相机/视频监控',
-          label: '卡口相机/视频监控'
+        permissionOptions: [{
+          value: '权限1',
+          label: '权限1'
         }],
       }
     },
@@ -206,12 +190,11 @@
 </script>
 
 <style lang="scss">
-    .page-sbgl-sblb {
+    .page-system-zhlb {
 
         .body {
             margin-top: 8px;
             width: 100%;
-            height: calc(100% - 72px);
             display: flex;
 
             .column-1 {
@@ -228,7 +211,6 @@
                     top: 24px;
                     left: 24px;
                     right: 24px;
-
                     .el-form-item {
                         margin-bottom: 8px;
                     }
