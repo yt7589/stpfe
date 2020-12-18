@@ -4,7 +4,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   //特殊车辆监管
   GetSpecialVehicleList(){
     return request({
-      url: '/emphasis/vehicle',
+      url: '/ks/getKsSvsMain',
       method: 'GET',
     })
   },

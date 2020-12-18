@@ -54,12 +54,12 @@
                     </el-row>
                     <el-row class="col-2-row-3">
                       <el-table class="col-2-row-3-table" :data="tableData" v-loading="loading">
-                          <el-table-column prop="id"  align="center" label="序号" minWidth="20"></el-table-column>
-                          <el-table-column prop="vehiclePlate"  align="center" label="车牌号" minWidth="70"></el-table-column>
-                          <el-table-column prop="vehicleType"  align="center" label="车辆品牌" ></el-table-column>
-                          <el-table-column prop="violationTypeName"  align="center" label="违法预警" ></el-table-column>
+                          <el-table-column prop="seq"  align="center" label="序号" minWidth="20"></el-table-column>
+                          <el-table-column prop="hphm"  align="center" label="车牌号" minWidth="70"></el-table-column>
+                          <el-table-column prop="ppcx"  align="center" label="车辆品牌" ></el-table-column>
+                          <el-table-column prop="trafficViolationTypeName"  align="center" label="违法预警" ></el-table-column>
                           <el-table-column prop="siteName"  align="center" label="点位" ></el-table-column>
-                          <el-table-column prop="trafficViolationTime"  align="center" label="拍摄时间" ></el-table-column>
+                          <el-table-column prop="shotTime"  align="center" label="拍摄时间" ></el-table-column>
                       </el-table>
                     </el-row>
                 </el-col>
@@ -71,7 +71,7 @@
                         <point-bar :x-data="pBarXData" :series-data="pBarSData"></point-bar>
                     </el-row>
                     <el-row class="col-common col-3-3">
-                        <violation-realtime-image></violation-realtime-image>
+                        <violation-realtime-image :images="images2"></violation-realtime-image>
                     </el-row>
                 </el-col>
         </el-row>
@@ -134,6 +134,9 @@
         //本日重点监控车辆点位分布图
         pBarXData:[],
         pBarSData:[],
+
+        //本日重点监控车辆违法实时图片
+        images2:[],
       }
     },
     mounted(){
@@ -170,32 +173,36 @@
 
       getData(){
         API.GetSpecialVehicleList().then((res) => {
-          res.data.emphasisVehiclePercentageList.forEach((item,idx)=>{
+          res.data.ksvmcs.forEach((item,idx)=>{
             let tmp =  {}
-            tmp.value = item.emphasisVehicleNum
-            tmp.name = item.emphasisVehicleTypeName
+            tmp.value = item.count
+            tmp.name = item.name
             this.cPieData.push(tmp)
           })
 
-          res.data.regionEmphasisVehicleList.forEach((item)=>{
-            this.cBarXData.push(item.regionName)
-            this.cBarSData.push(item.emphasisVehicleNum)
+          res.data.ksvads.forEach((item)=>{
+            this.cBarXData.push(item.name)
+            this.cBarSData.push(1)
           })
 
-          res.data.emphasisVehicleImgUrlList.forEach((item)=>{
+          res.data.ksvrps.forEach((item)=>{
             this.images.push(item.imgUrl)
           })
 
-          this.onlineDevice = res.data.emphasisVehicleNumber.onlineDevice
-          this.currentEmphasisVehicleNum = res.data.emphasisVehicleNumber.currentEmphasisVehicleNum
-          this.emphasisVehicleEmphasisRegionNum = res.data.emphasisVehicleNumber.emphasisVehicleEmphasisRegionNum
-          this.alarmNum = res.data.emphasisVehicleNumber.alarmNum
+          this.onlineDevice = res.data.htfs.todaySvNum
+          this.currentEmphasisVehicleNum = res.data.htfs.todayDevNum
+          this.emphasisVehicleEmphasisRegionNum = res.data.htfs.todayWarnNum
+          this.alarmNum = res.data.htfs.todayKakvNum
 
-          this.tableData = res.data.emphasisVehicleViolationList
+          this.tableData = res.data.svtvs
 
-          res.data.siteEmphasisVehicleList.forEach((item)=>{
-            this.pBarXData.push(item.siteName)
-            this.pBarSData.push(item.emphasisVehicleNum)
+          res.data.ksvsss.forEach((item)=>{
+            this.pBarXData.push(item.name)
+            this.pBarSData.push(item.count)
+          })
+
+          res.data.ksvtvrps.forEach((item)=>{
+            this.images2.push(item.imageUrl)
           })
         })
       }
@@ -270,7 +277,7 @@
             }
             .col-2-row-3 {
                 position: absolute;
-                bottom: 6%;
+                bottom: 3%;
             }
 
         }
@@ -291,8 +298,9 @@
         .col-2-row-3-table{
             width: 100%;
             background: url("../../image/tscl_table@1x.png") no-repeat;
-            background-size: cover;
+            background-size: 100% 100%;
             min-height: 220px;
+
         }
         .col-2-row-3-table  .el-table__header th,.el-table__header tr,.el-table__row{
             background-color:transparent !important;

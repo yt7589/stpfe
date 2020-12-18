@@ -87,44 +87,24 @@
           lng: 116.404,
           lat: 39.915
         },
-        markerData:{
-          desc:"海淀区上地8街12号",
-          card:"京A12345累计"
-        },
-        show: true,
-        src:'http://222.128.117.234:8090/cloud/vehicle_images/v001.jpg"',
         mps:[
-          {
-            markerPoint: {
-              lng: 116.404,
-              lat: 39.815
-            },
-            show: false,
-            markerData:{
-              desc:"eee",
-              card:"eeee",
-              trafficViolationTime:'',
-              vehiclePlate:'',
-            },
-          },
           {
             markerPoint: {
               lng: 116.404,
               lat: 39.915
             },
             show: true,
-            markerData:{
-              desc:"1222",
-              card:"2222"
-            },
+            imageUrl:'',
+            hphm:'',
+            siteName:'',
           },
         ],
 
         bmMarkerStyle:{
-          url: require('./image/mark_point3.png'),
+          url: require('./image/bmifno.png'),
           size: {
-            width: 65,
-            height: 66
+            width: 114,
+            height: 120
           },
         },
       }
@@ -178,36 +158,33 @@
       },
       getTsclData(){
         API.GetSpecialVehicleList().then((res) => {
-          res.data.emphasisVehicleViolationList.forEach((item,idx)=>{
-            let show = false
-            let lat = 116.404 //item.lat
-            let lng = 39.915//item.lng
-            if(idx==0){
-              show = true
-              this.map.center.lat = lat
-              this.map.center.lng = lng
-            }else{
-              lat = 116.404
-              lng = 39.815
-            }
-            let tmp = {
-              point:{
-                lat:'',
-                lng:''
-              }
-            }
-            tmp.point.lat = lat
-            tmp.point.lng = lng
-            tmp.trafficViolationTime = item.trafficViolationTime
-            tmp.vehiclePlate = item.vehiclePlate
-            tmp.siteName = item.siteName
-            tmp.imgUrl = item.imgUrl
-            tmp.vehicleType = item.vehicleType
-            tmp.violationTypeName = item.violationTypeName
-            tmp.show = show
-            this.markerPoints.push(tmp)
-          })
-          console.log(this.markerPoints)
+
+          // res.data.emphasisVehicleViolationList.forEach((item,idx)=>{
+          //   let show = false
+          //   let lat = 116.404 //item.lat
+          //   let lng = 39.915//item.lng
+          //   if(idx==0){
+          //     show = true
+          //   }
+          //   this.map.center.lat = lat
+          //   this.map.center.lng = lng
+          //   let tmp = {
+          //     point:{
+          //       lat:'',
+          //       lng:''
+          //     }
+          //   }
+          //   tmp.point.lat = lat
+          //   tmp.point.lng = lng
+          //   tmp.trafficViolationTime = item.trafficViolationTime
+          //   tmp.vehiclePlate = item.vehiclePlate
+          //   tmp.siteName = item.siteName
+          //   tmp.imgUrl = item.imgUrl
+          //   tmp.vehicleType = item.vehicleType
+          //   tmp.violationTypeName = item.violationTypeName
+          //   tmp.show = show
+          //   this.markerPoints.push(tmp)
+          // })
         })
       },
 
@@ -246,6 +223,7 @@
                     display: block;
                     overflow: unset;
                     width: 340px !important;
+                    left: -178px !important;
                 }
                 > div:nth-child(8){
                     /*display: block;*/
