@@ -36,8 +36,8 @@
                             <bm-marker :icon=bmMarkerStyle  :position="markerPoint" :dragging="true" @click="infoWindowOpen">
                                 <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
                                     <div class="bm-info-content">
-                                        <p>{{markerData.desc}}</p>
-                                        <p>{{markerData.card}}</p>
+                                        <p>{{markerData.siteName}}</p>
+                                        <p>{{markerData.hphm}}累计出现{{markerData.totalTimes}}次</p>
                                     </div>
 
                                 </bm-info-window>
@@ -67,12 +67,12 @@
                             <el-col class="dt-row" :span="24">
                                 <el-card class="card">
                                     <div  class="card-content">
-                                        <div>{{item.area}}</div>
-                                        <div>{{item.time}}</div>
+                                        <div>{{item.siteName}}</div>
+                                        <div>{{item.occurTime}}</div>
                                     </div>
                                     <div class="card-content">
-                                        <div> <span style="color: #00F6FF">{{item.card}}</span></div>
-                                        <div>{{item.num}}</div>
+                                        <div> <span style="color: #00F6FF">{{item.hphm}}</span></div>
+                                        <div>累计出现{{item.totalTimes}}次</div>
                                     </div>
                                 </el-card>
                             </el-col>
@@ -178,8 +178,9 @@
           lat: 39.915
         },
         markerData:{
-          desc:"海淀区上地8街12号",
-          card:"京A12345累计"
+          totalTimes:"",
+          siteName:"",
+          hphm:'',
         },
         bmMarkerStyle:{
           url: require('../../image/mark_point1.png'),
@@ -195,31 +196,16 @@
           area:[],
         },
         delAreaId:0,
-        dtData:[
-          {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }
-        ],
+        dtData:[],
         options:[],
         dialogVisibleConfirm:false,
       }
     },
     mounted(){
       this.getAreaList()
+      this.handdleMsg()
     },
+
     methods:{
       onMapReady ({BMap, map}) {
         this.map.instance = map
@@ -311,8 +297,57 @@
             this.options.push(tmp)
           })
         })
-      }
+      },
 
+      handdleMsg() {
+        let that = this;
+
+        //监听消息
+        this.sendSubscribeMsg('ksAsSfvs',1)
+        //this.sendUnsubscribe('ksAsSfvs',1)
+        this.sendSubscribeMsg('ksAsLsvs',1)
+        //this.sendUnsubscribe('ksAsLsvs',1)
+
+        that.$globalws.ws.onmessage =  (res)=> {
+          let data = JSON.parse(res.data)
+          if (data.length > 0 ){
+            if(data[0].occurTime){
+              //动态列表
+              this.dtData = data
+            }else{
+              //中间地图信息
+              this.map.center.lat = data[0].lat
+              this.map.center.lng = data[0].lng
+
+              this.markerPoint.lat = data[0].lat
+              this.markerPoint.lng = data[0].lng
+              this.markerData.siteName = data[0].siteName
+              this.markerData.totalTimes = data[0].totalTimes
+              this.markerData.hphm = data[0].hphm
+            }
+          }
+
+        }
+      },
+      //监听消息
+      sendSubscribeMsg(topic,g_userId) {
+        let msg = {
+          'userId': '' + g_userId,
+          'type': 'sub',
+          'topic': topic
+        }
+        this.$globalws.ws.send(JSON.stringify(msg))
+      },
+
+      //取消监听
+      sendUnsubscribe(topic,g_userId) {
+        let msg = {
+          'user': '' + g_userId,
+          'type': 'unsub',
+          'topic': topic
+        }
+        this.$globalws.ws.send(JSON.stringify(msg))
+      },
 
     }
   }
@@ -381,7 +416,7 @@
     .card {
         background: rgba(4, 95, 224, 0.3);
         border: 1px solid #00F6FF;
-        height: 72px;
+        height: 50px;
         .card-content{
             display: flex;
             justify-content: space-between;
@@ -394,7 +429,7 @@
     }
 
     .dt-row {
-        margin-bottom: 4px;
+        margin-bottom: 3px;
     }
 
     .bm-info-content{
@@ -407,20 +442,20 @@
 
     }
     .dt-title {
-        padding: 16px;
+        padding: 8px 0 0 16px;
         position: relative;
     }
 
     .dt-list{
         position: relative;
-        padding: 0px 16px 16px 16px;
+        padding: 0px 16px 8px 16px;
     }
 </style>
 
 <style lang="scss">
     .page-zdjg-qyjg{
         .el-card__body{
-            padding: 12px 16px 12px 16px;
+            padding: 4px 16px 4px 16px;
         }
         .el-dialog__header{
             background: #00F6FF;
