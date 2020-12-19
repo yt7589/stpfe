@@ -324,6 +324,7 @@
               this.markerData.siteName = data[0].siteName
               this.markerData.totalTimes = data[0].totalTimes
               this.markerData.hphm = data[0].hphm
+              this.show = true
             }
           }
 
