@@ -75,7 +75,6 @@
           {label: '特殊车辆监管'},
           {label: '牌照异常'},
         ],
-        src:"",
         map: {
           instance: null,
           zoom: 12,
@@ -243,7 +242,7 @@
                     overflow: unset;
                     width: 340px !important;
                     left: -178px !important;
-                    
+
                 }
                 > div:nth-child(8){
                     /*display: block;*/

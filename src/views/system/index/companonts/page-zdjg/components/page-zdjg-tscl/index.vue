@@ -202,7 +202,7 @@
           this.tableData = res.data.svtvs
 
           res.data.ksvsss.forEach((item)=>{
-            this.pBarXData.push(item.name)
+            this.pBarXData.push(item.siteName)
             this.pBarSData.push(item.count)
           })
 

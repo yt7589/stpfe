@@ -5,25 +5,25 @@
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
                     <div class="search-form" >
-                        <el-input placeholder="地区名称" class="search-input"></el-input>
-                        <button class="search-button"><span>搜索</span></button>
+                        <el-input v-model="frm.areaName" placeholder="地区名称" class="search-input"></el-input>
+                        <button class="search-button" @click="getAreaListNext"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
                     </div>
                     <div>
                         <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
                             <el-table class="custom-table" :data="tableData" :row-style="{height:'0.037rem'}">
-                                <el-table-column align="center" prop="area_name" label="地区名称" minWidth="150"></el-table-column>
+                                <el-table-column align="center" prop="areaName" label="地区名称" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
-                                        <el-button type="text" size="mini">修改</el-button>
-                                        <el-button type="text" size="mini">删除</el-button>
+                                        <el-button type="text" size="mini" @click="editArea(scope.row)">修改</el-button>
+                                        <el-button type="text" size="mini" @click="handleDel(scope.row)">删除</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
                         </el-main>
                         <div  class="button-page-group" v-show="this.tableData.length >= 10">
-                            <el-button class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
-                            <el-button class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
+                            <el-button @click="getAreaListPrev()" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
+                            <el-button @click="getAreaListNext()" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
                     </div>
                 </el-col>
@@ -84,28 +84,59 @@
         </div>
 
         <el-dialog
+                :close-on-click-modal="false"
                 title="添加地区"
                 :visible.sync="dialogVisible"
-                width="366px"
-                height = "200px"
+                class="qygj-add-area"
                 >
-            <el-form ref="dialogForm" :model="dialogData" label-width="56px">
+            <el-form ref="dialogForm" :inline="true" :model="dialogData" label-width="70">
                 <el-form-item label="地区名称">
-                    <el-input v-model="dialogData.area"name="area" width="266" />
+                    <el-select
+                            v-model="dialogData.area"
+                            multiple
+                            filterable
+                            remote
+                            reserve-keyword
+                            placeholder=""
+                            :remote-method="remoteMethod"
+                            :loading="loading">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <!--<el-input v-model="dialogData.area"name="area" width="266" />-->
+                </el-form-item>
+                <el-form-item>
+                    <button class="search-button" @click="remoteMethod"><span>搜索</span></button>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="saveAddArea">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                class="confirm"
+                title="提示"
+                :visible.sync="dialogVisibleConfirm"
+
+        >
+            <div>确定要删除吗？</div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleConfirm = false">取 消</el-button>
+                <el-button type="primary" @click="delArea">确 定</el-button>
             </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
-  const EXAMPLE_URL = "http://api.map.baidu.com/library/MarkerClusterer/1.2/examples/"
   import mapStyle from '@/assets/baiduMapStyle'
     import HeaderCrumb from '../common/header-crumb'
+  import API from '@/api'
   export default {
     name: 'page-zdjg-qyjg',
     props:{
@@ -129,41 +160,11 @@
     data(){
       return {
         loading:false,
-        tableData:[
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          },
-          {
-            area_name:"海淀区上地8街12号"
-          }
-        ],
+        tableData:[],
+        frm:{
+          direction:0,
+          areaName:'',
+        },
         map: {
           instance: null,
           zoom: 12,
@@ -191,8 +192,9 @@
         show: true,
         dialogVisible:false,
         dialogData:{
-          area:"",
+          area:[],
         },
+        delAreaId:0,
         dtData:[
           {
             area:"海淀区12号",
@@ -211,7 +213,12 @@
             num:"累计出现11次",
           }
         ],
+        options:[],
+        dialogVisibleConfirm:false,
       }
+    },
+    mounted(){
+      this.getAreaList()
     },
     methods:{
       onMapReady ({BMap, map}) {
@@ -237,7 +244,73 @@
         this.show = true
       },
       addArea(){
+        this.dialogData.area = []
         this.dialogVisible = true
+      },
+      saveAddArea(){
+        if (this.dialogData.area.length === 0){
+          this.$message.error('请选择地区');
+          return;
+        }
+        API.AddKsAsAreas({areas:this.dialogData.area}).then((res)=>{
+          this.getAreaList()
+          this.$message.success('操作成功');
+          this.dialogVisible = false
+        })
+      },
+      editArea(val){
+        this.remoteMethod(val.areaName)
+        this.dialogData.area = [val.areaId]
+        this.dialogVisible = true
+      },
+      handleDel(val){
+        this.delAreaId = val.areaId
+        this.dialogVisibleConfirm = true
+      },
+      delArea(){
+        if(this.delAreaId===0){
+          this.$message.error('请选择地区');
+          return;
+        }
+        API.DelKsAsAreas({areaId:this.delAreaId}).then((res)=>{
+          this.getAreaList()
+          this.dialogVisibleConfirm = false
+          this.delAreaId = 0
+          this.$message.success('操作成功');
+        })
+      },
+      getAreaList(){
+        this.loading = true
+        API.GetKsAsQueryKeyAreas(this.frm).then((res) => {
+            this.tableData = res.data.recs
+            this.loading = false
+        })
+      },
+      getAreaListPrev(){
+        this.frm.direction = 'prev'
+        this.getAreaList()
+      },
+      getAreaListNext(){
+        this.frm.direction = 'next'
+        this.getAreaList()
+      },
+
+      remoteMethod(query) {
+        let frm = {
+          direction:0,
+          areaName:query,
+        }
+        API.GetKsAsQueryKeyAreas(this.frm).then((res) => {
+          res.data.recs.forEach((item)=>{
+            let tmp = {
+              value:'',
+              label:"",
+            }
+            tmp.value = item.areaId
+            tmp.label = item.areaName
+            this.options.push(tmp)
+          })
+        })
       }
 
 
@@ -256,6 +329,9 @@
             height: 100%
         }
 
+        .qyjg-add-area{
+
+        }
     }
     .qy-row{
         height:85%;
@@ -359,6 +435,7 @@
             background: #001537;
             border-radius: 4px;
             border: 1px solid #0073FF;
+            width: 446px;
         }
         .el-dialog__title {
             width: 108px;
@@ -378,11 +455,13 @@
 
             overflow: auto;
             margin: 0;
+
         }
         .el-dialog__body{
             .el-input__inner {
                 background-color: rgba(4, 95, 224, 0.5) !important;
                 border-color: rgba(4, 95, 224, 0.5) !important;
+                color: #ffffff;
             }
         }
         .el-dialog__footer{
@@ -395,6 +474,29 @@
         }
         .el-main {
             padding: 16px !important;
+        }
+        .confirm {
+            .el-dialog{
+                width: 256px;
+
+            }
+            .el-dialog__header{
+                padding: 0;
+                height: 56px;
+            }
+            .el-dialog__body{
+                text-align: center;
+                color: #ffffff;
+                font-size: 14px;
+            }
+            .el-button{
+
+            }
+            .el-button--primary{
+                background: rgba(4, 95, 224, 1);
+                border-color: rgba(4, 95, 224, 1);
+            }
+
         }
     }
 
