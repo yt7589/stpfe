@@ -65,7 +65,7 @@
                 </el-col>
                 <el-col  class="col-3">
                     <el-row class="col-common col-3-1">
-                        <constitute-line ref="line"></constitute-line>
+                        <constitute-line ref="line" :x-data="LxData" :line-data="LineData" :line-data2="Line2Data" ></constitute-line>
                     </el-row>
                     <el-row class="col-common col-3-2">
                         <point-bar :x-data="pBarXData" :series-data="pBarSData"></point-bar>
@@ -130,6 +130,11 @@
         currentEmphasisVehicleNum:0,
         alarmNum:0,
         onlineDevice:0,
+
+        //本日重点监控车辆小时分布图
+        LxData:[],
+        LineData:{},
+        Line2Data:{},
 
         //本日重点监控车辆点位分布图
         pBarXData:[],
@@ -204,6 +209,24 @@
           res.data.ksvtvrps.forEach((item)=>{
             this.images2.push(item.imageUrl)
           })
+
+          let line1 = res.data.ksvtitfs[0]
+          let line2 = res.data.ksvtitfs[1]
+          let line1Name = line1.vtName
+          let line2Name = line2.vtName
+          this.LineData.name = line1Name
+          this.LineData.data = []
+          this.Line2Data.name = line2Name
+          this.Line2Data.data = []
+          line1.titfs.forEach((item)=>{
+            this.LineData.data.push(item.count)
+            this.LxData.push(item.name)
+          })
+          line2.titfs.forEach((item)=>{
+            this.Line2Data.data.push(item.count)
+          })
+
+
         })
       }
 

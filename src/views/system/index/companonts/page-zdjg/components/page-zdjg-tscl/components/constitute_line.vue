@@ -32,7 +32,31 @@
       height: {
         type: String,
         default: '100%'
-      }
+      },
+      xData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
+      lineData:{
+        type: Object,
+        default:()=>{
+          return {
+            name:'',
+            data:[],
+          };
+        }
+      },
+      lineData2:{
+        type: Object,
+        default:()=>{
+          return {
+            name:'',
+            data:[],
+          };
+        }
+      },
     },
     data(){
       return {
@@ -42,12 +66,27 @@
     mounted(){
       this.initChart()
     },
+    watch: {
+      xData: {
+        deep: true,
+        handler(val) {
+          this.setOptions(this.xData,this.lineData,this.lineData2)
+        }
+      }
+    },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
+    },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions()
+        this.setOptions(this.xData,this.lineData,this.lineData2)
       },
-      setOptions(){
+      setOptions(xData,lineData,lineData2){
         this.chart.setOption({
           tooltip: {
             trigger: 'axis',
@@ -104,7 +143,7 @@
                 color: '#376487'
               }
             },
-            data:xAxisData
+            data:xData
 
           }],
           yAxis: [{
@@ -140,7 +179,7 @@
           }],
           series: [
             {
-              name: '重点车',
+              name: lineData.name,
               type: 'line',
               symbol: 'circle',
               symbolSize: 2,
@@ -175,10 +214,10 @@
                 }
               },
 
-              data:lineData ,
+              data:lineData.data ,
             },
             {
-              name: '大货车',
+              name: lineData2.name,
               type: 'line',
               symbol: 'circle',
               symbolSize: 2,
@@ -213,7 +252,7 @@
                 }
               },
 
-              data:lineData2 ,
+              data:lineData2.data ,
             },
 
 

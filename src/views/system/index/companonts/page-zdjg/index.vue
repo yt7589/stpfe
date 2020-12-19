@@ -16,15 +16,15 @@
                 <bm-info-window class="bm-info-window-home" :position="it.markerPoint" :show="it.show" @close="infoWindowClose(idx)" @open="infoWindowOpen(idx)">
                     <div class="bm-info-content-home">
                         <div class="bm-w-image">
-                            <el-image class="bm-w-img"  :src="src"></el-image>
+                            <el-image class="bm-w-img"  :src="it.imageUrl"></el-image>
                         </div>
                         <div class="bm-w-content">
-                           <div class="bm-w-content-title">驾驶员未系安全带</div>
+                           <div class="bm-w-content-title">{{it.violationTypeName}}</div>
                             <div>
-                                <div>点位名称：xxxx</div>
-                                <div>车牌号：xxxx</div>
-                                <div>车辆品牌：xxxx</div>
-                                <div>发送时：xxxx</div>
+                                <div>点位名称：{{it.siteName}}</div>
+                                <div>车牌号：{{it.hphm}}</div>
+                                <div>车辆品牌：{{it.clpp}}</div>
+                                <div>发送时：{{it.occurTime}}</div>
                             </div>
                         </div>
 
@@ -75,6 +75,7 @@
           {label: '特殊车辆监管'},
           {label: '牌照异常'},
         ],
+        src:"",
         map: {
           instance: null,
           zoom: 12,
@@ -97,6 +98,9 @@
             imageUrl:'',
             hphm:'',
             siteName:'',
+            violationTypeName:'',
+            clpp:'',
+            occurTime:'',
           },
         ],
 
@@ -122,6 +126,7 @@
     },
     mounted(){
       this.curPage = this.pageOptions[0]
+      this.getTsclData()
     },
     methods: {
       onMapReady ({BMap, map}) {
@@ -158,6 +163,20 @@
       },
       getTsclData(){
         API.GetSpecialVehicleList().then((res) => {
+          let ltvi = res.data.ltvi
+
+          this.mps[0].markerPoint.lat = ltvi.lat
+          this.mps[0].markerPoint.lng = ltvi.lng
+          this.map.center.lat = ltvi.lat
+          this.map.center.lng = ltvi.lng
+          this.mps[0].show = true
+          this.mps[0].clpp = ltvi.clpp
+          this.mps[0].imageUrl = ltvi.imageUrl
+          this.mps[0].clpp = ltvi.clpp
+          this.mps[0].violationTypeName = ltvi.violationTypeName
+          this.mps[0].hphm = ltvi.hphm
+          this.mps[0].siteName = ltvi.siteName
+          this.mps[0].occurTime = ltvi.occurTime
 
           // res.data.emphasisVehicleViolationList.forEach((item,idx)=>{
           //   let show = false
@@ -224,6 +243,7 @@
                     overflow: unset;
                     width: 340px !important;
                     left: -178px !important;
+                    
                 }
                 > div:nth-child(8){
                     /*display: block;*/
