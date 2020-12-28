@@ -109,9 +109,9 @@
                     </el-select>
                     <!--<el-input v-model="dialogData.area"name="area" width="266" />-->
                 </el-form-item>
-                <el-form-item>
-                    <button class="search-button" @click="remoteMethod"><span>搜索</span></button>
-                </el-form-item>
+                <!--<el-form-item>-->
+                    <!--<button class="search-button" @click="remoteMethod"><span>搜索</span></button>-->
+                <!--</el-form-item>-->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -210,6 +210,7 @@
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
+
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
