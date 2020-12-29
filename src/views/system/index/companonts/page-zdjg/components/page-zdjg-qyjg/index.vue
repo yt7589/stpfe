@@ -33,15 +33,17 @@
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :icon=bmMarkerStyle  :position="markerPoint" :dragging="true" @click="infoWindowOpen">
-                                <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
-                                    <div class="bm-info-content">
-                                        <p>{{markerData.siteName}}</p>
-                                        <p>{{markerData.hphm}}累计出现{{markerData.totalTimes}}次</p>
-                                    </div>
+                            <div v-for="(item,index) in markerPoints" :key="index">
+                                <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
+                                    <bm-info-window  :show="item.show" @close="infoWindowClose(index)">
+                                        <div class="bm-info-content">
+                                            <p>{{item.siteName}}</p>
+                                            <p>{{item.hphm}}累计出现{{item.totalTimes}}次</p>
+                                        </div>
 
-                                </bm-info-window>
-                            </bm-marker>
+                                    </bm-info-window>
+                                </bm-marker>
+                            </div>
                         </baidu-map>
                     </div>
                 </el-col >
@@ -173,15 +175,9 @@
             lat: 39.915
           },
         },
-        markerPoint: {
-          lng: 116.404,
-          lat: 39.915
-        },
-        markerData:{
-          totalTimes:"",
-          siteName:"",
-          hphm:'',
-        },
+        markerPoints:[
+
+        ],
         bmMarkerStyle:{
           url: require('../../image/mark_point1.png'),
           size: {
@@ -190,7 +186,6 @@
           },
         },
         showPaging:false,
-        show: true,
         dialogVisible:false,
         dialogData:{
           area:[],
@@ -203,9 +198,12 @@
     },
     mounted(){
       this.getAreaList()
-      this.handdleMsg()
+      this.handleMsg()
     },
-
+    beforeDestroy() {
+      //this.sendUnsubscribe('ksAsSfvs',1)
+      //this.sendUnsubscribe('ksAsLsvs',1)
+    },
     methods:{
       onMapReady ({BMap, map}) {
         this.map.instance = map
@@ -224,11 +222,11 @@
         this.map.center.lng = lng
         this.map.zoom = event.target.getZoom()
       },
-      infoWindowClose () {
-        this.show = false
+      infoWindowClose (key) {
+        this.markerPoints[key].show = false
       },
-      infoWindowOpen () {
-        this.show = true
+      infoWindowOpen (key) {
+        this.markerPoints[key].show = true
       },
       addArea(){
         this.dialogData.area = []
@@ -287,7 +285,7 @@
           direction:0,
           areaName:query,
         }
-        API.GetKsAsQueryKeyAreas(this.frm).then((res) => {
+        API.GetKsAsQueryKeyAreas(frm).then((res) => {
           res.data.recs.forEach((item)=>{
             let tmp = {
               value:'',
@@ -300,14 +298,12 @@
         })
       },
 
-      handdleMsg() {
+      handleMsg() {
         let that = this;
 
         //监听消息
         this.sendSubscribeMsg('ksAsSfvs',1)
-        //this.sendUnsubscribe('ksAsSfvs',1)
         this.sendSubscribeMsg('ksAsLsvs',1)
-        //this.sendUnsubscribe('ksAsLsvs',1)
 
         that.$globalws.ws.onmessage =  (res)=> {
           let data = JSON.parse(res.data)
@@ -319,13 +315,8 @@
               //中间地图信息
               this.map.center.lat = data[0].lat
               this.map.center.lng = data[0].lng
-
-              this.markerPoint.lat = data[0].lat
-              this.markerPoint.lng = data[0].lng
-              this.markerData.siteName = data[0].siteName
-              this.markerData.totalTimes = data[0].totalTimes
-              this.markerData.hphm = data[0].hphm
-              this.show = true
+              this.markerPoints = data
+              this.markerPoints[0].show = true
             }
           }
 

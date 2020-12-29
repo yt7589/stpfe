@@ -34,4 +34,38 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     })
   },
 
+  //路段监控：数据列表
+  QueryKsRsSupervision(params){
+    return request({
+      url: '/ks/rss/queryKsRsSupervision?p=pc&v=0.0.1',
+      method: 'GET',
+      params,
+    })
+  },
+  //路径监控：搜索
+  QueryKeyRsSupervision(params){
+    return request({
+      url: '/ks/rss/queryKeyRsSupervision?p=pc&v=0.0.1',
+      method: 'GET',
+      params,
+    })
+  },
+
+  //路段监控：新增路段
+  AddRsToRsSupervision(data){
+    return request({
+      url: '/ks/rss/addRsToRsSupervision?p=pc&v=0.0.1',
+      method: 'POST',
+      data,
+    })
+  },
+
+  //路段监控：删除
+  DeleteKsRsSupervision(data){
+    return request({
+      url: '/ks/rss/deleteKsRsSupervision?p=pc&v=0.0.1',
+      method: 'POST',
+      data,
+    })
+  },
 })
