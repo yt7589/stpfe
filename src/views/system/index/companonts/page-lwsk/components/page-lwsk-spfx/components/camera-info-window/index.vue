@@ -1,45 +1,68 @@
 <template>
   <div class="camera-info-window">
-    <div class="window-wrapper" flex="dir:top">
-      <div class="header">
+    <div class="main-content" v-show="!cameraPhotoDialog.visible">
+      <div class="window-wrapper">
+        <div class="header">
         <span>
           <div>该点位共有： </div>
           {{data.cameraNum}}个摄像头、{{data.snapMachineNum}}个抓拍机
         </span>
-        <i class="el-icon-close icon-close" @click="close"></i>
+          <i class="el-icon-close icon-close" @click="close"></i>
+        </div>
+        <el-table :data="data.cameraList" v-if="data.cameraList" class="custom-table camera-table"
+                  @row-click="onRowClick">
+          <el-table-column prop="regionName" align="center" label="设备位置" minWidth="80"></el-table-column>
+          <el-table-column prop="to" align="center" label="朝向" minWidth="40"></el-table-column>
+          <el-table-column prop="cameraTypeName" align="center" label="类别" minWidth="80"></el-table-column>
+          <el-table-column prop="status" align="center" label="状态" minWidth="40">
+            <template slot-scope="scope">
+              <div :style="scope.row.status>0?{}:{color:'red'}">{{scope.row.status > 0 ? "正常" : "异常"}}</div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--<div class="button-box">-->
+        <!--<el-button type="text" icon="el-icon-arrow-up">上一页</el-button>-->
+        <!--<el-button type="text" icon="el-icon-arrow-down">下一页</el-button>-->
+        <!--</div>-->
       </div>
-      <el-table :data="data.cameraList" v-if="data.cameraList" class="custom-table camera-table" flex-box="1" :row-click="onRowClick">
-        <el-table-column prop="regionName" align="center" label="设备位置" minWidth="80"></el-table-column>
-        <el-table-column prop="to" align="center" label="朝向" minWidth="40"></el-table-column>
-        <el-table-column prop="cameraTypeName" align="center" label="类别" minWidth="80"></el-table-column>
-        <el-table-column prop="status" align="center" label="状态" minWidth="40">
-          <template slot-scope="scope"><div :style="scope.row.status>0?{}:{color:'red'}">{{scope.row.status>0?"正常":"异常"}}</div></template>
-        </el-table-column>
-      </el-table>
-      <!--<div class="button-box">-->
-      <!--<el-button type="text" icon="el-icon-arrow-up">上一页</el-button>-->
-      <!--<el-button type="text" icon="el-icon-arrow-down">下一页</el-button>-->
-      <!--</div>-->
     </div>
+
+    <div class="small-image-box">
+
+    </div>
+
+    <el-dialog :visible.sync="cameraPhotoDialog.visible" class="camera-photo-dialog" :modal="false" style="overflow: hidden;">
+      <camera-photo-dialog v-if="cameraPhotoDialog.visible" :data="cameraPhotoDialog.data"></camera-photo-dialog>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import CameraPhotoDialog from '../camera-photo-dialog'
   export default {
     props: ['data'],
-    components: {},
+    components: {CameraPhotoDialog},
     data(){
-      return {}
+      return {
+        visible: true,
+        cameraPhotoDialog: {
+          visible: false,
+          data: {}
+        }
+      }
     },
     mounted(){
     },
     methods: {
       onRowClick(row, column, event){
-        console.log(row,column,event)
+        this.cameraPhotoDialog.data = row
+        this.cameraPhotoDialog.visible = true;
+        this.visible = false
       },
       close(){
         this.$emit("close")
-      }
+      },
+
     }
   }
 </script>
@@ -48,11 +71,17 @@
   .camera-info-window {
     width: 400px;
     height: 618px;
-    background: #001537;
-    border-radius: 4px;
-    border: 1px solid #0073FF;
 
-    position: relative;
+    .main-content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+
+      background: #001537;
+      border-radius: 4px;
+      border: 1px solid #0073FF;
+    }
+
     .window-wrapper {
       position: absolute;
       top: 22px;
@@ -73,6 +102,7 @@
     }
 
     .camera-table {
+      height: calc(100% - 60px);
       margin-top: 10px;
       background: transparent !important;
 
@@ -93,6 +123,15 @@
 
         padding-left: 10px;
         padding-right: 10px;
+      }
+    }
+
+    .camera-photo-dialog {
+      .el-dialog {
+        background: transparent;
+      }
+      .el-dialog__header {
+        display: none;
       }
     }
   }

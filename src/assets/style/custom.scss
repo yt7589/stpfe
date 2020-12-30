@@ -11,6 +11,10 @@
     font-size: 20px;
   }
 
+  input:-moz-placeholder {
+    color: #a9a9a9;
+  }
+
   .el-input__prefix {
     padding: 20px 18px;
     img {
