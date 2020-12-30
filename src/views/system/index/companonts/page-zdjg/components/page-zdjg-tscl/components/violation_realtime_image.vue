@@ -5,9 +5,9 @@
             <div class="content">本日重点监控车辆违法实时图片</div>
         </div>
         <div class="images">
-            <el-image class="image" :src="src"></el-image>
-            <el-image  class="image" :src="src"></el-image>
+            <el-image v-for="(item,index) in images" :key="index" class="image" :src="item"></el-image>
         </div>
+
 
     </div>
 </template>
@@ -15,9 +15,17 @@
 <script>
   export default {
     name: 'monitor_realtime_image',
+    props:{
+      images:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      }
+    },
     data(){
       return {
-        src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606650551241&di=8378d72dc6414bfa9a243c2e75db511a&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Fauto%2Fpics%2Fhv1%2F246%2F190%2F1582%2F102918246.jpg'
+
       }
     }
   }

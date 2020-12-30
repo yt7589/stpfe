@@ -51,6 +51,10 @@ Vue.use(BaiduMap, {
 // 核心插件
 Vue.use(d2Admin)
 
+//ws
+import ws from './api/ws'
+Vue.prototype.$globalws = ws
+
 new Vue({
   router,
   store,
