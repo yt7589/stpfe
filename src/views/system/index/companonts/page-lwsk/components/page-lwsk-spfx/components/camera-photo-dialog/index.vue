@@ -41,6 +41,7 @@
       return {}
     },
     mounted(){
+      console.log('this.data:' + JSON.stringify(this.data) + '!!!!!!!!!!!!!!!!!!!')
       this.initMouseEvent()
     },
     methods: {
