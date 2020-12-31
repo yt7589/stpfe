@@ -55,7 +55,7 @@
     },
     methods: {
       onRowClick(row, column, event){
-        console.log('cameraId=' + row.diId + '!!!!!!!!!!!!')
+        console.log('cameraId=' + row.diId + '!!!!!!!!!!!! store:' + JSON.stringify(this.$store.state) + '!')
         this.cameraPhotoDialog.data = row
         this.cameraPhotoDialog.visible = true;
         this.visible = false
