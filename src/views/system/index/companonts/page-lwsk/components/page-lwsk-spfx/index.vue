@@ -97,7 +97,9 @@
       }
     },
     mounted(){
+      console.log('############# in lwsk=>spfx mounted 1 ###################')
       this.getSiteList()
+      console.log('############# in lwsk=>spfx mounted 2 ###################')
     },
     methods: {
       onMapReady ({BMap, map}) {
@@ -149,6 +151,7 @@
         })
       },
       getSiteList(){
+        console.log('########### lwsk=>spfx getSiteList 1 ##################')
         API.GetCameraSiteList().then(res => {
           //this.siteList = res.data.siteInfoList
           //this.cameraInfo = res.data.cameraInfo
@@ -161,6 +164,7 @@
             item.lat = latitude + i * 0.01
           })
         })
+        console.log('########### lwsk=>spfx getSiteList 2 ##################')
       },
 
     }
