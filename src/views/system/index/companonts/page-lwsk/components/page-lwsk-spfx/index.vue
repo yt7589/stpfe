@@ -155,14 +155,7 @@
         API.GetCameraSiteList().then(res => {
           this.siteList = res.data.recs
           this.cameraInfo = res.data.recs
-          console.log(res.data)
-
-          let longitude = 116.490094
-          let latitude = 39.857702
-          this.siteList.forEach((item, i) => {
-            item.lng = lng
-            item.lat = lat
-          })
+          console.log(res.data.recs)
         })
         console.log('########### lwsk=>spfx getSiteList 2 ##################')
       },
