@@ -90,7 +90,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   },
   GetCameraList(params){
     return request({
-      url: '/camera/site/device',
+      url: '/tn/va/querySdInfo?p=pc&v=0.0.1',
       method: 'get',
       params
     })
