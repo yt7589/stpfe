@@ -55,10 +55,10 @@
     },
     methods: {
       onRowClick(row, column, event){
-        console.log('cameraId=' + row.diId + '!!!!!!!!!!!! store:' + JSON.stringify(this.$store.state) + '!')
-        this.$store.commit("setCameraId", 101)
+        console.log('cameraId=' + row.diId + '!!!!!!!!!!!! store:' + JSON.stringify(this.$store.stp.state) + '!')
+        this.$store.stp.video_analysis.commit("setCameraId", 101)
         console.log('??????????????????????????? OK ??????????????????????????')
-        console.log('##### cameraId=' + this.$store.stp.video_analysis.state.cameraId + '!!!!!!!!!!!!!!!!!!!!!!!!')
+        console.log('##### cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!!!!!!')
         this.cameraPhotoDialog.data = row
         this.cameraPhotoDialog.visible = true;
         this.visible = false
