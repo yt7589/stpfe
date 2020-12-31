@@ -5,18 +5,18 @@
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
                     <div  class="search-form" >
-                        <el-input placeholder="请输入车辆牌号" class="search-input"></el-input>
-                        <button class="search-button"><span>搜索</span></button>
-                        <button class="create-button" @click="addArea"><span>添加</span></button>
+                        <el-input v-model="frm.hphm" placeholder="请输入车辆牌号" class="search-input"></el-input>
+                        <button class="search-button" @click="getList"><span>搜索</span></button>
+                        <button class="create-button" @click="handleAdd"><span>添加</span></button>
                     </div>
                     <div>
                         <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
                             <el-table class="custom-table" :data="tableData">
-                                <el-table-column align="center" prop="area_name" label="车辆牌号" minWidth="150"></el-table-column>
+                                <el-table-column align="center" prop="hphm" label="车辆牌号" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
-                                        <el-button type="text" size="mini">修改</el-button>
-                                        <el-button type="text" size="mini">删除</el-button>
+                                        <el-button type="text" size="mini"  @click="handleEdit(scope.row)">修改</el-button>
+                                        <el-button type="text" size="mini" @click="handleDel(scope.row)">删除</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -33,15 +33,17 @@
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :icon="bmMarkerStyle" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
-                                <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
-                                    <div class="bm-info-content">
-                                        <p>{{markerData.desc}}</p>
-                                        <p>{{markerData.card}}</p>
-                                    </div>
+                            <div v-for="(item,index) in markerPoints" :key="index">
+                                <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
+                                    <bm-info-window  :show="item.show" @close="infoWindowClose(index)">
+                                        <div class="bm-info-content">
+                                            <p>{{item.siteName}}</p>
+                                            <p>{{item.hphm}}累计出现{{item.totalTimes}}次</p>
+                                        </div>
 
-                                </bm-info-window>
-                            </bm-marker>
+                                    </bm-info-window>
+                                </bm-marker>
+                            </div>
                         </baidu-map>
                     </div>
                 </el-col >
@@ -58,12 +60,12 @@
                             <el-col class="dt-row" :span="24">
                                 <el-card class="card">
                                     <div  class="card-content">
-                                        <div>{{item.area}}</div>
-                                        <div>{{item.time}}</div>
+                                        <div>{{item.siteName}}</div>
+                                        <div>{{item.occurTime}}</div>
                                     </div>
                                     <div class="card-content">
-                                        <div> <span style="color: #00F6FF">{{item.card}}</span></div>
-                                        <div>{{item.num}}</div>
+                                        <div> <span style="color: #00F6FF">{{item.hphm}}</span></div>
+                                        <div>累计出现{{item.totalTimes}}次</div>
                                     </div>
                                 </el-card>
                             </el-col>
@@ -79,16 +81,16 @@
                         </el-row>
                     </div>
                     <div class="dt-list">
-                        <el-row  v-for="(item,key) in dtData" :key="key">
+                        <el-row  v-for="(item,key) in alarmData" :key="key">
                             <el-col class="dt-row" :span="24">
                                 <el-card class="card">
                                     <div  class="card-content">
-                                        <div>{{item.area}}</div>
-                                        <div>{{item.time}}</div>
+                                        <div>{{item.siteName}}</div>
+                                        <div>{{item.occurTime}}</div>
                                     </div>
                                     <div class="card-content">
-                                        <div> <span style="color: #00F6FF">{{item.card}}</span></div>
-                                        <div>{{item.num}}</div>
+                                        <div> <span style="color: #00F6FF">{{item.hphm}}</span></div>
+                                        <div>累计出现{{item.totalTimes}}次</div>
                                     </div>
                                 </el-card>
                             </el-col>
@@ -100,19 +102,32 @@
         </div>
 
         <el-dialog
+                :close-on-click-modal="false"
                 title="添加布控车辆"
                 :visible.sync="dialogVisible"
-                width="366px"
-                height = "200px"
+                class="clbk-add-cl"
+
                 >
-            <el-form ref="dialogForm" :model="dialogData" label-width="56px">
+            <el-form ref="dialogForm" :model="dialogData" :inline="true" label-width="70">
                 <el-form-item label="车辆牌号">
-                    <el-input v-model="dialogData.area"name="area" width="266" />
+                    <el-input v-model="dialogData.hphm" />
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary"@click="save">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                class="confirm"
+                title="提示"
+                :visible.sync="dialogVisibleConfirm"
+
+        >
+            <div>确定要删除吗？</div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleConfirm = false">取 消</el-button>
+                <el-button type="primary" @click="del">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -121,6 +136,7 @@
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
   import HeaderCrumb from '../common/header-crumb'
+  import API from '@/api'
   export default {
     name: 'page-zdjg-clbk',
     props:{
@@ -142,9 +158,7 @@
       return {
         loading:false,
         tableData:[
-          {
-            area_name:"海淀区上地8街12号"
-          }
+
         ],
         map: {
           instance: null,
@@ -154,14 +168,7 @@
             lat: 39.915
           },
         },
-        markerPoint: {
-          lng: 116.404,
-          lat: 39.915
-        },
-        markerData:{
-          desc:"海淀区上地8街12号",
-          card:"京A12345累计"
-        },
+
         bmMarkerStyle:{
           url: require('../../image/mark_point2.png'),
           size: {
@@ -169,25 +176,28 @@
             height: 18
           },
         },
-        show: true,
+        markerPoints:[
+
+        ],
         dialogVisible:false,
         dialogData:{
-          area:"",
+          hphm:"",
         },
-        dtData:[
-          {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          },
-        ],
+        dtData:[],
+        alarmData:[],
+        frm:{
+          direction:0,
+          hphm:'',
+        },
+        delId:0,
+        dialogVisibleConfirm:false,
       }
+    },
+    mounted(){
+      this.getList()
+      this.getMapMarks()
+      this.getDtList()
+      this.getAlarmList()
     },
     methods:{
       onMapReady ({BMap, map}) {
@@ -200,6 +210,7 @@
 
         })
       },
+
       syncCenterAndZoom (event) {
         const {lng, lat} = event.target.getCenter()
         this.map.center.lat = lat
@@ -212,11 +223,72 @@
       infoWindowOpen () {
         this.show = true
       },
-      addArea(){
+      handleAdd(){
+        this.initDialogData()
         this.dialogVisible = true
-      }
 
-
+      },
+      initDialogData(){
+        this.dialogData = {
+          hphm:'',
+        }
+      },
+      getList(){
+        this.loading = true
+        API.QueryVehicle(this.frm).then((res) => {
+          this.tableData = res.data.recs
+          this.loading = false
+        })
+      },
+      handleEdit(val){
+        this.dialogData = '';
+        this.dialogData.vcId = [val.vcId]
+        this.dialogVisible = true
+      },
+      handleDel(val){
+        this.delId = val.vcId
+        this.dialogVisibleConfirm = true
+      },
+      save(){
+        if (this.dialogData.hphm.length === 0){
+          this.$message.error('请输入车牌');
+          return;
+        }
+        API.AddVehicle({hphm:this.dialogData.hphm}).then((res)=>{
+          this.getList()
+          this.$message.success('操作成功');
+          this.dialogVisible = false
+        })
+      },
+      del(){
+        if(this.delId===0){
+          this.$message.error('请选择');
+          return;
+        }
+        API.DeleteVehicle({vcId:this.delId}).then((res)=>{
+          this.getList()
+          this.dialogVisibleConfirm = false
+          this.delId = 0
+          this.$message.success('操作成功');
+        })
+      },
+      getMapMarks(){
+        API.QueryVcSfvs({}).then((res)=>{
+          this.map.center.lat = res.data.recs[0].lat
+          this.map.center.lng = res.data.recs[0].lng
+          this.markerPoints = res.data.recs
+        })
+      },
+      getDtList(){
+        API.QueryVcLsvs().then((res)=>{
+          this.dtData = res.data.recs.slice(0,4)
+        })
+      },
+      getAlarmList(){
+        API.QueryVcLtvis().then((res)=>{
+          this.alarmData = res.data.recs.slice(0,4)
+        })
+      },
     }
   }
 </script>
@@ -281,7 +353,7 @@
     .card {
         background: rgba(4, 95, 224, 0.3);
         border: 1px solid #00F6FF;
-        height: 72px;
+        height: 50px;
         .card-content{
             display: flex;
             justify-content: space-between;
@@ -294,7 +366,7 @@
     }
 
     .dt-row {
-        margin-bottom: 4px;
+        margin-bottom: 3px;
     }
 
     .bm-info-content{
@@ -307,12 +379,13 @@
 
     }
     .dt-title {
-        padding: 16px;
+        padding: 8px 0 0 16px;
         position: relative;
     }
+
     .dt-list{
         position: relative;
-        padding: 0px 16px 16px 16px;
+        padding: 0px 16px 8px 16px;
     }
     .col-more{
         text-align: end;
@@ -331,19 +404,22 @@
 <style lang="scss">
     .page-zdjg-clbk{
         .el-card__body{
-            padding: 12px 16px 12px 16px;
+            padding: 4px 16px 4px 16px;
         }
         .el-dialog__header{
             background: #00F6FF;
             text-align: center;
             border-radius: 4px;
             border: 1px solid #0073FF;
+            padding: 0;
+            height: 56px;
         }
         .el-dialog{
 
             background: #001537;
             border-radius: 4px;
             border: 1px solid #0073FF;
+            width: 446px;
         }
         .el-dialog__title {
             width: 108px;
@@ -352,7 +428,7 @@
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             color: #001537;
-            line-height: 25px;
+            line-height: 56px;
 
         }
         .el-dialog__wrapper{
@@ -360,15 +436,22 @@
             top: 7%;
             right: 0;
             bottom: 0;
-            left: -22%;
+
             overflow: auto;
             margin: 0;
+
         }
         .el-dialog__body{
-
+            padding: 20px 0 0 20px;
+            .el-input__inner {
+                background-color: rgba(4, 95, 224, 0.5) !important;
+                border-color: rgba(4, 95, 224, 0.5) !important;
+                color: #ffffff;
+                width: 286px;
+            }
         }
         .el-dialog__footer{
-
+            text-align: center;
         }
         .el-form-item__label{
             font-weight: 400;
@@ -377,6 +460,29 @@
         }
         .el-main {
             padding: 16px !important;
+        }
+        .confirm {
+            .el-dialog{
+                width: 256px;
+
+            }
+            .el-dialog__header{
+                padding: 0;
+                height: 56px;
+            }
+            .el-dialog__body{
+                text-align: center;
+                color: #ffffff;
+                font-size: 14px;
+            }
+            .el-button{
+
+            }
+            .el-button--primary{
+                background: rgba(4, 95, 224, 1);
+                border-color: rgba(4, 95, 224, 1);
+            }
+
         }
     }
 

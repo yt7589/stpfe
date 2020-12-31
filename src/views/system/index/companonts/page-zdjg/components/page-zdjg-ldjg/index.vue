@@ -297,8 +297,8 @@
         let that = this;
 
         //监听消息
-        this.sendSubscribeMsg('ksRssSfvs',1)
-        this.sendSubscribeMsg('ksRssLsvs',1)
+        this.sendSubscribeMsg('ksRssSfvs',2)
+        this.sendSubscribeMsg('ksRssLsvs',2)
 
         that.$globalws.ws.onmessage =  (res)=> {
           let data = JSON.parse(res.data)
@@ -482,14 +482,16 @@
 
         }
         .el-dialog__body{
+            padding: 20px 0 0 20px;
             .el-input__inner {
                 background-color: rgba(4, 95, 224, 0.5) !important;
                 border-color: rgba(4, 95, 224, 0.5) !important;
                 color: #ffffff;
+                width: 286px;
             }
         }
         .el-dialog__footer{
-
+            text-align: center;
         }
         .el-form-item__label{
             font-weight: 400;

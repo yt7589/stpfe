@@ -64,8 +64,59 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   DeleteKsRsSupervision(data){
     return request({
       url: '/ks/rss/deleteKsRsSupervision?p=pc&v=0.0.1',
+      method: 'DELETE',
+      data,
+    })
+  },
+
+  //车辆布控：布控车辆列表查询
+  QueryVehicle(params){
+    return request({
+      url: '/ks/vc/queryVehicle?p=pc&v=0.0.1',
+      method: 'GET',
+      params,
+    })
+  },
+  //车辆布控：	删除布控车辆
+  DeleteVehicle(data){
+    return request({
+      url: '/ks/vc/deleteVehicle?p=pc&v=0.0.1',
+      method: 'DELETE',
+      data,
+    })
+  },
+  //车辆布控：	新增布控车辆
+  AddVehicle(data){
+    return request({
+      url: '/ks/vc/addVehicle?p=pc&v=0.0.1',
       method: 'POST',
       data,
+    })
+  },
+
+  //车辆布控：	布控车辆地图点位
+  QueryVcSfvs(params){
+    return request({
+      url: '/ks/vc/queryVcSfvs?p=pc&v=0.0.1',
+      method: 'GET',
+      params,
+    })
+  },
+
+  //车辆布控:	车辆布控最新动态
+  QueryVcLsvs(){
+    return request({
+      url: '/ks/vc/queryVcLsvs?p=pc&v=0.0.1',
+      method: 'GET',
+
+    })
+  },
+
+  //车辆布控:	车辆布控最新违章报警
+  QueryVcLtvis(){
+    return request({
+      url: '/ks/vc/queryVcLtvis?p=pc&v=0.0.1',
+      method: 'GET',
     })
   },
 })
