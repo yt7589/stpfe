@@ -41,7 +41,7 @@
       return {}
     },
     mounted(){
-      console.log('this.data:' + JSON.stringify(this.data) + '!!!!!!!!!!!!!!!!!!!')
+      console.log('camera-photo-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
       this.initMouseEvent()
     },
     methods: {
