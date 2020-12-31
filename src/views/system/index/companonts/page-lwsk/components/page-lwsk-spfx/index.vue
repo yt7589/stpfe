@@ -97,9 +97,7 @@
       }
     },
     mounted(){
-      console.log('############# in lwsk=>spfx mounted 1 ###################')
       this.getSiteList()
-      console.log('############# in lwsk=>spfx mounted 2 ###################')
     },
     methods: {
       onMapReady ({BMap, map}) {
@@ -144,20 +142,21 @@
           this.map.zoom--
         }
       },
+      /**
+       * 点击点位图标响应函数
+       */
       onPointClick(point){
+        console.log('point: ' + JSON.stringify(point) + "!")
         API.GetCameraList({siteId: 1}).then(res => {
           this.cameraDialog.visible = true
           this.cameraDialog.data = res.data
         })
       },
       getSiteList(){
-        console.log('########### lwsk=>spfx getSiteList 1 ##################')
         API.GetCameraSiteList().then(res => {
           this.siteList = res.data.recs
-          this.cameraInfo = res.data.recs
-          console.log(res.data.recs)
+          //this.cameraInfo = res.data.recs
         })
-        console.log('########### lwsk=>spfx getSiteList 2 ##################')
       },
 
     }
