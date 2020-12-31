@@ -55,7 +55,7 @@
     },
     methods: {
       onRowClick(row, column, event){
-        console.log('cameraId=' + row.diId + '!!!!!!!!!!!! store:' + JSON.stringify(this.$store.stp.video_analysis.state) + '!')
+        console.log('cameraId=' + row.diId + '!!!!!!!!!!!! store:' + JSON.stringify(this.$store) + '!')
         this.$store.stp.video_analysis.commit("setCameraId", 101)
         console.log('??????????????????????????? OK ??????????????????????????')
         console.log('##### cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!!!!!!')
