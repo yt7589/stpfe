@@ -16,7 +16,7 @@
           <el-table-column prop="category" align="center" label="类别" minWidth="80"></el-table-column>
           <el-table-column prop="status" align="center" label="状态" minWidth="40">
             <template slot-scope="scope">
-              <div :style="scope.row.status>0?{}:{color:'red'}">{{scope.row.status > 0 ? "正常" : "异常"}}</div>
+              <div :style="scope.row.status=='已接入'?{}:{color:'red'}">{{scope.row.status=='已接入' ? "正常" : "异常"}}</div>
             </template>
           </el-table-column>
         </el-table>
