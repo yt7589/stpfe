@@ -41,7 +41,6 @@
       return {}
     },
     mounted(){
-      console.log('camera-photo-dialog: cameraId=' + JSON.stringify(this) + '!!!!!!!!!!!!!!!!!!!!!')
       this.initMouseEvent()
     },
     methods: {
