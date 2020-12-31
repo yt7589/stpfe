@@ -13,20 +13,20 @@
     <div class="camera-info">
       <div class="success-info info-box" @click="zoomFocus">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
-        共接入摄像头 {{cameraInfo.allCamera}} 个
+        共接入摄像头 {{cameraInfo.camera}} 个
       </div>
       <div class="success-info info-box">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
-        共接入抓拍机 {{cameraInfo.allSnapMachine}}  个
+        共接入抓拍机 {{cameraInfo.snapshot}}  个
       </div>
       <br>
       <div class="error-info info-box">
         <el-image :src="require('../../image/image-warning.png')"></el-image>
-        异常摄像头 {{cameraInfo.brokenCamera}}  个
+        异常摄像头 {{cameraInfo.abnormal_camera}}  个
       </div>
       <div class="error-info info-box">
         <el-image :src="require('../../image/image-warning.png')"></el-image>
-        异常抓拍机 {{cameraInfo.brokenSnapMachine}}  个
+        异常抓拍机 {{cameraInfo.abnormal_snapshot}}  个
       </div>
     </div>
     <camera-info-window class="camera-info-window" v-if="cameraDialog.visible"
@@ -98,6 +98,7 @@
     },
     mounted(){
       this.getSiteList()
+      this.getQueryDeviceSum()
     },
     methods: {
       onMapReady ({BMap, map}) {
@@ -152,12 +153,20 @@
           this.cameraDialog.data = res.data
         })
       },
+      /**
+       * 获取在地图上显示的点位列表信息
+       */
       getSiteList(){
         API.GetCameraSiteList().then(res => {
           this.siteList = res.data.recs
           //this.cameraInfo = res.data.recs
         })
       },
+      getQueryDeviceSum() {
+        API.GetQueryDeviceSum().then(res => {
+          this.cameraInfo = res.data
+        })
+      }
 
     }
   }

@@ -95,6 +95,13 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       params
     })
   },
+  GetQueryDeviceSum() {
+    return request({
+      url: '/tn/va/queryDevice?p=pc&v=0.0.1',
+      method: 'get',
+      //params
+    })
+  },
   GetTrafficViolationList(params){
     return request({
       url: '/traffic/violation/list',
