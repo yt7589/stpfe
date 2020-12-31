@@ -119,4 +119,11 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       method: 'GET',
     })
   },
+  //牌照异常
+  QueryAbnormalLicensePlate(){
+    return request({
+      url: '/ks/lps/queryAbnormalLicensePlate?p=pc&v=0.0.1',
+      method: 'GET',
+    })
+  },
 })

@@ -15,7 +15,7 @@
                                 <el-table-column align="center" prop="rssName" label="路段名称" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
-                                        <el-button type="text" size="mini" @click="handleEdit(scope.row)">修改</el-button>
+                                        <!--<el-button type="text" size="mini" @click="handleEdit(scope.row)">修改</el-button>-->
                                         <el-button type="text" size="mini" @click="handleDel(scope.row)">删除</el-button>
                                     </template>
                                 </el-table-column>
@@ -219,9 +219,11 @@
       },
       infoWindowClose (key) {
         this.markerPoints[key].show = false
+        this.$forceUpdate()
       },
       infoWindowOpen (key) {
         this.markerPoints[key].show = true
+        this.$forceUpdate()
       },
       handleAdd(){
         this.dialogData.rssId = []
