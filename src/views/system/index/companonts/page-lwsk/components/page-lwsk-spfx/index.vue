@@ -146,8 +146,8 @@
        * 点击点位图标响应函数
        */
       onPointClick(point){
-        console.log('point: ' + JSON.stringify(point) + "!")
-        API.GetCameraList({siteId: 1}).then(res => {
+        console.log('point.siteId: ' + point.siteId + "!")
+        API.GetCameraList({siteId: point.siteId}).then(res => {
           this.cameraDialog.visible = true
           this.cameraDialog.data = res.data
         })
