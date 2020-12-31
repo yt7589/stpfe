@@ -55,6 +55,7 @@
     },
     methods: {
       onRowClick(row, column, event){
+        console.log('cameraId=' + row.diId + '!!!!!!!!!!!!')
         this.cameraPhotoDialog.data = row
         this.cameraPhotoDialog.visible = true;
         this.visible = false
