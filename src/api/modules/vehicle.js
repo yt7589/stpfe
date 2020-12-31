@@ -84,7 +84,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   GetCameraSiteList(){
     return request({
       //url: '/camera/site',
-      url: '/tn/va/queryDeviceDeploy',
+      url: '/tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
       method: 'get',
     })
   },
