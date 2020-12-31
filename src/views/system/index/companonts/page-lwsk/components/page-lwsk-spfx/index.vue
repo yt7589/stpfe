@@ -150,8 +150,9 @@
       },
       getSiteList(){
         API.GetCameraSiteList().then(res => {
-          this.siteList = res.data.siteInfoList
-          this.cameraInfo = res.data.cameraInfo
+          //this.siteList = res.data.siteInfoList
+          //this.cameraInfo = res.data.cameraInfo
+          console.log(res.data)
 
           let longitude = 116.490094
           let latitude = 39.857702
