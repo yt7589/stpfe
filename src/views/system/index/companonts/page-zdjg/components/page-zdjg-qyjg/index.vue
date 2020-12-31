@@ -15,7 +15,7 @@
                                 <el-table-column align="center" prop="areaName" label="地区名称" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
-                                        <el-button type="text" size="mini" @click="editArea(scope.row)">修改</el-button>
+                                        <!--<el-button type="text" size="mini" @click="editArea(scope.row)">修改</el-button>-->
                                         <el-button type="text" size="mini" @click="handleDel(scope.row)">删除</el-button>
                                     </template>
                                 </el-table-column>
@@ -33,15 +33,17 @@
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :icon=bmMarkerStyle  :position="markerPoint" :dragging="true" @click="infoWindowOpen">
-                                <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
-                                    <div class="bm-info-content">
-                                        <p>{{markerData.siteName}}</p>
-                                        <p>{{markerData.hphm}}累计出现{{markerData.totalTimes}}次</p>
-                                    </div>
+                            <div v-for="(item,index) in markerPoints" :key="index">
+                                <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
+                                    <bm-info-window  :show="item.show" @close="infoWindowClose(index)">
+                                        <div class="bm-info-content">
+                                            <p>{{item.siteName}}</p>
+                                            <p>{{item.hphm}}累计出现{{item.totalTimes}}次</p>
+                                        </div>
 
-                                </bm-info-window>
-                            </bm-marker>
+                                    </bm-info-window>
+                                </bm-marker>
+                            </div>
                         </baidu-map>
                     </div>
                 </el-col >
@@ -109,9 +111,9 @@
                     </el-select>
                     <!--<el-input v-model="dialogData.area"name="area" width="266" />-->
                 </el-form-item>
-                <el-form-item>
-                    <button class="search-button" @click="remoteMethod"><span>搜索</span></button>
-                </el-form-item>
+                <!--<el-form-item>-->
+                    <!--<button class="search-button" @click="remoteMethod"><span>搜索</span></button>-->
+                <!--</el-form-item>-->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -173,15 +175,9 @@
             lat: 39.915
           },
         },
-        markerPoint: {
-          lng: 116.404,
-          lat: 39.915
-        },
-        markerData:{
-          totalTimes:"",
-          siteName:"",
-          hphm:'',
-        },
+        markerPoints:[
+
+        ],
         bmMarkerStyle:{
           url: require('../../image/mark_point1.png'),
           size: {
@@ -190,7 +186,6 @@
           },
         },
         showPaging:false,
-        show: true,
         dialogVisible:false,
         dialogData:{
           area:[],
@@ -203,13 +198,17 @@
     },
     mounted(){
       this.getAreaList()
-      this.handdleMsg()
+      this.handleMsg()
     },
-
+    beforeDestroy() {
+      //this.sendUnsubscribe('ksAsSfvs',1)
+      //this.sendUnsubscribe('ksAsLsvs',1)
+    },
     methods:{
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
+
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
@@ -223,11 +222,13 @@
         this.map.center.lng = lng
         this.map.zoom = event.target.getZoom()
       },
-      infoWindowClose () {
-        this.show = false
+      infoWindowClose (key) {
+        this.markerPoints[key].show = false
+        this.$forceUpdate()
       },
-      infoWindowOpen () {
-        this.show = true
+      infoWindowOpen (key) {
+        this.markerPoints[key].show = true
+        this.$forceUpdate()
       },
       addArea(){
         this.dialogData.area = []
@@ -286,7 +287,7 @@
           direction:0,
           areaName:query,
         }
-        API.GetKsAsQueryKeyAreas(this.frm).then((res) => {
+        API.GetKsAsQueryKeyAreas(frm).then((res) => {
           res.data.recs.forEach((item)=>{
             let tmp = {
               value:'',
@@ -299,14 +300,12 @@
         })
       },
 
-      handdleMsg() {
+      handleMsg() {
         let that = this;
 
         //监听消息
         this.sendSubscribeMsg('ksAsSfvs',1)
-        //this.sendUnsubscribe('ksAsSfvs',1)
         this.sendSubscribeMsg('ksAsLsvs',1)
-        //this.sendUnsubscribe('ksAsLsvs',1)
 
         that.$globalws.ws.onmessage =  (res)=> {
           let data = JSON.parse(res.data)
@@ -318,12 +317,8 @@
               //中间地图信息
               this.map.center.lat = data[0].lat
               this.map.center.lng = data[0].lng
-
-              this.markerPoint.lat = data[0].lat
-              this.markerPoint.lng = data[0].lng
-              this.markerData.siteName = data[0].siteName
-              this.markerData.totalTimes = data[0].totalTimes
-              this.markerData.hphm = data[0].hphm
+              this.markerPoints = data
+              this.markerPoints[0].show = true
             }
           }
 
@@ -493,14 +488,16 @@
 
         }
         .el-dialog__body{
+            padding: 20px 0 0 20px;
             .el-input__inner {
                 background-color: rgba(4, 95, 224, 0.5) !important;
                 border-color: rgba(4, 95, 224, 0.5) !important;
                 color: #ffffff;
+                width: 286px;
             }
         }
         .el-dialog__footer{
-
+            text-align: center;
         }
         .el-form-item__label{
             font-weight: 400;
