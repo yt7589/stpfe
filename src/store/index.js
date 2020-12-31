@@ -8,7 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    d2admin,
-    stp
+    d2admin: d2admin,
+    stp: stp
   }
 })
