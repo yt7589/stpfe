@@ -1,6 +1,6 @@
 <template>
     <div class="page-zdjg">
-        <div class="menu-bg"></div>
+        <div class="menu-bg"  :class="[curPage.label=='特殊车辆监管'?'menu-hight':'']"></div>
         <baidu-map
                 v-if="curPage.label=='特殊车辆监管'"
                 ref="map-tscl"
@@ -217,11 +217,14 @@
         height: 100%;
         .menu-bg {
             width: 100%;
-            height: 163px;
+
             position: absolute;
 
             z-index: 1;
             background: url("./image/menu-bg.png") no-repeat;
+        }
+        .menu-hight {
+            height: 153px;
         }
         .baidu-map-tscl-home{
             height: 100%;
