@@ -192,6 +192,7 @@
             this.fqytjSeriesData.push(item.count)
           })
           this.dtData = res.data.lalp.slice(0,3)
+          this.src = res.data.lalp[0].imageUrl
 
         })
       }
