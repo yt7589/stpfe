@@ -149,9 +149,9 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
-        startIndex = 0,
-        amount = 20,
-        driection = 'next',
+        startIndex: 0,
+        amount: 20,
+        driection: 'next',
         table: {
           data: [],
           filter: {},
