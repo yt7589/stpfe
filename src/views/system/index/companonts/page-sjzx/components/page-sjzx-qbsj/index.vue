@@ -20,7 +20,7 @@
 
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
-                         v-model="table.filter.wzlx">
+                         v-model="defaultVehicleLocType">
                 <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
@@ -144,6 +144,7 @@
             label: '外埠'
           }
         ],
+        defaultVehicleLocType: '0',
         table: {
           data: [],
           filter: {},
