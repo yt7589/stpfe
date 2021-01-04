@@ -159,7 +159,7 @@
       }
     },
     mounted(){
-      getVehicleTypes()
+      this.getVehicleTypes()
     },
     methods: {
       fetchData(page = 1){
@@ -194,7 +194,7 @@
             label: '大货车'
           }
         ]
-        defaultVehicleType = 103
+        this.defaultVehicleType = 103
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
