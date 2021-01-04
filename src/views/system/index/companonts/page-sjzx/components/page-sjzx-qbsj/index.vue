@@ -20,7 +20,7 @@
 
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
-                         v-model="defaultVehicleLocType">
+                         v-model="defaultVehicleLocType" @change="chooseVehicleLocType($event)">
                 <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
@@ -149,6 +149,9 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
+        startIndex = 0,
+        amount = 20,
+        driection = 'next',
         table: {
           data: [],
           filter: {},
@@ -192,6 +195,17 @@
        */
       queryVehicles(event) {
         console.log('查询按钮点击事件：' + JSON.stringify(event) + '!')
+        let params = {
+          startIndex: '' + this.startIndex,
+          amount: '' + this.amount,
+          direction: this.direction
+        }
+      },
+      /**
+       * 本地外埠车辆类型下拉列表框选择改变监听事件
+       */
+      chooseVehicleLocType(event) {
+        console.log('选择：' + event.value + '---' + event.label + '!')
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
