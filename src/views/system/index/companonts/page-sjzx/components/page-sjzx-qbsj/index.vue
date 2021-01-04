@@ -173,35 +173,20 @@
         console.log('getVehicleTypes..........?????????????')
         API.getVehicleTypes().then(res => {
           let recs = res.data
-          console.log('数据：' + JSON.stringify(recs) + '!')
-        })
-        this.vehicleTypes = [
-          {
+          let vtLen= recs.length;
+          this.vehicleTypes = [{
             value: 0,
             label: '全部'
-          },
-          {
-            value: 101,
-            label: '小轿车'
-          },
-          {
-            value: 102,
-            label: 'SUV'
-          },
-          {
-            value: 103,
-            label: 'MPV'
-          },
-          {
-            value: 104,
-            label: '大客车'
-          },
-          {
-            value: 105,
-            label: '大货车'
+          }]
+          for (let i=0; i<vtLen; i++) {
+            this.vehicleTypes.push({
+              value: recs[i].typeId,
+              label: recs[i].typeName
+            })
           }
-        ]
-        this.defaultVehicleType = 103
+          console.log('数据：' + JSON.stringify(recs) + '!')
+        })
+        this.defaultVehicleType = 0
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
