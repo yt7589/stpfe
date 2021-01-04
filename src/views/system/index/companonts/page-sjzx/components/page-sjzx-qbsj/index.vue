@@ -25,8 +25,8 @@
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="车辆类型" v-model="table.filter.wzlx">
-
+                         style="width:24%" placeholder="车辆类型" v-model="defaultVehicleType">
+                <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
@@ -145,6 +145,8 @@
           }
         ],
         defaultVehicleLocType: '0',
+        vehicleTypes: [],
+        defaultVehicleType: 0,
         table: {
           data: [],
           filter: {},
@@ -157,9 +159,42 @@
       }
     },
     mounted(){
+      getVehicleTypes()
     },
     methods: {
       fetchData(page = 1){
+      },
+      /**
+       * 获取车辆类别下拉框中内容
+       */
+      getVehicleTypes() {
+        this.vehicleLocTypes = [
+          {
+            value: 0,
+            label: '全部'
+          },
+          {
+            value: 101,
+            lable: '小轿车'
+          },
+          {
+            value: 102,
+            label: 'SUV'
+          },
+          {
+            value: 103,
+            label: 'MPV'
+          },
+          {
+            value: 104,
+            label: '大客车'
+          },
+          {
+            value: 105,
+            label: '大货车'
+          }
+        ]
+        defaultVehicleType = 103
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
