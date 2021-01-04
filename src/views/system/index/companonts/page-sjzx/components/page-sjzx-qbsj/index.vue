@@ -124,6 +124,8 @@
   import ChartRecognize  from './chart-recognize.vue'
   import ChartViolation from './chart-violation.vue'
 
+  import API from '@/api'
+
   export default {
     props: ['visible'],
     components: {ChartRecognize, ChartViolation},
@@ -169,6 +171,10 @@
        */
       getVehicleTypes() {
         console.log('getVehicleTypes..........?????????????')
+        API.GetQueryDeviceSum().then(res => {
+          let recs = res.data
+          console.log('数据：' + JSON.stringify(recs) + '!')
+        })
         this.vehicleTypes = [
           {
             value: 0,
