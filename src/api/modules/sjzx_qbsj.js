@@ -4,7 +4,7 @@
 export default ({service, request, serviceForMock, requestForMock, mock, faker, tools}) => ({
 getVehicleTypes(params) {
     return request({
-        url: 'vm/ils/queryVehicleTypes',
+        url: '/vm/ils/queryVehicleTypes',
         method: 'GET',
         params,
     })
