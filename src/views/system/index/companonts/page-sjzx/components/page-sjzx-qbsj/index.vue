@@ -42,7 +42,7 @@
               </el-input>
 
               <div style="width:68%;display: inline-block;text-align: right">
-                <el-button class="button-search">
+                <el-button class="button-search" @click="queryVehicles">
                   搜索
                   <el-image :src="require('../../image/image-search.png')"></el-image>
                 </el-button>
@@ -170,7 +170,6 @@
        * 获取车辆类别下拉框中内容
        */
       getVehicleTypes() {
-        console.log('getVehicleTypes..........?????????????')
         API.getVehicleTypes().then(res => {
           let recs = res.data
           let vtLen= recs.length;
@@ -187,6 +186,12 @@
           console.log('数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultVehicleType = 0
+      },
+      /**
+       * 左侧列表查询接口
+       */
+      queryVehicles(event) {
+        console.log('查询按钮点击事件：' + JSON.stringify(event) + '!')
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
