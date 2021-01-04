@@ -171,7 +171,7 @@
        */
       getVehicleTypes() {
         console.log('getVehicleTypes..........?????????????')
-        API.GetQueryDeviceSum().then(res => {
+        API.getVehicleTypes().then(res => {
           let recs = res.data
           console.log('数据：' + JSON.stringify(recs) + '!')
         })
