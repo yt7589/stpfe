@@ -21,7 +21,7 @@
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
                          v-model="table.filter.wzlx">
-
+                <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
@@ -130,6 +130,20 @@
     data(){
       return {
         loading: false,
+        vehicleLocTypes: [
+          {
+            value: '0',
+            label: '全部'
+          },
+          {
+            value: '1',
+            label: '本地'
+          },
+          {
+            value: '2',
+            label: '外埠'
+          }
+        ],
         table: {
           data: [],
           filter: {},
