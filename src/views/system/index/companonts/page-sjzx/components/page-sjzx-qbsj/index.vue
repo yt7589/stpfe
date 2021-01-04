@@ -30,8 +30,8 @@
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="违章类型" v-model="table.filter.wzlx">
-
+                         style="width:24%" placeholder="违章类型" v-model="defaultIlsTypes">
+                <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </div>
             <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
@@ -149,6 +149,8 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
+        ilsTypes: [],
+        defaultIlsTypes: 0,
         table: {
           data: [],
           filter: {},
@@ -161,7 +163,8 @@
       }
     },
     mounted(){
-      this.getVehicleTypes()
+      this.getVehicleTypes(),
+      this.getIlsTypes()
     },
     methods: {
       fetchData(page = 1){
@@ -187,6 +190,28 @@
           console.log('数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultVehicleType = 0
+      },
+      /**
+       * 获取违章类型下拉框中内容
+       */
+      getIlsTypes() {
+        console.log('getIlsTypes..........?????????????')
+        API.getIlsTypes().then(res => {
+          let recs = res.data
+          let vtLen= recs.length;
+          this.ilsTypes = [{
+            value: 0,
+            label: '全部'
+          }]
+          for (let i=0; i<vtLen; i++) {
+            this.ilsTypes.push({
+              value: recs[i].typeId,
+              label: recs[i].typeName
+            })
+          }
+          console.log('违章数据：' + JSON.stringify(recs) + '!')
+        })
+        this.defaultIlsTypes = 0
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size

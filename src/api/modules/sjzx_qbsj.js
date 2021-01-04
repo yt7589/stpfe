@@ -9,6 +9,13 @@ getVehicleTypes(params) {
         params,
     })
 },
+getIlsTypes(params) {
+    return request({
+        url: '/vm/ils/queryIlsTypes',
+        method: 'GET',
+        params,
+    })
+},
 test001(params) {
     console.log('数据中心=》全部数据')
 }
