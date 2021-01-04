@@ -169,14 +169,14 @@
        */
       getVehicleTypes() {
         console.log('getVehicleTypes..........?????????????')
-        this.vehicleLocTypes = [
+        this.vehicleTypes = [
           {
             value: 0,
             label: '全部'
           },
           {
             value: 101,
-            lable: '小轿车'
+            label: '小轿车'
           },
           {
             value: 102,
