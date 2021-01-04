@@ -168,6 +168,7 @@
        * 获取车辆类别下拉框中内容
        */
       getVehicleTypes() {
+        console.log('getVehicleTypes..........?????????????')
         this.vehicleLocTypes = [
           {
             value: 0,
