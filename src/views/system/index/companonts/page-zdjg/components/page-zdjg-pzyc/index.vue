@@ -31,19 +31,19 @@
                         </baidu-map>
                         <el-row  class="col-2-row-1">
                             <el-col :span="6" class="common_stat total_car">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{wpCount}}</div>
                                 <div class="car_info">今日无牌过车数量</div>
                             </el-col>
                             <el-col :span="6" class="common_stat total_dev">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{tpCount}}</div>
                                 <div class="car_info">今日套牌车过车数量</div>
                             </el-col>
                             <el-col :span="6" class="common_stat total_warn">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{jpCount}}</div>
                                 <div class="car_info">今日假牌车过车数量</div>
                             </el-col>
                             <el-col :span="6" class="common_stat area_total_car">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{hpzdCount}}</div>
                                 <div class="car_info">今日号牌遮挡过车数量</div>
                             </el-col>
 
@@ -117,11 +117,7 @@
     data(){
       return {
         loading:false,
-        tableData:[
-          {
-            area_name:"海淀区上地8街12号"
-          }
-        ],
+
         map: {
           instance: null,
           zoom: 12,
@@ -133,6 +129,10 @@
         markerPoints:[
 
         ],
+        wpCount:0,
+        tpCount:0,
+        jpCount:0,
+        hpzdCount:0,
         bmMarkerStyle:{
           url: require('../../image/mark_point2.png'),
           size: {
@@ -180,6 +180,12 @@
       },
       getData(){
         API.QueryAbnormalLicensePlate().then((res)=>{
+
+          this.wpCount =res.data.wpCount
+          this.tpCount =res.data.tpCount
+          this.jpCount =res.data.jpCount
+          this.hpzdCount =res.data.hpzdCount
+
           this.map.center.lat = res.data.site[0].lat
           this.map.center.lng = res.data.site[0].lng
           this.markerPoints = res.data.site
