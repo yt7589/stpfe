@@ -5,18 +5,18 @@
             <div class="column-1">
                 <el-form class="search-form">
                     <el-form-item>
-                        <el-input placeholder="设备类型" v-model="table.filter.type">
+                        <el-input placeholder="设备类型" v-model="frm.type">
 
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="设备编号" v-model="table.filter.num">
+                        <el-input placeholder="设备编号" v-model="frm.code">
 
                         </el-input>
                     </el-form-item>
 
                     <el-form-item>
-                        <el-button class="button-search">
+                        <el-button class="button-search" @click="getList">
                             搜索
                             <el-image :src="require('../../image/image-search.png')"></el-image>
                         </el-button>
@@ -32,18 +32,18 @@
             <div class="column-2">
                 <el-container class="table-container">
                     <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-                        <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-                            <el-table-column align="center" prop="city" label="城市" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="num" label="设备编号" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="type" label="设备类型" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="node" label="所属节点" minWidth="80"></el-table-column>
-                            <el-table-column align="center" prop="orientation" label="朝向" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="car_orientation" label="车辆方向" minWidth="60"></el-table-column>
-                            <el-table-column align="center" prop="addr" label="视频流地址" minWidth="80"></el-table-column>
+                        <el-table class="custom-table wzgl-table" :data="tableData" height="100%">
+                            <el-table-column align="center" prop="cityName" label="城市" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="deviceNo" label="设备编号" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="deviceType" label="设备类型" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="deviceNode" label="所属节点" minWidth="80"></el-table-column>
+                            <el-table-column align="center" prop="deviceDirection" label="朝向" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="vehicleDirection" label="车辆方向" minWidth="60"></el-table-column>
+                            <el-table-column align="center" prop="videoUrl" label="视频流地址" minWidth="100"></el-table-column>
                             <el-table-column align="center" prop="" label="操作" minWidth="40">
                                 <template slot-scope="scope">
-                                    <el-button type="text" size="mini">修改</el-button>
-                                    <el-button type="text" size="mini" @click="delConfirm(scope.row.id)">删除</el-button>
+                                    <el-button type="text" size="mini" @click="handleEdit(scope.row)">修改</el-button>
+                                    <el-button type="text" size="mini" @click="delConfirm(scope.row)">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -53,48 +53,48 @@
                                 class="custom-pagination"
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
-                                :current-page.sync="table.pagination.currentPage"
+                                :page.sync="frm.startIndex + 1"
                                 :page-sizes="[20, 50, 100, 200]"
-                                :page-size="table.pagination.pageSize"
+                                :page-size="frm.amount"
                                 layout="prev, pager,sizes, next,total"
-                                :total="table.pagination.total">
+                                :total="total">
                         </el-pagination>
                     </el-footer>
                 </el-container>
             </div>
         </div>
         <el-dialog
-                title="添加"
+                :title="dialogTitle"
                 :visible.sync="dialogVisible"
         >
             <el-form ref="dialogForm" :model="dialogData" >
                 <el-form-item label="设备编号">
-                    <el-input v-model="dialogData.num"name="area" />
+                    <el-input v-model="dialogData.deviceNo"name="area" />
                 </el-form-item>
                 <el-form-item label="设备类型">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
+                    <el-select v-model="dialogData.deviceType" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in deviceTypeOptions"
+                                :key="item.dtId"
+                                :label="item.dtName"
+                                :value="item.dtId">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="设备节点">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
+                    <el-select v-model="dialogData.deviceNode" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in deviceNodeOptions"
+                                :key="item.deviceNodeId"
+                                :label="item.deviceNodeName"
+                                :value="item.deviceNodeId">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="设备朝向">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
+                    <el-select v-model="dialogData.deviceDirection" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
+                                v-for="item in deviceDirectionOptions"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
@@ -102,22 +102,22 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="车辆方向">
-                    <el-select v-model="dialogData.type" placeholder="请选择">
+                    <el-select v-model="dialogData.vehicleDirection" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
+                                v-for="item in vehicleDirectionOptions"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="车辆方向">
-                    <el-input v-model="dialogData.num"name="area"  />
+                <el-form-item label="数据地址">
+                    <el-input v-model="dialogData.dtUrl"  />
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
         <el-dialog
@@ -130,7 +130,7 @@
             <div>确定要删除吗？</div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisibleConfirm = false">取 消</el-button>
-                <el-button type="primary" @click="">确 定</el-button>
+                <el-button type="primary"  @click="del">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -138,6 +138,7 @@
 
 <script>
   import HeaderCrumb from '@components/custom/header-crumb'
+  import API from '@/api'
   export default {
     name: 'sbgl-sblb',
     props:{
@@ -158,49 +159,167 @@
     data(){
       return {
         loading: false,
-        table: {
-          data: [
-            {id:1,city:"北京",num:'001',type:"视频监控",node:"海淀区上地8街1号位",orientation:"东南",car_orientation:"车头",addr:"rtsp://11.12.13.14/1"}
-          ],
-          filter: {
-            num: '',
-            type: ''
-          },
-          pagination: {
-            currentPage: 1,
-            total: 1000,
-            pageSize: 20
-          }
+        frm:{
+          code: '',
+          type: '',
+          amount:20,
+          startIndex:0,
         },
+        tableData:[],
+        total:0,
         dialogVisible:false,
         dialogData:{
-          area:"",
-          type:"卡口相机/视频监控"
+          deviceNo:"",
+          deviceType:"",
+          deviceNode:"",
+          deviceDirection:"",
+          vehicleDirection:"",
+          dtUrl:"",
         },
+        saveType:'',
         dialogVisibleConfirm:false,
         delId:0,
-        options: [{
-          value: '卡口相机/视频监控',
-          label: '卡口相机/视频监控'
-        }],
+        deviceTypeOptions:[
+
+        ],
+        deviceNodeOptions:[],
+        vehicleDirectionOptions:[
+          {
+            value: '车头',
+            label: '车头'
+          },
+          {
+            value: '车尾',
+            label: '车尾'
+          },
+        ],
+        deviceDirectionOptions: [
+          {
+              value: '东',
+              label: '东'
+          },
+          {
+            value: '西',
+            label: '西'
+          },
+          {
+            value: '南',
+            label: '南'
+          },
+          {
+            value: '北',
+            label: '北'
+          },
+          {
+            value: '东南',
+            label: '东南'
+          },
+          {
+            value: '西南',
+            label: '西南'
+          },
+          {
+            value: '东北',
+            label: '东北'
+          },
+          {
+            value: '西北',
+            label: '西北'
+          },
+        ],
+        dialogTitle:'添加',
       }
+    },
+    mounted(){
+      this.getList()
+      this.getDeviceType()
+      this.getDeviceNode()
     },
     methods: {
       handleSizeChange(size){
-        this.table.pagination.pageSize = size
-        this.fetchData()
+        this.frm.startIndex = 0
+        this.frm.amount = size
+        this.getList()
       },
       handleCurrentChange(page){
-        this.table.pagination.page = page
-        this.fetchData(page)
+        this.frm.startIndex = page - 1
+        this.getList()
       },
       add(){
+        this.initDialog()
+        this.saveType = 'add'
         this.dialogVisible = true
       },
-      delConfirm(id){
-        this.delId = id
+      initDialog(){
+        this.dialogTitle = '添加';
+        this.saveType = ''
+        this.dialogData = {
+          deviceNo:"",
+          deviceType:"",
+          deviceNode:"",
+          deviceDirection:"",
+          vehicleDirection:"",
+          dtUrl:"",
+
+        }
+      },
+      handleEdit(row){
+        this.dialogData = row
+        this.dialogTitle = '修改';
+        this.dialogVisible = true
+      },
+      delConfirm(val){
+        this.delId = val.deviceNo
         this.dialogVisibleConfirm = true
-      }
+      },
+      del(){
+        if(this.delId===0){
+          this.$message.error('请选择');
+          return;
+        }
+        API.DeleteDevice({deviceNo:this.delId}).then((res)=>{
+          this.getList()
+          this.dialogVisibleConfirm = false
+          this.delId = 0
+          this.$message.success('操作成功');
+        })
+      },
+      getList(){
+        this.loading = true
+        API.QueryDevice(this.frm).then((res) => {
+          this.tableData = res.data.recs
+          this.loading = false
+          this.total = res.data.total
+        })
+      },
+      getDeviceType(){
+        API.QueryDeviceType().then((res)=>{
+            this.deviceTypeOptions = res.data.recs
+        })
+      },
+      getDeviceNode(){
+        API.QueryDeviceNode().then((res)=>{
+          this.deviceNodeOptions = res.data.recs
+        })
+      },
+      save(){
+        if(this.saveType ==='add' ){
+          //新增
+          API.AddDevice(this.dialogData).then((res)=>{
+            this.getList()
+            this.$message.success('操作成功');
+            this.dialogVisible = false
+          })
+        }else{
+          //修改
+          API.updateDeviceInfo(this.dialogData).then((res)=>{
+            this.getList()
+            this.$message.success('操作成功');
+            this.dialogVisible = false
+          })
+        }
+
+      },
     }
   }
 </script>
