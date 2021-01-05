@@ -30,8 +30,8 @@
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="违章类型" v-model="table.filter.wzlx">
-
+                         style="width:24%" placeholder="违章类型" v-model="defaultIlsTypes">
+                <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </div>
             <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
@@ -149,6 +149,8 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
+        ilsTypes: [],
+        defaultIlsTypes: 0,
         // 定义查询条件
         hphm: '', // 车牌号
         siteName: '点位', // 地点仅提点位
@@ -170,7 +172,8 @@
       }
     },
     mounted(){
-      this.getVehicleTypes()
+      this.getVehicleTypes(),
+      this.getIlsTypes()
     },
     methods: {
       fetchData(page = 1){
