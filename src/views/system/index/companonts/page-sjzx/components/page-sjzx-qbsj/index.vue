@@ -240,7 +240,7 @@
           vAddr: this.siteName
         }
         console.log(JSON.stringify(params))
-        API.getIlsTypes().then(res => {
+        API.getDcAdVehicles(params).then(res => {
           console.log(JSON.stringify(res.data))
         })
       },
