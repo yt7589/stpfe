@@ -199,6 +199,18 @@
        */
       queryVehicles(event) {
         console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + this.queryTimes[0].Format('yyyy-MM-dd') + '!')
+        let startDate = '' + this.queryTimes[0].getFullYear()
+        if ((this.queryTimes[0].getMonth() + 1)<10) {
+          startDate += '0' + this.queryTimes[0].getMonth()
+        } else {
+          startDate += this.queryTimes[0].getMonth()
+        }
+        if (this.queryTimes[0].getDate()<10) {
+          startDate += '0' + this.queryTimes[0].getDate()
+        } else {
+          startDate += this.queryTimes[0].getDate()
+        }
+        console.log('startDate: ' + startDate + '!')
         for (let key in this.queryTimes) {
           console.log('### ' + key + '=' + this.queryTimes[key] + '!')
         }
