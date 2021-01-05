@@ -269,7 +269,7 @@
     if (dateVal<10) {
       dateStr += '-0' + dateVal
     } else {
-      dateStr += '-' + dataVal
+      dateStr += '-' + dateVal
     }
   }
 </script>
