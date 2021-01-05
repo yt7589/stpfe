@@ -64,15 +64,6 @@
                 <el-table-column align="center" prop="isIl" label="违章" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="" label="详情" minWidth="60"></el-table-column>
-                <tr v-for="veh in vehicles" :key="veh.dcId">
-                  <el-table-column align="center" prop="" label="veh.dcTime" minWidth="60"></el-table-column>
-                  <el-table-column align="center" prop="" label="veh.dcAddr" minWidth="60"></el-table-column>
-                  <el-table-column align="center" prop="" label="veh.hphm" minWidth="60"></el-table-column>
-                  <el-table-column align="center" prop="" label="veh.category" minWidth="60"></el-table-column>
-                  <el-table-column align="center" prop="" label="veh.isIl" minWidth="60"></el-table-column>
-                  <el-table-column align="center" prop="" label="veh.ilType" minWidth="60"></el-table-column>
-                  <el-table-column align="center" prop="" label="..." minWidth="60"></el-table-column>
-                </tr>
               </el-table>
             </el-main>
             <el-footer>
