@@ -9,7 +9,7 @@
           <el-form class="search-form">
             <div style="display: flex;justify-content: space-between;">
               <el-date-picker
-                v-model="table.filter.time"
+                v-model="queryTimes" format="yyyy-MM-dd" 
                 class="custom-date-editor"
                 style="width:35%"
                 type="daterange"
@@ -20,7 +20,7 @@
 
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
-                         v-model="defaultVehicleLocType">
+                         v-model="defaultVehicleLocType" @change="chooseVehicleLocType($event)">
                 <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
@@ -35,14 +35,14 @@
               </el-select>
             </div>
             <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
-              <el-input placeholder="请输入车牌号" v-model="table.filter.carNumber"
+              <el-input placeholder="请输入车牌号" v-model="hphm"
                         class="custom-input custom-input-mini" style="width:15%"></el-input>
-              <el-input placeholder="请输入地点" v-model="table.filter.location"
+              <el-input placeholder="请输入地点" v-model="siteName"
                         class="custom-input custom-input-mini" style="width:15%">>
               </el-input>
 
               <div style="width:68%;display: inline-block;text-align: right">
-                <el-button class="button-search">
+                <el-button class="button-search" @click="queryVehicles">
                   搜索
                   <el-image :src="require('../../image/image-search.png')"></el-image>
                 </el-button>
@@ -149,8 +149,18 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
+<<<<<<< HEAD
         ilsTypes: [],
         defaultIlsTypes: 0,
+=======
+        // 定义查询条件
+        hphm: '', // 车牌号
+        siteName: '点位', // 地点仅提点位
+        queryTimes: null,
+        startIndex: 0,
+        amount: 20,
+        driection: 'next',
+>>>>>>> 4ee435a2b39e3ec7d6854e23a3ab26187967700d
         table: {
           data: [],
           filter: {},
@@ -173,7 +183,6 @@
        * 获取车辆类别下拉框中内容
        */
       getVehicleTypes() {
-        console.log('getVehicleTypes..........?????????????')
         API.getVehicleTypes().then(res => {
           let recs = res.data
           let vtLen= recs.length;
@@ -192,6 +201,7 @@
         this.defaultVehicleType = 0
       },
       /**
+<<<<<<< HEAD
        * 获取违章类型下拉框中内容
        */
       getIlsTypes() {
@@ -212,6 +222,38 @@
           console.log('违章数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultIlsTypes = 0
+=======
+       * 左侧列表查询接口
+       */
+      queryVehicles(event) {
+        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + this.queryTimes[0] + '!')
+        let startDate = '' + this.queryTimes[0].getFullYear()
+        if ((this.queryTimes[0].getMonth() + 1)<10) {
+          startDate += '0' + this.queryTimes[0].getMonth()
+        } else {
+          startDate += this.queryTimes[0].getMonth()
+        }
+        if (this.queryTimes[0].getDate()<10) {
+          startDate += '0' + this.queryTimes[0].getDate()
+        } else {
+          startDate += this.queryTimes[0].getDate()
+        }
+        console.log('startDate: ' + startDate + '!')
+        for (let key in this.queryTimes) {
+          console.log('### ' + key + '=' + this.queryTimes[key] + '!')
+        }
+        let params = {
+          startIndex: '' + this.startIndex,
+          amount: '' + this.amount,
+          direction: this.direction
+        }
+      },
+      /**
+       * 本地外埠车辆类型下拉列表框选择改变监听事件
+       */
+      chooseVehicleLocType(event) {
+        console.log('选择：' + event.value + '---' + event.label + '!')
+>>>>>>> 4ee435a2b39e3ec7d6854e23a3ab26187967700d
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
