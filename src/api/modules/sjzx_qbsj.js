@@ -18,7 +18,7 @@ getIlsTypes(params) {
 },
 getDcAdVehicles(params) {
     return request({
-        url: '/dc/hp/queryAllData',
+        url: '/dc/hp/queryAllData?p=pc&v=0.0.1',
         method: 'GET',
         params,
     })
