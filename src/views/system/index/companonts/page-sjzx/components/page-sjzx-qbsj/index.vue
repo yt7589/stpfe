@@ -261,15 +261,15 @@
     let dateStr = '' + dateObj.getFullYear()
     let month = dateObj.getMonth() + 1
     if (month<10) {
-      startDate += '-0' + month
+      dateStr += '-0' + month
     } else {
-      startDate += '-' + month
+      dateStr += '-' + month
     }
     let dateVal = this.queryTimes[0].getDate()
     if (dateVal<10) {
-      startDate += '-0' + dateVal
+      dateStr += '-0' + dateVal
     } else {
-      startDate += '-' + dataVal
+      dateStr += '-' + dataVal
     }
   }
 </script>
