@@ -198,7 +198,7 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(typeof this.queryTimes) + '!')
+        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + (typeof this.queryTimes[0]) + '!')
         for (let key in this.queryTimes) {
           console.log('### ' + key + '=' + this.queryTimes[key] + '!')
         }
