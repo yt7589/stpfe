@@ -9,7 +9,7 @@
           <el-form class="search-form">
             <div style="display: flex;justify-content: space-between;">
               <el-date-picker
-                v-model="queryTimes"
+                v-model="queryTimes" format="yyyy-MM-dd" 
                 class="custom-date-editor"
                 style="width:35%"
                 type="daterange"
