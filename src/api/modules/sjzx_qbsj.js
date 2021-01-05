@@ -16,6 +16,13 @@ getIlsTypes(params) {
         params,
     })
 },
+getDcAdVehicles(params) {
+    return request({
+        url: '/dc/hp/queryAllData',
+        method: 'GET',
+        params,
+    })
+},
 test001(params) {
     console.log('数据中心=》全部数据')
 }

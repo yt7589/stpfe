@@ -240,6 +240,9 @@
           vAddr: this.siteName
         }
         console.log(JSON.stringify(params))
+        API.getIlsTypes().then(res => {
+          console.log(JSON.stringify(res.data))
+        })
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
