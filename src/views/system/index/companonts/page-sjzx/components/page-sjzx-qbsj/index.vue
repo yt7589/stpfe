@@ -153,7 +153,7 @@
         selIlsType: 0,
         // 定义查询条件
         hphm: '', // 车牌号
-        siteName: '点位', // 地点仅提点位
+        siteName: '', // 地点仅提点位
         queryTimes: null,
         startDate: '',
         endDate: '',
@@ -237,7 +237,7 @@
           vType: this.selVehicleType + '',
           ilType: this.selIlsType + '',
           hphm: this.hphm,
-          vAddr: this.sietName
+          vAddr: this.siteName
         }
         console.log(JSON.stringify(params))
       },
