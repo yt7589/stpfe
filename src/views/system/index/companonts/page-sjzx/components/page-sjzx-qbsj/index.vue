@@ -56,14 +56,23 @@
 
           <el-container class="table-container">
             <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-              <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-                <el-table-column align="center" prop="" label="时间" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="地点" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="车牌号" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="类别" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="违章" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="违章类型" minWidth="60"></el-table-column>
+              <el-table class="custom-table wzgl-table" :data="vehicles" height="100%">
+                <el-table-column align="center" prop="dcTime" label="时间" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="dcAddr" label="地点" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="hphm" label="车牌号" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="isIl" label="违章" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="" label="详情" minWidth="60"></el-table-column>
+                <tr v-for="veh in vehicles" :key="veh.dcId">
+                  <el-table-column align="center" prop="" label="veh.dcTime" minWidth="60"></el-table-column>
+                  <el-table-column align="center" prop="" label="veh.dcAddr" minWidth="60"></el-table-column>
+                  <el-table-column align="center" prop="" label="veh.hphm" minWidth="60"></el-table-column>
+                  <el-table-column align="center" prop="" label="veh.category" minWidth="60"></el-table-column>
+                  <el-table-column align="center" prop="" label="veh.isIl" minWidth="60"></el-table-column>
+                  <el-table-column align="center" prop="" label="veh.ilType" minWidth="60"></el-table-column>
+                  <el-table-column align="center" prop="" label="..." minWidth="60"></el-table-column>
+                </tr>
               </el-table>
             </el-main>
             <el-footer>
@@ -71,11 +80,11 @@
                 class="custom-pagination"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page.sync="table.pagination.currentPage"
+                :current-page.sync="currentPage"
                 :page-sizes="[20, 50, 100, 200]"
-                :page-size="table.pagination.pageSize"
+                :page-size="pageSize"
                 layout="prev, pager,sizes, next,total"
-                :total="table.pagination.total">
+                :total="total">
               </el-pagination>
             </el-footer>
           </el-container>
@@ -160,6 +169,10 @@
         startIndex: 0,
         amount: 20,
         driection: 'next',
+        currentPage: 1,
+        pageSize: 20,
+        total: 0,
+        vehicles: [],
         table: {
           data: [],
           filter: {},
@@ -225,29 +238,44 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
+        this.currentPage = 1
         this.startIndex = 0
         let params = {
           startIndex: '' + this.startIndex,
           amount: '' + this.amount,
-          direction: this.direction/*,
-          startTime: startTime,
-          endTime: endTime,
-          category: this.selVehicleLocType,
-          vType: this.selVehicleType + '',
-          ilType: this.selIlsType + '',
-          hphm: this.hphm,
-          vAddr: this.siteName*/
+          direction: this.direction
         }
-        console.log('this.queryTimes=' + this.queryTimes + '!')
-        console.log('this.queryTimes[0]=' + this.queryTimes[0] + '!')
-        /*
-        let startTime = formatDate(this.queryTimes[0])
-        let endTime = formatDate(this.queryTimes[1])
-
+        if (this.queryTimes != null) {
+          params.startTime = formatDate(this.queryTimes[0])
+          params.endTime = formatDate(this.queryTimes[1])
+        }
+        if (this.selVehicleLocType != '0') {
+          params.selVehicleLocType = this.selVehicleLocType
+        }
+        if (this.selVehicleType != 0) {
+          params.selVehicleType = this.selVehicleType
+        }
+        if (this.selIlsType != 0) {
+          params.selIlsType = this.selIlsType
+        }
+        if (this.hphm != null && this.hphm != '') {
+          params.hphm = this.hphm
+        }
+        if (this.siteName != null && this.siteName != '') {
+          params.vAddr = this.siteName
+        }
         console.log(JSON.stringify(params))
         API.getDcAdVehicles(params).then(res => {
+          let data = res.data
+          this.total = data.total
+          if (this.direction == 'next') {
+            this.startIndex += data.realNum
+          } else {
+            this.startIndex -= data.realNum
+          }
           console.log(JSON.stringify(res.data))
-        })*/
+          this.vehicles = data.recs
+        })
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
