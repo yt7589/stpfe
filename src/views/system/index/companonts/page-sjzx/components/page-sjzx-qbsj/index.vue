@@ -20,7 +20,7 @@
 
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
-                         v-model="defaultVehicleLocType" @change="chooseVehicleLocType($event)">
+                         v-model="defaultVehicleLocType">
                 <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
@@ -225,17 +225,15 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + this.queryTimes[0] + '!')
         let startDate = formatDate(this.queryTimes[0])
         let endDate = formatDate(this.queryTimes[1])
-        console.log('startDate: ' + startDate + '; endDate=' + endDate + '!')
-        for (let key in this.queryTimes) {
-          console.log('### ' + key + '=' + this.queryTimes[key] + '!')
-        }
+        console.log('startDate: ' + startDate + '; endDate=' + endDate + '! defaultVehicleLocType=' + this.defaultVehicleLocType + '!')
         let params = {
           startIndex: '' + this.startIndex,
           amount: '' + this.amount,
-          direction: this.direction
+          direction: this.direction,
+          startDate: startDate,
+          endDate: endDate
         }
       },
       /**
@@ -271,6 +269,7 @@
     } else {
       dateStr += '-' + dateVal
     }
+    return dateStr
   }
 </script>
 
