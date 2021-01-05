@@ -42,7 +42,7 @@
               </el-input>
 
               <div style="width:68%;display: inline-block;text-align: right">
-                <el-button class="button-search" @click="queryVehicles">
+                <el-button class="button-search" @click="queryVehiclesHandler">
                   搜索
                   <el-image :src="require('../../image/image-search.png')"></el-image>
                 </el-button>
