@@ -200,6 +200,28 @@
         this.defaultVehicleType = 0
       },
       /**
+       * 获取违章类型下拉框中内容
+       */
+      getIlsTypes() {
+        console.log('getIlsTypes..........?????????????')
+        API.getIlsTypes().then(res => {
+          let recs = res.data
+          let vtLen= recs.length;
+          this.ilsTypes = [{
+            value: 0,
+            label: '全部'
+          }]
+          for (let i=0; i<vtLen; i++) {
+            this.ilsTypes.push({
+              value: recs[i].typeId,
+              label: recs[i].typeName
+            })
+          }
+          console.log('违章数据：' + JSON.stringify(recs) + '!')
+        })
+        this.defaultIlsTypes = 0
+      },
+      /**
        * 左侧列表查询接口
        */
       queryVehicles(event) {
