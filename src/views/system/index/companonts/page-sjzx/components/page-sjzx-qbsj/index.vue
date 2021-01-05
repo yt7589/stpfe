@@ -153,6 +153,8 @@
         hphm: '', // 车牌号
         siteName: '点位', // 地点仅提点位
         queryTimes: null,
+        startDate: '',
+        endDate: '',
         startIndex: 0,
         amount: 20,
         driection: 'next',
@@ -199,18 +201,9 @@
        */
       queryVehicles(event) {
         console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + this.queryTimes[0] + '!')
-        let startDate = '' + this.queryTimes[0].getFullYear()
-        if ((this.queryTimes[0].getMonth() + 1)<10) {
-          startDate += '0' + this.queryTimes[0].getMonth()
-        } else {
-          startDate += this.queryTimes[0].getMonth()
-        }
-        if (this.queryTimes[0].getDate()<10) {
-          startDate += '0' + this.queryTimes[0].getDate()
-        } else {
-          startDate += this.queryTimes[0].getDate()
-        }
-        console.log('startDate: ' + startDate + '!')
+        let startDate = formatDate(this.queryTimes[0])
+        let endDate = formatDate(this.queryTimes[1])
+        console.log('startDate: ' + startDate + '; endDate=' + endDate + '!')
         for (let key in this.queryTimes) {
           console.log('### ' + key + '=' + this.queryTimes[key] + '!')
         }
@@ -233,6 +226,21 @@
       handleCurrentChange(page){
         this.table.pagination.page = page
         this.fetchData(page)
+      }
+    },
+    formatDate(dateObj) {
+      let dateStr = '' + dateObj.getFullYear()
+      let month = dateObj.getMonth() + 1
+      if (month<10) {
+        startDate += '-0' + month
+      } else {
+        startDate += '-' + month
+      }
+      let dateVal = this.queryTimes[0].getDate()
+      if (dateVal<10) {
+        startDate += '-0' + dateVal
+      } else {
+        startDate += '-' + dataVal
       }
     }
   }
