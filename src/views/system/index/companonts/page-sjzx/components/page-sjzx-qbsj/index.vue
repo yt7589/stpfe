@@ -265,7 +265,7 @@
     } else {
       dateStr += '-' + month
     }
-    let dateVal = dataObj.getDate()
+    let dateVal = dateObj.getDate()
     if (dateVal<10) {
       dateStr += '-0' + dateVal
     } else {
