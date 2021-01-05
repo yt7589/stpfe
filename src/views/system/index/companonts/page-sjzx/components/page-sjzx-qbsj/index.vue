@@ -265,7 +265,7 @@
     } else {
       dateStr += '-' + month
     }
-    let dateVal = this.queryTimes[0].getDate()
+    let dateVal = dataObj.getDate()
     if (dateVal<10) {
       dateStr += '-0' + dateVal
     } else {
