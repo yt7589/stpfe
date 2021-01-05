@@ -63,7 +63,11 @@
                 <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="isIl" label="违章" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="详情" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="" label="详情" minWidth="60">
+                  <template slot-scope="scope">
+                    <span :id="scope.row.dcId" @click="selectVehicle(scope.row.dcId)">...</span>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-main>
             <el-footer>
@@ -134,19 +138,19 @@
         loading: false,
         vehicleLocTypes: [
           {
-            value: '0',
+            value: 0,
             label: '全部'
           },
           {
-            value: '1',
+            value: 1,
             label: '本地'
           },
           {
-            value: '2',
+            value: 2,
             label: '外埠'
           }
         ],
-        selVehicleLocType: '0',
+        selVehicleLocType: 0,
         vehicleTypes: [],
         selVehicleType: 0,
         ilsTypes: [],
@@ -176,12 +180,11 @@
       }
     },
     mounted(){
-      this.getVehicleTypes(),
+      this.getVehicleTypes()
       this.getIlsTypes()
+      this.queryVehicles()
     },
     methods: {
-      fetchData(page = 1){
-      },
       /**
        * 获取车辆类别下拉框中内容
        */
@@ -207,7 +210,6 @@
        * 获取违章类型下拉框中内容
        */
       getIlsTypes() {
-        console.log('getIlsTypes..........?????????????')
         API.getIlsTypes().then(res => {
           let recs = res.data
           let vtLen= recs.length;
@@ -228,19 +230,22 @@
       /**
        * 左侧列表查询接口
        */
-      queryVehicles(event) {
+      queryVehiclesHandler(event) {
         this.currentPage = 1
         this.startIndex = 0
+        this.queryVehicles()
+      },
+      queryVehicles() {
         let params = {
-          startIndex: '' + this.startIndex,
-          amount: '' + this.amount,
+          startIndex: this.startIndex,
+          amount: this.amount,
           direction: this.direction
         }
         if (this.queryTimes != null) {
           params.startTime = formatDate(this.queryTimes[0])
           params.endTime = formatDate(this.queryTimes[1])
         }
-        if (this.selVehicleLocType != '0') {
+        if (this.selVehicleLocType != 0) {
           params.selVehicleLocType = this.selVehicleLocType
         }
         if (this.selVehicleType != 0) {
@@ -264,17 +269,23 @@
           } else {
             this.startIndex -= data.realNum
           }
-          console.log(JSON.stringify(res.data))
           this.vehicles = data.recs
         })
       },
+      /**
+       * 车辆表格中每行编辑图标点击事件
+       */
+      selectVehicle(dcId) {
+        console.log('点击：' + dcId + '!')
+      },
       handleSizeChange(size){
-        this.table.pagination.pageSize = size
-        this.fetchData()
+        this.pageSize = size
+        this.queryVehicles()
       },
       handleCurrentChange(page){
-        this.table.pagination.page = page
-        this.fetchData(page)
+        this.currentPage = page
+        this.startIndex = (page - 1) * this.pageSize
+        this.queryVehicles()
       }
     }
   }

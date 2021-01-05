@@ -123,7 +123,7 @@
       updateChartData(){
         if (this.data) {
           if(this.data.todayTraffics){
-            let pData = this.chart.option.series[0].data
+            let pData = this.chart.option.series[1].data
             this.data.todayTraffics.forEach(item=>{
               let index = parseInt(item.reportTime / 4) - 1
               if (index < pData.length) {
@@ -135,7 +135,7 @@
           }
 
           if(this.data.yesterdayTraffics){
-            let pData = this.chart.option.series[1].data
+            let pData = this.chart.option.series[0].data
             this.data.yesterdayTraffics.forEach(item=>{
               let index = parseInt(item.reportTime / 4) - 1
               if (index < pData.length) {
