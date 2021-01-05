@@ -254,8 +254,9 @@
       }
     }
   }
-
-  
+  /**
+   * 日期格式化工具函数
+   */
   function formatDate(dateObj) {
     let dateStr = '' + dateObj.getFullYear()
     let month = dateObj.getMonth() + 1
