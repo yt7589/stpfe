@@ -227,21 +227,23 @@
         this.table.pagination.page = page
         this.fetchData(page)
       }
-    },
-    formatDate(dateObj) {
-      let dateStr = '' + dateObj.getFullYear()
-      let month = dateObj.getMonth() + 1
-      if (month<10) {
-        startDate += '-0' + month
-      } else {
-        startDate += '-' + month
-      }
-      let dateVal = this.queryTimes[0].getDate()
-      if (dateVal<10) {
-        startDate += '-0' + dateVal
-      } else {
-        startDate += '-' + dataVal
-      }
+    }
+  }
+
+  
+  function formatDate(dateObj) {
+    let dateStr = '' + dateObj.getFullYear()
+    let month = dateObj.getMonth() + 1
+    if (month<10) {
+      startDate += '-0' + month
+    } else {
+      startDate += '-' + month
+    }
+    let dateVal = this.queryTimes[0].getDate()
+    if (dateVal<10) {
+      startDate += '-0' + dateVal
+    } else {
+      startDate += '-' + dataVal
     }
   }
 </script>
