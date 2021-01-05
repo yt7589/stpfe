@@ -20,17 +20,17 @@
 
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
-                         v-model="defaultVehicleLocType">
+                         v-model="selVehicleLocType">
                 <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="车辆类型" v-model="defaultVehicleType">
+                         style="width:24%" placeholder="车辆类型" v-model="selVehicleType">
                 <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="违章类型" v-model="defaultIlsTypes">
+                         style="width:24%" placeholder="违章类型" v-model="selIlsType">
                 <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </div>
@@ -146,11 +146,11 @@
             label: '外埠'
           }
         ],
-        defaultVehicleLocType: '0',
+        selVehicleLocType: '0',
         vehicleTypes: [],
-        defaultVehicleType: 0,
+        selVehicleType: 0,
         ilsTypes: [],
-        defaultIlsTypes: 0,
+        selIlsType: 0,
         // 定义查询条件
         hphm: '', // 车牌号
         siteName: '点位', // 地点仅提点位
@@ -225,22 +225,21 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        let startDate = formatDate(this.queryTimes[0])
-        let endDate = formatDate(this.queryTimes[1])
-        console.log('startDate: ' + startDate + '; endDate=' + endDate + '! defaultVehicleLocType=' + this.defaultVehicleLocType + '!')
+        let startTime = formatDate(this.queryTimes[0])
+        let endTime = formatDate(this.queryTimes[1])
         let params = {
           startIndex: '' + this.startIndex,
           amount: '' + this.amount,
           direction: this.direction,
-          startDate: startDate,
-          endDate: endDate
+          startTime: startTime,
+          endTime: endTime,
+          category: this.selVehicleLocType,
+          vType: this.selVehicleType + '',
+          ilType: this.selIlsType + '',
+          hphm: this.hphm,
+          vAddr: this.sietName
         }
-      },
-      /**
-       * 本地外埠车辆类型下拉列表框选择改变监听事件
-       */
-      chooseVehicleLocType(event) {
-        console.log('选择：' + event.value + '---' + event.label + '!')
+        console.log(JSON.stringify(params))
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
