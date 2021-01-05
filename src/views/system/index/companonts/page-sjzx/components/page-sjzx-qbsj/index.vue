@@ -198,7 +198,7 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + this.queryTimes[0].Format('yyyy-MM-dd') + '!')
+        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times=' + JSON.stringify(this.queryTimes) + '! t:' + this.queryTimes[0] + '!')
         let startDate = '' + this.queryTimes[0].getFullYear()
         if ((this.queryTimes[0].getMonth() + 1)<10) {
           startDate += '0' + this.queryTimes[0].getMonth()
