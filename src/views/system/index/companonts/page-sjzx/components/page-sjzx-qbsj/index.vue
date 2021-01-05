@@ -149,10 +149,8 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
-<<<<<<< HEAD
         ilsTypes: [],
         defaultIlsTypes: 0,
-=======
         // 定义查询条件
         hphm: '', // 车牌号
         siteName: '点位', // 地点仅提点位
@@ -162,7 +160,6 @@
         startIndex: 0,
         amount: 20,
         driection: 'next',
->>>>>>> 4ee435a2b39e3ec7d6854e23a3ab26187967700d
         table: {
           data: [],
           filter: {},
@@ -203,28 +200,6 @@
         this.defaultVehicleType = 0
       },
       /**
-<<<<<<< HEAD
-       * 获取违章类型下拉框中内容
-       */
-      getIlsTypes() {
-        console.log('getIlsTypes..........?????????????')
-        API.getIlsTypes().then(res => {
-          let recs = res.data
-          let vtLen= recs.length;
-          this.ilsTypes = [{
-            value: 0,
-            label: '全部'
-          }]
-          for (let i=0; i<vtLen; i++) {
-            this.ilsTypes.push({
-              value: recs[i].typeId,
-              label: recs[i].typeName
-            })
-          }
-          console.log('违章数据：' + JSON.stringify(recs) + '!')
-        })
-        this.defaultIlsTypes = 0
-=======
        * 左侧列表查询接口
        */
       queryVehicles(event) {
@@ -246,7 +221,6 @@
        */
       chooseVehicleLocType(event) {
         console.log('选择：' + event.value + '---' + event.label + '!')
->>>>>>> 4ee435a2b39e3ec7d6854e23a3ab26187967700d
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
