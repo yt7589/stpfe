@@ -9,7 +9,7 @@
           <el-form class="search-form">
             <div style="display: flex;justify-content: space-between;">
               <el-date-picker
-                v-model="table.filter.time"
+                v-model="queryTimes"
                 class="custom-date-editor"
                 style="width:35%"
                 type="daterange"
@@ -37,7 +37,7 @@
             <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
               <el-input placeholder="请输入车牌号" v-model="hphm"
                         class="custom-input custom-input-mini" style="width:15%"></el-input>
-              <el-input placeholder="请输入地点" v-model="table.filter.location"
+              <el-input placeholder="请输入地点" v-model="siteName"
                         class="custom-input custom-input-mini" style="width:15%">>
               </el-input>
 
@@ -150,7 +150,9 @@
         vehicleTypes: [],
         defaultVehicleType: 0,
         // 定义查询条件
-        hphm: 'm?',
+        hphm: '', // 车牌号
+        siteName: '点位', // 地点仅提点位
+        queryTimes: null,
         startIndex: 0,
         amount: 20,
         driection: 'next',
@@ -196,7 +198,7 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '!')
+        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '; addr=' + this.siteName + '; times' + this.queryTimes + '!')
         let params = {
           startIndex: '' + this.startIndex,
           amount: '' + this.amount,
