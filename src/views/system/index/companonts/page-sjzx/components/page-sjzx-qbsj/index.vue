@@ -225,24 +225,29 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        let startTime = formatDate(this.queryTimes[0])
-        let endTime = formatDate(this.queryTimes[1])
+        this.startIndex = 0
         let params = {
           startIndex: '' + this.startIndex,
           amount: '' + this.amount,
-          direction: this.direction,
+          direction: this.direction/*,
           startTime: startTime,
           endTime: endTime,
           category: this.selVehicleLocType,
           vType: this.selVehicleType + '',
           ilType: this.selIlsType + '',
           hphm: this.hphm,
-          vAddr: this.siteName
+          vAddr: this.siteName*/
         }
+        console.log('this.queryTimes=' + this.queryTimes + '!')
+        console.log('this.queryTimes[0]=' + this.queryTimes[0] + '!')
+        /*
+        let startTime = formatDate(this.queryTimes[0])
+        let endTime = formatDate(this.queryTimes[1])
+
         console.log(JSON.stringify(params))
         API.getDcAdVehicles(params).then(res => {
           console.log(JSON.stringify(res.data))
-        })
+        })*/
       },
       handleSizeChange(size){
         this.table.pagination.pageSize = size
