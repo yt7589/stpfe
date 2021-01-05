@@ -35,7 +35,7 @@
               </el-select>
             </div>
             <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
-              <el-input placeholder="请输入车牌号" v-model="table.filter.carNumber"
+              <el-input placeholder="请输入车牌号" v-model="hphm"
                         class="custom-input custom-input-mini" style="width:15%"></el-input>
               <el-input placeholder="请输入地点" v-model="table.filter.location"
                         class="custom-input custom-input-mini" style="width:15%">>
@@ -149,6 +149,8 @@
         defaultVehicleLocType: '0',
         vehicleTypes: [],
         defaultVehicleType: 0,
+        // 定义查询条件
+        hphm: 'm?',
         startIndex: 0,
         amount: 20,
         driection: 'next',
@@ -194,7 +196,7 @@
        * 左侧列表查询接口
        */
       queryVehicles(event) {
-        console.log('查询按钮点击事件：' + JSON.stringify(event) + '!')
+        console.log('查询按钮点击事件：' + JSON.stringify(event) + '! v=' + this.hphm + '!')
         let params = {
           startIndex: '' + this.startIndex,
           amount: '' + this.amount,
