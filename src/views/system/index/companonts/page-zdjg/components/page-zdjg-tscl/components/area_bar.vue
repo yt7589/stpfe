@@ -83,14 +83,19 @@
             top: '10%',
             // right: '3%',
             left: '15%',
-            // bottom: '12%'
+            bottom: '82'
           },
           xAxis: [{
             type: 'category',
             data: xData,
+            axisTick: {
+              show: false,
+
+            },
             axisLine: {
+              show: false,
               lineStyle: {
-                color: 'rgba(255,255,255,0.12)'
+                color: 'rgba(151, 151, 151, 1)'
               }
             },
             axisLabel: {
@@ -105,14 +110,20 @@
           yAxis: [{
             name: '',
             axisLabel: {
-
-              color: '#ffffff',
+              textStyle: {
+                fontSize: 12,
+                fontFamily:'',
+                color: '#ffffff',
+              }
+            },
+            axisTick: {
+              show: false,
             },
             axisLine: {
               show: false,
-              lineStyle: {
-                color: '#ffffff'
-              }
+              // lineStyle: {
+              //   color: 'rgba(151, 151, 151, 1)'
+              // }
             },
 
           }],
@@ -125,13 +136,19 @@
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: ' rgba(0, 246, 255, 0.7)' // 0% 处的颜色
+                  color: 'rgba(0, 246, 255, 0.7)' // 0% 处的颜色
                 }, {
                   offset: 1,
-                  color: ' #091221' // 100% 处的颜色
+                  color: '#091221' // 100% 处的颜色
                 }], false),
-              }
+                lineStyle:{
+                  color:'#f5bf58',
+                  width:4
+                },
+              },
+
             },
+
 
           }]
         })

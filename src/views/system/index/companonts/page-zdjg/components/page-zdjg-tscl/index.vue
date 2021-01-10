@@ -53,8 +53,8 @@
 
                     </el-row>
                     <el-row class="col-2-row-3">
-                      <el-table class="col-2-row-3-table" :data="tableData" v-loading="loading">
-                          <el-table-column prop="seq"  align="center" label="序号" minWidth="20"></el-table-column>
+                      <el-table class="col-2-row-3-table" :data="tableData" v-loading="loading" :header-row-style="{padding:'0px'}" :cell-style="{padding:'0px'}">
+                          <el-table-column prop="seq"  align="center" label="序号" minWidth="30"></el-table-column>
                           <el-table-column prop="hphm"  align="center" label="车牌号" minWidth="70"></el-table-column>
                           <el-table-column prop="ppcx"  align="center" label="车辆品牌" ></el-table-column>
                           <el-table-column prop="trafficViolationTypeName"  align="center" label="违法预警" ></el-table-column>
@@ -301,6 +301,7 @@
             .col-2-row-3 {
                 position: absolute;
                 bottom: 3%;
+                height: 180px;
             }
 
         }
@@ -308,7 +309,7 @@
             width: 100%;
             height: 32%;
             background: url("../../image/col-1-1.png") no-repeat;
-            background-size: 95% 98%;
+            background-size: 100% 98%;
         }
         .col-3 {
             width: 27%;
@@ -322,7 +323,7 @@
             width: 100%;
             background: url("../../image/tscl_table@1x.png") no-repeat;
             background-size: 100% 100%;
-            min-height: 220px;
+            min-height: 180px;
 
         }
         .col-2-row-3-table  .el-table__header th,.el-table__header tr,.el-table__row{

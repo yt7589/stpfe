@@ -101,7 +101,7 @@
             left: '15%',
             top: '20%',
             // right: '4%',
-            // bottom: '3%',
+            bottom: '75',
             // containLabel: true
           },
           legend: {
@@ -155,7 +155,6 @@
             },
             axisTick: {
               show: false,
-
             },
             axisLine: {
               show: false, //y轴线

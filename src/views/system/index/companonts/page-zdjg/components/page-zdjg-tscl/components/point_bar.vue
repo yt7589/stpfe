@@ -76,7 +76,7 @@
             top: '10%',
             // right: '3%',
             left: '20%',
-            // bottom: '12%'
+            bottom: '70'
           },
           xAxis: [{
             type: 'value',
@@ -107,7 +107,7 @@
               interval:0,
               textStyle: {
                 color: '#FFFFFF',
-                fontSize: '12'
+                fontSize: 12
               },
             },
             splitNumber:0,
