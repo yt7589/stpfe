@@ -31,7 +31,7 @@
 
     </div>
 
-    <el-dialog :visible.sync="cameraPhotoDialog.visible" class="camera-photo-dialog" :modal="false" style="overflow: hidden;">
+    <el-dialog :visible.sync="cameraPhotoDialog.visible" class="camera-photo-dialog" :modal="true" style="overflow: hidden;">
       <camera-photo-dialog v-if="cameraPhotoDialog.visible" :data="cameraPhotoDialog.data"></camera-photo-dialog>
     </el-dialog>
   </div>
