@@ -6,7 +6,7 @@
                 <el-col class="col-1">
                     <el-row class="col-1-row col-1-row-1">
                         <div class="date-time-select">
-                            <el-form :model="form" label-width="80px">
+                            <el-form :model="form" label-width="90px">
                                 <el-form-item label="选择日期">
                                     <el-date-picker
                                         align="right"
@@ -35,11 +35,11 @@
                     <el-row class="col-1-row col-1-row-2">
                         <div class="col-1-row-2-content">
                             <div>预计本时段全市车流量</div>
-                            <div>123456</div>
+                            <div>{{tVehicle}}</div>
                         </div>
                     </el-row>
                     <el-row class="col-1-row col-1-row-3">
-                        <llyc-chart ref="llyc-chart"></llyc-chart>
+                        <llyc-chart ref="llyc-chart" :y-data="yData" :y-data2="yData2" :series-data="seriesData"></llyc-chart>
                     </el-row>
                 </el-col>
                 <el-col class="col-2">
@@ -48,9 +48,12 @@
                                     :center="map.center" :dragging="false"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker  :position="markerPoint" :dragging="true">
+                            <div v-for="(item,index) in markerPoints" :key="index">
+                                <bm-marker :icon="bmMarkerStyle"  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
 
-                            </bm-marker>
+
+                                </bm-marker>
+                            </div>
                         </baidu-map>
                     </div>
                 </el-col>
@@ -63,6 +66,7 @@
   import mapStyle from '@/assets/baiduMapStyle'
   import HeaderCrumb from '@components/custom/header-crumb'
   import LlycChart from './charts'
+  import API from '@/api'
   export default {
     name: 'jtyc-llyc',
     props:{
@@ -82,9 +86,10 @@
       LlycChart
     },
     data(){
+      let st = new Date().toLocaleDateString().split('/').join('-')
       return {
         form:{
-          date:'2020-12-10',
+          date:st,
           time:'00:00',
         },
         map: {
@@ -95,22 +100,25 @@
             lat: 39.915
           },
         },
-        markerPoint: {
-          lng: 116.404,
-          lat: 39.915
-        },
-        markerData:{
-          desc:"海淀区上地8街12号",
-          card:"京A12345累计"
-        },
+        markerPoints:[
+
+        ],
+        tVehicle:'',
         bmMarkerStyle:{
-          //url: require('../../image/mark_point2.png'),
-          // size: {
-          //   width: 39,
-          //   height: 18
-          // },
+          url: require('../../image/llyj-mark.png'),
+          size: {
+            width: 39,
+            height: 27
+          },
         },
+        yData:[],
+        yData2:[],
+        seriesData:[],
+
       }
+    },
+    mounted(){
+      this.getData()
     },
     methods:{
       onMapReady ({BMap, map}) {
@@ -129,7 +137,20 @@
         this.map.center.lng = lng
         this.map.zoom = event.target.getZoom()
       },
+      getData(){
+        API.QueryTrafficForecast(this.form).then((res) => {
+          this.map.center.lat = res.data.tfs[0].lat
+          this.map.center.lng = res.data.tfs[0].lng
+          this.markerPoints = res.data.tfs
+          this.tVehicle = res.data.tVehicle
 
+          res.data.tfst.forEach((item)=>{
+            this.yData.push(item.name)
+            this.seriesData.push(item.count)
+            this.yData2.push(item.count)
+          })
+        })
+      },
 
 
 
@@ -242,6 +263,7 @@
         .el-form-item__label{
             font-size: 14px;
             color: #ffffff;
+
         }
     }
 

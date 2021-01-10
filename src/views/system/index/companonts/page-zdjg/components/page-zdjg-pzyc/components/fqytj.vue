@@ -25,20 +25,53 @@
         type: String,
         default: '100%'
       },
+      yData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
+      seriesData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
       height: {
         type: String,
         default: '100%'
       }
     },
-    mounted() {
+    data(){
+      return {
+        chart: null
+      }
+    },
+    watch: {
+      seriesData: {
+        deep: true,
+        handler(val) {
+
+          this.setOptions(this.yData,this.seriesData)
+        }
+      }
+    },
+    mounted(){
       this.initChart()
+    },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
     },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions()
+        this.setOptions(this.yData,this.seriesData)
       },
-      setOptions(){
+      setOptions(yData,seriesData){
         this.chart.setOption({
           grid: {
             left:'50',
@@ -92,7 +125,7 @@
                 color: '#979797'
               }
             },
-            data: ['朝阳区','东城区','房山区','通州区','海淀区','思明区','湖里区','集美区']
+            data: yData
           }],
           series: [{
             name: '值',
@@ -112,7 +145,7 @@
               },
             },
             barWidth: 5,
-            data: [78,56,63,123,22,330,11,22]
+            data: seriesData
           }
           ]
         })

@@ -19,26 +19,59 @@
       },
       id: {
         type: String,
-        default: 'chart'
+        default: 'fsdtjchart'
       },
       width: {
         type: String,
         default: '100%'
+      },
+      yData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
+      },
+      seriesData:{
+        type: Array,
+        default:()=>{
+          return [];
+        }
       },
       height: {
         type: String,
         default: '100%'
       }
     },
-    mounted() {
+    data(){
+      return {
+        chart: null
+      }
+    },
+    watch: {
+      seriesData: {
+        deep: true,
+        handler(val) {
+
+          this.setOptions(this.yData,this.seriesData)
+        }
+      }
+    },
+    mounted(){
       this.initChart()
+    },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
     },
     methods:{
       initChart(){
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions()
+        this.setOptions(this.yData,this.seriesData)
       },
-      setOptions(){
+      setOptions(yData,seriesData){
         this.chart.setOption({
           grid: {
             left:'50',
@@ -92,7 +125,7 @@
                 color: '#979797'
               }
             },
-            data: ['23:00','22:00','21:00','20:00','19:00','18:00','17:00','16:00','15:00','14:00','13:00','12:00','11:00','10:00','09:00', '08:00', '07:00', '06:00', '04:00', '03:00', '02:00', '01:00', '00:00', '09:00']
+            data: yData
           }],
           series: [{
             name: '值',
@@ -106,7 +139,7 @@
               },
             },
             barWidth: 5,
-            data: [88,12,23,45,33,23,56,12,55,67,23,11,78,23,86, 90, 77, 63, 55, 25, 98, 65, 55, 66]
+            data: seriesData
           }
           ]
         })

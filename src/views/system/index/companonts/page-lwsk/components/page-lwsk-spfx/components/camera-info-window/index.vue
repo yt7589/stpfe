@@ -5,18 +5,18 @@
         <div class="header">
         <span>
           <div>该点位共有： </div>
-          {{data.cameraNum}}个摄像头、{{data.snapMachineNum}}个抓拍机
+          {{data.camera}}个摄像头、{{data.snapshot}}个抓拍机
         </span>
           <i class="el-icon-close icon-close" @click="close"></i>
         </div>
-        <el-table :data="data.cameraList" v-if="data.cameraList" class="custom-table camera-table"
+        <el-table :data="data.recs" v-if="data.recs" class="custom-table camera-table"
                   @row-click="onRowClick">
-          <el-table-column prop="regionName" align="center" label="设备位置" minWidth="80"></el-table-column>
-          <el-table-column prop="to" align="center" label="朝向" minWidth="40"></el-table-column>
-          <el-table-column prop="cameraTypeName" align="center" label="类别" minWidth="80"></el-table-column>
+          <el-table-column prop="diAddr" align="center" label="设备位置" minWidth="80"></el-table-column>
+          <el-table-column prop="direction" align="center" label="朝向" minWidth="40"></el-table-column>
+          <el-table-column prop="category" align="center" label="类别" minWidth="80"></el-table-column>
           <el-table-column prop="status" align="center" label="状态" minWidth="40">
             <template slot-scope="scope">
-              <div :style="scope.row.status>0?{}:{color:'red'}">{{scope.row.status > 0 ? "正常" : "异常"}}</div>
+              <div :style="scope.row.status=='已接入'?{}:{color:'red'}">{{scope.row.status=='已接入' ? "正常" : "异常"}}</div>
             </template>
           </el-table-column>
         </el-table>
@@ -55,6 +55,7 @@
     },
     methods: {
       onRowClick(row, column, event){
+        this.$store.commit("stp/video_analysis/setCameraId", 101)
         this.cameraPhotoDialog.data = row
         this.cameraPhotoDialog.visible = true;
         this.visible = false

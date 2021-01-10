@@ -9,7 +9,7 @@
           <el-form class="search-form">
             <div style="display: flex;justify-content: space-between;">
               <el-date-picker
-                v-model="table.filter.time"
+                v-model="queryTimes" format="yyyy-MM-dd" 
                 class="custom-date-editor"
                 style="width:35%"
                 type="daterange"
@@ -20,29 +20,29 @@
 
               <el-select class="custom-input custom-input-mini"
                          style="width:14%" placeholder="类型"
-                         v-model="table.filter.wzlx">
-
+                         v-model="selVehicleLocType">
+                <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="车辆类型" v-model="table.filter.wzlx">
-
+                         style="width:24%" placeholder="车辆类型" v-model="selVehicleType">
+                <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
 
               <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="违章类型" v-model="table.filter.wzlx">
-
+                         style="width:24%" placeholder="违章类型" v-model="selIlsType">
+                <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </div>
             <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
-              <el-input placeholder="请输入车牌号" v-model="table.filter.carNumber"
+              <el-input placeholder="请输入车牌号" v-model="hphm"
                         class="custom-input custom-input-mini" style="width:15%"></el-input>
-              <el-input placeholder="请输入地点" v-model="table.filter.location"
+              <el-input placeholder="请输入地点" v-model="siteName"
                         class="custom-input custom-input-mini" style="width:15%">>
               </el-input>
 
               <div style="width:68%;display: inline-block;text-align: right">
-                <el-button class="button-search">
+                <el-button class="button-search" @click="queryVehiclesHandler">
                   搜索
                   <el-image :src="require('../../image/image-search.png')"></el-image>
                 </el-button>
@@ -56,14 +56,18 @@
 
           <el-container class="table-container">
             <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-              <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-                <el-table-column align="center" prop="" label="时间" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="地点" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="车牌号" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="类别" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="违章" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="违章类型" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="详情" minWidth="60"></el-table-column>
+              <el-table class="custom-table wzgl-table" :data="vehicles" height="100%">
+                <el-table-column align="center" prop="dcTime" label="时间" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="dcAddr" label="地点" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="hphm" label="车牌号" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="isIl" label="违章" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="" label="详情" minWidth="60">
+                  <template slot-scope="scope">
+                    <span :id="scope.row.dcId" @click="selectVehicle(scope.row.dcId)">...</span>
+                  </template>
+                </el-table-column>
               </el-table>
             </el-main>
             <el-footer>
@@ -71,11 +75,11 @@
                 class="custom-pagination"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page.sync="table.pagination.currentPage"
+                :current-page.sync="currentPage"
                 :page-sizes="[20, 50, 100, 200]"
-                :page-size="table.pagination.pageSize"
+                :page-size="pageSize"
                 layout="prev, pager,sizes, next,total"
-                :total="table.pagination.total">
+                :total="total">
               </el-pagination>
             </el-footer>
           </el-container>
@@ -124,12 +128,46 @@
   import ChartRecognize  from './chart-recognize.vue'
   import ChartViolation from './chart-violation.vue'
 
+  import API from '@/api'
+
   export default {
     props: ['visible'],
     components: {ChartRecognize, ChartViolation},
     data(){
       return {
         loading: false,
+        vehicleLocTypes: [
+          {
+            value: 0,
+            label: '全部'
+          },
+          {
+            value: 1,
+            label: '本地'
+          },
+          {
+            value: 2,
+            label: '外埠'
+          }
+        ],
+        selVehicleLocType: 0,
+        vehicleTypes: [],
+        selVehicleType: 0,
+        ilsTypes: [],
+        selIlsType: 0,
+        // 定义查询条件
+        hphm: '', // 车牌号
+        siteName: '', // 地点仅提点位
+        queryTimes: null,
+        startDate: '',
+        endDate: '',
+        startIndex: 0,
+        amount: 20,
+        driection: 'next',
+        currentPage: 1,
+        pageSize: 20,
+        total: 0,
+        vehicles: [],
         table: {
           data: [],
           filter: {},
@@ -142,19 +180,133 @@
       }
     },
     mounted(){
+      this.getVehicleTypes()
+      this.getIlsTypes()
+      this.queryVehicles()
     },
     methods: {
-      fetchData(page = 1){
+      /**
+       * 获取车辆类别下拉框中内容
+       */
+      getVehicleTypes() {
+        API.getVehicleTypes().then(res => {
+          let recs = res.data
+          let vtLen= recs.length;
+          this.vehicleTypes = [{
+            value: 0,
+            label: '全部'
+          }]
+          for (let i=0; i<vtLen; i++) {
+            this.vehicleTypes.push({
+              value: recs[i].typeId,
+              label: recs[i].typeName
+            })
+          }
+          console.log('数据：' + JSON.stringify(recs) + '!')
+        })
+        this.defaultVehicleType = 0
+      },
+      /**
+       * 获取违章类型下拉框中内容
+       */
+      getIlsTypes() {
+        API.getIlsTypes().then(res => {
+          let recs = res.data
+          let vtLen= recs.length;
+          this.ilsTypes = [{
+            value: 0,
+            label: '全部'
+          }]
+          for (let i=0; i<vtLen; i++) {
+            this.ilsTypes.push({
+              value: recs[i].typeId,
+              label: recs[i].typeName
+            })
+          }
+          console.log('违章数据：' + JSON.stringify(recs) + '!')
+        })
+        this.defaultIlsTypes = 0
+      },
+      /**
+       * 左侧列表查询接口
+       */
+      queryVehiclesHandler(event) {
+        this.currentPage = 1
+        this.startIndex = 0
+        this.queryVehicles()
+      },
+      queryVehicles() {
+        let params = {
+          startIndex: this.startIndex,
+          amount: this.amount,
+          direction: this.direction
+        }
+        if (this.queryTimes != null) {
+          params.startTime = formatDate(this.queryTimes[0])
+          params.endTime = formatDate(this.queryTimes[1])
+        }
+        if (this.selVehicleLocType != 0) {
+          params.selVehicleLocType = this.selVehicleLocType
+        }
+        if (this.selVehicleType != 0) {
+          params.selVehicleType = this.selVehicleType
+        }
+        if (this.selIlsType != 0) {
+          params.selIlsType = this.selIlsType
+        }
+        if (this.hphm != null && this.hphm != '') {
+          params.hphm = this.hphm
+        }
+        if (this.siteName != null && this.siteName != '') {
+          params.vAddr = this.siteName
+        }
+        console.log(JSON.stringify(params))
+        API.getDcAdVehicles(params).then(res => {
+          let data = res.data
+          this.total = data.total
+          if (this.direction == 'next') {
+            this.startIndex += data.realNum
+          } else {
+            this.startIndex -= data.realNum
+          }
+          this.vehicles = data.recs
+        })
+      },
+      /**
+       * 车辆表格中每行编辑图标点击事件
+       */
+      selectVehicle(dcId) {
+        console.log('点击：' + dcId + '!')
       },
       handleSizeChange(size){
-        this.table.pagination.pageSize = size
-        this.fetchData()
+        this.pageSize = size
+        this.queryVehicles()
       },
       handleCurrentChange(page){
-        this.table.pagination.page = page
-        this.fetchData(page)
+        this.currentPage = page
+        this.startIndex = (page - 1) * this.pageSize
+        this.queryVehicles()
       }
     }
+  }
+  /**
+   * 日期格式化工具函数
+   */
+  function formatDate(dateObj) {
+    let dateStr = '' + dateObj.getFullYear()
+    let month = dateObj.getMonth() + 1
+    if (month<10) {
+      dateStr += '-0' + month
+    } else {
+      dateStr += '-' + month
+    }
+    let dateVal = dateObj.getDate()
+    if (dateVal<10) {
+      dateStr += '-0' + dateVal
+    } else {
+      dateStr += '-' + dateVal
+    }
+    return dateStr
   }
 </script>
 

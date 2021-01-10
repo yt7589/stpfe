@@ -83,15 +83,23 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   GetCameraSiteList(){
     return request({
-      url: '/camera/site',
+      //url: '/camera/site',
+      url: '/tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
       method: 'get',
     })
   },
   GetCameraList(params){
     return request({
-      url: '/camera/site/device',
+      url: '/tn/va/querySdInfo?p=pc&v=0.0.1',
       method: 'get',
       params
+    })
+  },
+  GetQueryDeviceSum() {
+    return request({
+      url: '/tn/va/queryDevice?p=pc&v=0.0.1',
+      method: 'get',
+      //params
     })
   },
   GetTrafficViolationList(params){

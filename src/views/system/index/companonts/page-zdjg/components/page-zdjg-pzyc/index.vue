@@ -4,11 +4,11 @@
         <div  class="body">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col col-1">
-                    <el-row class="fsdtj" >
-                        <fsdtj id="fsdtj"></fsdtj>
+                    <el-row class="fsdtj">
+                        <fsdtj id="fsdtj" :y-data="fsdtjYData" :series-data="fsdtjSeriesData"></fsdtj>
                     </el-row>
                     <el-row class="fqytj">
-                        <fqytj id="fqytj"></fqytj>
+                        <fqytj id="fqytj" :y-data="fqytjYData" :series-data="fqytjSeriesData"></fqytj>
                     </el-row>
                 </el-col>
                 <el-col :span="12" class="col bg-color col-2">
@@ -17,31 +17,33 @@
                                     :center="map.center" :dragging="false"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :icon="bmMarkerStyle" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
-                                <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
-                                    <div class="bm-info-content">
-                                        <p>{{markerData.desc}}</p>
-                                        <p>{{markerData.card}}</p>
-                                    </div>
+                            <div v-for="(item,index) in markerPoints" :key="index">
+                                <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
+                                    <bm-info-window  :show="item.show" @close="infoWindowClose(index)">
+                                        <div class="bm-info-content">
+                                            <p>{{item.siteName}}</p>
+                                            <p>{{item.hphm}}累计出现{{item.totalTimes}}次</p>
+                                        </div>
 
-                                </bm-info-window>
-                            </bm-marker>
+                                    </bm-info-window>
+                                </bm-marker>
+                            </div>
                         </baidu-map>
                         <el-row  class="col-2-row-1">
                             <el-col :span="6" class="common_stat total_car">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{wpCount}}</div>
                                 <div class="car_info">今日无牌过车数量</div>
                             </el-col>
                             <el-col :span="6" class="common_stat total_dev">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{tpCount}}</div>
                                 <div class="car_info">今日套牌车过车数量</div>
                             </el-col>
                             <el-col :span="6" class="common_stat total_warn">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{jpCount}}</div>
                                 <div class="car_info">今日假牌车过车数量</div>
                             </el-col>
                             <el-col :span="6" class="common_stat area_total_car">
-                                <div class="car_num">12345</div>
+                                <div class="car_num">{{hpzdCount}}</div>
                                 <div class="car_info">今日号牌遮挡过车数量</div>
                             </el-col>
 
@@ -64,11 +66,11 @@
                                 <el-col class="dt-row" :span="24">
                                     <el-card class="card">
                                         <div  class="card-content">
-                                            <div>{{item.area}}</div>
-                                            <div>{{item.time}}</div>
+                                            <div>{{item.siteName}}</div>
+                                            <div>{{item.occurTime}}</div>
                                         </div>
                                         <div class="card-content">
-                                            <div> <span style="color: #00F6FF">{{item.card}}</span></div>
+                                            <div> <span style="color: #00F6FF">{{item.hphm}}</span></div>
 
                                         </div>
                                     </el-card>
@@ -92,6 +94,7 @@
   import HeaderCrumb from '../common/header-crumb'
   import Fsdtj from './components/fsdtj'
   import Fqytj from './components/fqytj'
+  import API from '@/api'
   export default {
     name: 'page-zdjg-pzyc',
     props:{
@@ -114,11 +117,7 @@
     data(){
       return {
         loading:false,
-        tableData:[
-          {
-            area_name:"海淀区上地8街12号"
-          }
-        ],
+
         map: {
           instance: null,
           zoom: 12,
@@ -127,14 +126,13 @@
             lat: 39.915
           },
         },
-        markerPoint: {
-          lng: 116.404,
-          lat: 39.915
-        },
-        markerData:{
-          desc:"海淀区上地8街12号",
-          card:"京A12345累计"
-        },
+        markerPoints:[
+
+        ],
+        wpCount:0,
+        tpCount:0,
+        jpCount:0,
+        hpzdCount:0,
         bmMarkerStyle:{
           url: require('../../image/mark_point2.png'),
           size: {
@@ -142,26 +140,18 @@
             height: 18
           },
         },
-        show: true,
-        dialogVisible:false,
-        dialogData:{
-          area:"",
-        },
+        fsdtjYData:[],
+        fsdtjSeriesData:[],
+        fqytjYData:[],
+        fqytjSeriesData:[],
         dtData:[
-          {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          },
+
         ],
         src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606650551241&di=8378d72dc6414bfa9a243c2e75db511a&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Fauto%2Fpics%2Fhv1%2F246%2F190%2F1582%2F102918246.jpg',
       }
+    },
+    mounted(){
+      this.getData()
     },
     methods:{
       onMapReady ({BMap, map}) {
@@ -180,14 +170,37 @@
         this.map.center.lng = lng
         this.map.zoom = event.target.getZoom()
       },
-      infoWindowClose () {
-        this.show = false
+      infoWindowClose (key) {
+        this.markerPoints[key].show = false
+        this.$forceUpdate()
       },
-      infoWindowOpen () {
+      infoWindowOpen (key) {
+        this.markerPoints[key].show = true
+        this.$forceUpdate()
+      },
+      getData(){
+        API.QueryAbnormalLicensePlate().then((res)=>{
 
-      },
-      addArea(){
-        this.dialogVisible = true
+          this.wpCount =res.data.wpCount
+          this.tpCount =res.data.tpCount
+          this.jpCount =res.data.jpCount
+          this.hpzdCount =res.data.hpzdCount
+
+          this.map.center.lat = res.data.site[0].lat
+          this.map.center.lng = res.data.site[0].lng
+          this.markerPoints = res.data.site
+          res.data.time.forEach((item)=>{
+            this.fsdtjYData.push(item.name)
+            this.fsdtjSeriesData.push(item.count)
+          })
+          res.data.area.forEach((item)=>{
+            this.fqytjYData.push(item.name)
+            this.fqytjSeriesData.push(item.count)
+          })
+          this.dtData = res.data.lalp.slice(0,3)
+          this.src = res.data.lalp[0].imageUrl
+
+        })
       }
 
 

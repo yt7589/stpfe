@@ -1,47 +1,49 @@
 <template>
-    <div class="page-zdjg-ldgj" >
+    <div class="page-zdjg-ldjg" >
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
-        <div  class="body" >
+        <div class="body" style="">
             <el-row class="qy-row" >
                 <el-col :span="5" class="col" style="width: 23%;">
-                    <div   class="search-form" >
-                        <el-input placeholder="路段名称" class="search-input"></el-input>
-                        <button class="search-button"><span>搜索</span></button>
-                        <button class="create-button" @click="addArea"><span>添加</span></button>
+                    <div class="search-form" >
+                        <el-input v-model="frm.rssName" placeholder="路段名称" class="search-input"></el-input>
+                        <button class="search-button" @click="getListNext"><span>搜索</span></button>
+                        <button class="create-button" @click="handleAdd"><span>添加</span></button>
                     </div>
                     <div>
                         <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-                            <el-table class="custom-table" :data="tableData">
-                                <el-table-column align="center" prop="area_name" label="路段名称" minWidth="150"></el-table-column>
+                            <el-table class="custom-table" :data="tableData" :row-style="{height:'0.037rem'}">
+                                <el-table-column align="center" prop="rssName" label="路段名称" minWidth="150"></el-table-column>
                                 <el-table-column align="center" prop="" label="操作">
                                     <template slot-scope="scope">
-                                        <el-button type="text" size="mini">修改</el-button>
-                                        <el-button type="text" size="mini">删除</el-button>
+                                        <!--<el-button type="text" size="mini" @click="handleEdit(scope.row)">修改</el-button>-->
+                                        <el-button type="text" size="mini" @click="handleDel(scope.row)">删除</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
                         </el-main>
                         <div  class="button-page-group" v-show="this.tableData.length >= 10">
-                            <el-button class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
-                            <el-button class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
+                            <el-button @click="getListPrev()" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
+                            <el-button @click="getListNext()" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
                     </div>
                 </el-col>
                 <el-col :span="12" class="col" style="width: 52%;margin-right: 1%;margin-left: 1%;">
                     <div  style="height: 100%;" class="map">
-                        <baidu-map  ref="map-qyjg" class="baidu-map" :zoom="map.zoom"
+                        <baidu-map  ref="map-ldjg" class="baidu-map" :zoom="map.zoom"
                                     :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
-                            <bm-marker :icon="bmMarkerStyle" :position="markerPoint" :dragging="true" @click="infoWindowOpen">
-                                <bm-info-window  :show="show" @close="infoWindowClose" @open="infoWindowOpen">
+                            <div v-for="(item,index) in markerPoints" :key="index">
+                            <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
+                                <bm-info-window  :show="item.show" @close="infoWindowClose(index)">
                                     <div class="bm-info-content">
-                                        <p>{{markerData.desc}}</p>
-                                        <p>{{markerData.card}}</p>
+                                        <p>{{item.siteName}}</p>
+                                        <p>{{item.hphm}}累计出现{{item.totalTimes}}次</p>
                                     </div>
 
                                 </bm-info-window>
                             </bm-marker>
+                            </div>
                         </baidu-map>
                     </div>
                 </el-col >
@@ -52,7 +54,7 @@
                             <el-col :span="6" class="jgdt-text">  <span class="jgdt-span">监管动态</span></el-col>
                         </el-row>
                     </div>
-                    <div class="dt-list">
+                    <div class="dt-list ">
                         <el-row :gutter="2">
                             <el-col :span="12">
                                 <el-input placeholder="请输入地区名称" class="search-input"></el-input>
@@ -67,12 +69,12 @@
                             <el-col class="dt-row" :span="24">
                                 <el-card class="card">
                                     <div  class="card-content">
-                                        <div>{{item.area}}</div>
-                                        <div>{{item.time}}</div>
+                                        <div>{{item.siteName}}</div>
+                                        <div>{{item.occurTime}}</div>
                                     </div>
                                     <div class="card-content">
-                                        <div> <span style="color: #00F6FF">{{item.card}}</span></div>
-                                        <div>{{item.num}}</div>
+                                        <div> <span style="color: #00F6FF">{{item.hphm}}</span></div>
+                                        <div>累计出现{{item.totalTimes}}次</div>
                                     </div>
                                 </el-card>
                             </el-col>
@@ -84,19 +86,47 @@
         </div>
 
         <el-dialog
+                :close-on-click-modal="false"
                 title="添加路段"
                 :visible.sync="dialogVisible"
-                width="366px"
-                height = "200px"
-                >
-            <el-form ref="dialogForm" :model="dialogData" label-width="56px">
+                class="qygj-add-area"
+        >
+            <el-form ref="dialogForm" :inline="true" :model="dialogData" label-width="70">
                 <el-form-item label="路段名称">
-                    <el-input v-model="dialogData.area"name="area" width="266" />
+                    <el-select
+                            v-model="dialogData.rssId"
+                            multiple
+                            filterable
+                            remote
+                            reserve-keyword
+                            placeholder=""
+                            :remote-method="remoteMethod"
+                            :loading="loading">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
+
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="save">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                class="confirm"
+                title="提示"
+                :visible.sync="dialogVisibleConfirm"
+
+        >
+            <div>确定要删除吗？</div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleConfirm = false">取 消</el-button>
+                <el-button type="primary" @click="del">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -105,8 +135,9 @@
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
   import HeaderCrumb from '../common/header-crumb'
+  import API from '@/api'
   export default {
-    name: 'page-zdjg-ldgj',
+    name: 'page-zdjg-ldjg',
     props:{
       firstItem:{
         type:String,
@@ -122,14 +153,17 @@
     components:{
       HeaderCrumb
     },
+    computed:{
+
+    },
     data(){
       return {
         loading:false,
-        tableData:[
-          {
-            area_name:"海淀区上地8街12号"
-          }
-        ],
+        tableData:[],
+        frm:{
+          direction:0,
+          rssName:'',
+        },
         map: {
           instance: null,
           zoom: 12,
@@ -138,14 +172,9 @@
             lat: 39.915
           },
         },
-        markerPoint: {
-          lng: 116.404,
-          lat: 39.915
-        },
-        markerData:{
-          desc:"海淀区上地8街12号",
-          card:"京A12345累计"
-        },
+        markerPoints:[
+
+        ],
         bmMarkerStyle:{
           url: require('../../image/mark_point1.png'),
           size: {
@@ -153,35 +182,28 @@
             height: 43
           },
         },
-        show: true,
+        showPaging:false,
+        show: [],
         dialogVisible:false,
         dialogData:{
-          area:"",
+          rssIds:[],
         },
-        dtData:[
-          {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }, {
-            area:"海淀区12号",
-            time:'11:11:11',
-            card:"京A11111",
-            num:"累计出现11次",
-          }
-        ],
+        delId:0,
+        dtData:[],
+        options:[],
+        dialogVisibleConfirm:false,
       }
     },
+    mounted(){
+      this.getList()
+      this.handleMsg()
+    },
+
     methods:{
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
+
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
@@ -195,31 +217,147 @@
         this.map.center.lng = lng
         this.map.zoom = event.target.getZoom()
       },
-      infoWindowClose () {
-        this.show = false
+      infoWindowClose (key) {
+        this.markerPoints[key].show = false
+        this.$forceUpdate()
       },
-      infoWindowOpen () {
-        this.show = true
+      infoWindowOpen (key) {
+        this.markerPoints[key].show = true
+        this.$forceUpdate()
       },
-      addArea(){
+      handleAdd(){
+        this.dialogData.rssId = []
         this.dialogVisible = true
-      }
+      },
+      save(){
+        if (this.dialogData.rssId.length === 0){
+          this.$message.error('请选择路段');
+          return;
+        }
+        API.AddRsToRsSupervision({rssIds:this.dialogData.rssId}).then((res)=>{
+          this.getList()
+          this.$message.success('操作成功');
+          this.dialogVisible = false
+        })
+      },
+      handleEdit(val){
+        this.remoteMethod(val.rssName)
+        this.dialogData.rssId = [val.rssId]
+        this.dialogVisible = true
+      },
+      handleDel(val){
+        this.delId = val.rssId
+        this.dialogVisibleConfirm = true
+      },
+      del(){
+        if(this.delId===0){
+          this.$message.error('请选择路段');
+          return;
+        }
+        API.DeleteKsRsSupervision({rssId:this.delId}).then((res)=>{
+          this.getList()
+          this.dialogVisibleConfirm = false
+          this.delId = 0
+          this.$message.success('操作成功');
+        })
+      },
+      getList(){
+        this.loading = true
+        API.QueryKsRsSupervision(this.frm).then((res) => {
+          this.tableData = res.data.recs
+          this.loading = false
+        })
+      },
+      getListPrev(){
+        this.frm.direction = 'prev'
+        this.getList()
+      },
+      getListNext(){
+        this.frm.direction = 'next'
+        this.getList()
+      },
 
+      remoteMethod(query) {
+        let frm = {
+          direction:0,
+          rssName:query,
+        }
+        API.QueryKeyRsSupervision(frm).then((res) => {
+          res.data.recs.forEach((item)=>{
+            let tmp = {
+              value:'',
+              label:"",
+            }
+            tmp.value = item.rssId
+            tmp.label = item.rssName
+            this.options.push(tmp)
+          })
+        })
+      },
+
+      handleMsg() {
+        let that = this;
+
+        //监听消息
+        this.sendSubscribeMsg('ksRssSfvs',2)
+        this.sendSubscribeMsg('ksRssLsvs',2)
+
+        that.$globalws.ws.onmessage =  (res)=> {
+          let data = JSON.parse(res.data)
+          if (data.length > 0 ){
+            if(data[0].occurTime){
+              //动态列表
+              this.dtData = data
+            }else{
+
+              //中间地图信息
+              this.map.center.lat = data[0].lat
+              this.map.center.lng = data[0].lng
+              this.markerPoints = data
+              this.markerPoints[0].show = true
+            }
+          }
+
+        }
+      },
+      //监听消息
+      sendSubscribeMsg(topic,g_userId) {
+        let msg = {
+          'userId': '' + g_userId,
+          'type': 'sub',
+          'topic': topic
+        }
+        this.$globalws.ws.send(JSON.stringify(msg))
+      },
+
+      //取消监听
+      sendUnsubscribe(topic,g_userId) {
+        let msg = {
+          'user': '' + g_userId,
+          'type': 'unsub',
+          'topic': topic
+        }
+        this.$globalws.ws.send(JSON.stringify(msg))
+      },
 
     }
   }
 </script>
 
 <style scoped lang="scss">
-    .page-zdjg-ldgj {
+    .page-zdjg-ldjg {
         height: calc(100% - 170px);
         overflow-y: hidden;
+
         .body {
             margin-top: 8px;
             width: 100%;
             height: 100%
         }
 
+        .qyjg-add-area{
+
+        }
     }
     .qy-row{
         height:85%;
@@ -240,8 +378,6 @@
             width: 98%;
             height:97%;
             padding: 1%;
-
-
         }
         .jgdt-text{
 
@@ -271,7 +407,7 @@
     .card {
         background: rgba(4, 95, 224, 0.3);
         border: 1px solid #00F6FF;
-        height: 72px;
+        height: 50px;
         .card-content{
             display: flex;
             justify-content: space-between;
@@ -284,7 +420,7 @@
     }
 
     .dt-row {
-        margin-bottom: 4px;
+        margin-bottom: 3px;
     }
 
     .bm-info-content{
@@ -297,31 +433,35 @@
 
     }
     .dt-title {
-        padding: 16px;
+        padding: 8px 0 0 16px;
         position: relative;
     }
+
     .dt-list{
         position: relative;
-        padding: 0px 16px 16px 16px;
+        padding: 0px 16px 8px 16px;
     }
 </style>
 
 <style lang="scss">
-    .page-zdjg-ldgj{
+    .page-zdjg-ldjg{
         .el-card__body{
-            padding: 12px 16px 12px 16px;
+            padding: 4px 16px 4px 16px;
         }
         .el-dialog__header{
             background: #00F6FF;
             text-align: center;
             border-radius: 4px;
             border: 1px solid #0073FF;
+            padding: 0;
+            height: 56px;
         }
         .el-dialog{
 
             background: #001537;
             border-radius: 4px;
             border: 1px solid #0073FF;
+            width: 446px;
         }
         .el-dialog__title {
             width: 108px;
@@ -330,7 +470,7 @@
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             color: #001537;
-            line-height: 25px;
+            line-height: 56px;
 
         }
         .el-dialog__wrapper{
@@ -338,15 +478,22 @@
             top: 7%;
             right: 0;
             bottom: 0;
-            left: -22%;
+
             overflow: auto;
             margin: 0;
+
         }
         .el-dialog__body{
-
+            padding: 20px 0 0 20px;
+            .el-input__inner {
+                background-color: rgba(4, 95, 224, 0.5) !important;
+                border-color: rgba(4, 95, 224, 0.5) !important;
+                color: #ffffff;
+                width: 286px;
+            }
         }
         .el-dialog__footer{
-
+            text-align: center;
         }
         .el-form-item__label{
             font-weight: 400;
@@ -355,6 +502,29 @@
         }
         .el-main {
             padding: 16px !important;
+        }
+        .confirm {
+            .el-dialog{
+                width: 256px;
+
+            }
+            .el-dialog__header{
+                padding: 0;
+                height: 56px;
+            }
+            .el-dialog__body{
+                text-align: center;
+                color: #ffffff;
+                font-size: 14px;
+            }
+            .el-button{
+
+            }
+            .el-button--primary{
+                background: rgba(4, 95, 224, 1);
+                border-color: rgba(4, 95, 224, 1);
+            }
+
         }
     }
 
