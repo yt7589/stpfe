@@ -80,7 +80,7 @@
             top:'5',
             textStyle: {
               color:'#ffffff',
-              fontSize:"12px",
+              fontSize:12,
             },
 
           },
@@ -95,7 +95,7 @@
               label: {
                 normal: {
                   color:'#ffffff',
-                  fontSize:"12px",
+                  fontSize:12,
                   show: true,
                   position: 'outter',
                   formatter:function (parms){
