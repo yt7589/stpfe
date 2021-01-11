@@ -32,19 +32,19 @@
                 <el-col  class="col-2">
                     <el-row  class="col-2-row-1">
                         <el-col :span="6" class="common_stat total_car">
-                            <div class="car_num">{{currentEmphasisVehicleNum}}</div>
+                            <div class="car_num">{{todaySvNum}}</div>
                             <div class="car_info">本日重点车辆总数</div>
                         </el-col>
                         <el-col :span="6" class="common_stat total_dev">
-                            <div class="car_num">{{onlineDevice}}</div>
+                            <div class="car_num">{{todayDevNum}}</div>
                             <div class="car_info">本日在线设备总数</div>
                         </el-col>
                         <el-col :span="6" class="common_stat total_warn">
-                            <div class="car_num">{{alarmNum}}</div>
+                            <div class="car_num">{{todayWarnNum}}</div>
                             <div class="car_info">本日报警总数</div>
                         </el-col>
                         <el-col :span="6" class="common_stat area_total_car">
-                            <div class="car_num">{{emphasisVehicleEmphasisRegionNum}}</div>
+                            <div class="car_num">{{todayKakvNum}}</div>
                             <div class="car_info">重点区域重点车辆总数</div>
                         </el-col>
 
@@ -126,10 +126,10 @@
         //本日重点监控车辆实时图片
         images:[],
         //各个车辆总数
-        emphasisVehicleEmphasisRegionNum:0,
-        currentEmphasisVehicleNum:0,
-        alarmNum:0,
-        onlineDevice:0,
+        todaySvNum:0,
+        todayDevNum:0,
+        todayWarnNum:0,
+        todayKakvNum:0,
 
         //本日重点监控车辆小时分布图
         LxData:[],
@@ -194,10 +194,10 @@
             this.images.push(item.imgUrl)
           })
 
-          this.onlineDevice = res.data.htfs.todaySvNum
-          this.currentEmphasisVehicleNum = res.data.htfs.todayDevNum
-          this.emphasisVehicleEmphasisRegionNum = res.data.htfs.todayWarnNum
-          this.alarmNum = res.data.htfs.todayKakvNum
+          this.todaySvNum = res.data.htfs.todaySvNum
+          this.todayDevNum = res.data.htfs.todayDevNum
+          this.todayWarnNum = res.data.htfs.todayWarnNum
+          this.todayKakvNum = res.data.htfs.todayKakvNum
 
           this.tableData = res.data.svtvs
 
