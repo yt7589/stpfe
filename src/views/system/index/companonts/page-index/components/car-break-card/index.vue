@@ -4,12 +4,12 @@
       <div v-for="(item,index) in data" :key="index" v-if="index<2" style="height:50%; width:100%;display: flex;">
         <el-image :src="item.imgUrl" fit="contain"></el-image>
         <div :span="12" class="result-box">
-          <div>位置： {{item.location}}</div>
+          <div>位置： {{item.siteName}}</div>
           <div>车型： {{item.clpp}}</div>
           <div>车款： {{item.ppcx}}</div>
           <div>号牌： {{item.hphm}}</div>
           <div style="color:#00F6FF">违章类型： {{item.violationTypeName}}</div>
-          <div>拍摄时间： {{item.time}}</div>
+          <div>拍摄时间： {{item.occurTime}}</div>
         </div>
       </div>
 

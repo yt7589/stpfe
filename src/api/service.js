@@ -18,6 +18,22 @@ function createService() {
       if (token) {
         config.headers['accessToken'] = token
       }
+      if (!config.params) {
+        config.params = {}
+      }
+
+      // config.params.p='pc'
+      // config.params.v='1.0'
+      if (config.params.page && config.params.pageSize) {
+        // 分页请求
+        config.params.startIndex = config.params.page * config.params.pageSize
+        config.params.amount = config.params.pageSize
+        config.params.direction = 'next'
+
+        config.params.page = undefined
+        config.params.pageSize = undefined
+      }
+
       return config
     },
     error => {

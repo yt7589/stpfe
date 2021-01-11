@@ -80,7 +80,7 @@
               labels: {
                 distance: 18,
                 formatter: function () {
-                  let index = this.pos / this.axis.tickInterval
+                  let index = parseInt(this.pos / this.axis.tickInterval)
                   let options = this.axis.categories
                   let name = index < options.length ? options[index] : ''
                   let colors = ['#E69B03', '#D1494E', '#42FF00', '#00F6FF', '#00C087', '#06A6FF', '#FF5200', '#4C49EC', '#045FE0', '#041FE0']

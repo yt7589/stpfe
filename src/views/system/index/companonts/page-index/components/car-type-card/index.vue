@@ -66,9 +66,11 @@
             },
             plotOptions: {
               variablepie: {
+                size:'60%',
                 borderWidth: 0,
                 dataLabels: {
                   enabled: true,
+                  softConnector: false,
                   formatter: function () {
                     return parseInt(this.percentage) + '%';
                   },

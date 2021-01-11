@@ -6,19 +6,27 @@
     <div class="body">
       <div class="column-1">
         <el-form class="search-form">
+          <el-form-item label="">
+            <el-date-picker
+              v-model="table.filter.date"
+              type="daterange"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
           <el-form-item>
             <el-select placeholder="类别" v-model="table.filter.type">
-
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-select placeholder="车辆类型" v-model="table.filter.carType">
-
+              <el-option v-for="item in table.option.typeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-select placeholder="违章类型" v-model="table.filter.wzlx">
-
+              <el-option v-for="item in table.option.ilsTypeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -33,7 +41,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button class="button-search">
+            <el-button class="button-search" @click="fetchData">
               搜索
               <el-image :src="require('../../image/image-search.png')"></el-image>
             </el-button>
@@ -50,14 +58,24 @@
         <el-container class="table-container">
           <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
             <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-              <el-table-column align="center" prop="" label="时间" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="地点" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="车牌号" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="类别" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="车辆类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="违章类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="详情" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="操作" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="ilTime" label="时间" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="ilAddr" label="地点" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="hmhp" label="车牌号" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="types" label="车辆类型" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="ilTypes" label="违章类型" minWidth="60"></el-table-column>
+              <el-table-column align="center" prop="" label="详情" minWidth="60">
+                <template slot-scope="scope">
+                  <el-image :src="scope.row.imageUrl">
+                    <div slot="error"></div>
+                  </el-image>
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="" label="操作" minWidth="60">
+                <template slot-scope="scope">
+                  <el-button size="small" type="text">车辆历史</el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </el-main>
           <el-footer>
@@ -93,20 +111,37 @@
             phone: '',
             company: ''
           },
+          option: {
+            typeOptions: []
+          },
           pagination: {
             currentPage: 1,
-            total: 1000,
+            total: 0,
             pageSize: 20
           }
         }
       }
     },
     mounted(){
+      this.fetchData()
+      this.initParam()
     },
     methods: {
+      initParam(){
+        API.queryVehicleTypes().then(res => {
+          this.table.option.typeOptions = [{typeId: null, typeName: "全部"}].concat(res.data)
+        })
+        API.queryIlsTypes().then(res => {
+          this.table.option.ilsTypeOptions = [{typeId: null, typeName: "全部"}].concat(res.data)
+        })
+      },
       fetchData(){
-        API.GetTrafficViolationList().then(res => {
-
+        API.queryIllegalVehicle({
+          page: this.table.pagination.currentPage,
+          pageSize: this.table.pagination.pageSize,
+        }).then(res => {
+          this.table.data = res.data.recs
+          this.table.pagination.total = res.data.total
         })
       },
       handleSizeChange(size){
@@ -155,6 +190,27 @@
             border-radius: 4px;
             border: 1px solid #045FE0;
             color: white;
+          }
+
+          .el-date-editor {
+            width: 100%;
+            padding: 9px 12px;
+            .el-input__icon {
+              padding-bottom: 11px;
+            }
+            .el-range-input {
+              font-size: 14px;
+              color: #FFFFFF;
+              background: transparent;
+            }
+            .el-range-separator {
+              line-height: 14px;
+              color: #FFFFFF;
+            }
+          }
+
+          .el-select {
+            width: 100%;
           }
 
           .button-search {
@@ -215,6 +271,11 @@
           right: 4px;
           bottom: 4px;
           left: 4px;
+
+          .el-image {
+            width: 100px;
+            height: 60px;
+          }
 
           .el-footer {
             height: 50px !important;
