@@ -109,6 +109,7 @@
     border: 2px solid #00F6FF;
 
     position: relative;
+    opacity: 1.0;
   }
 
     .wrapper {
