@@ -109,8 +109,7 @@
     border: 2px solid #00F6FF;
 
     position: relative;
-    opacity: 1.0;
-    z-index: 1000;
+    z-index: 8000;
   }
 
     .wrapper {
@@ -119,6 +118,7 @@
       left: 20px;
       right: 20px;
       bottom: 20px;
+      z-index: 8000;
     }
 
     .item-box {
