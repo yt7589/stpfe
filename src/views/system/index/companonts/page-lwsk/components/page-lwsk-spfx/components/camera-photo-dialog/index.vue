@@ -4,7 +4,7 @@
       <el-image style="width:100%;height:80%" :src="require('../../image/lwsk_spfx_main.jpg')"></el-image>
       <ul class="item-box" id="image-box">
         <li class="li-image" v-for="item in spfxs" :key="item.seq">
-          <el-image :src="item.image"></el-image>
+          <el-image :src="item.image" style="max-height: 100%;"></el-image>
           <div>
             <div style="display: flex;justify-content: space-between;">
               <span>{{item.hphm}}</span>
