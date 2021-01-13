@@ -110,6 +110,7 @@
 
     position: relative;
     opacity: 1.0;
+    z-index: 1000;
   }
 
     .wrapper {
