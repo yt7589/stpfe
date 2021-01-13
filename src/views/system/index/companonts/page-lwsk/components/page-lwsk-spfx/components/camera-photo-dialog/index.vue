@@ -41,14 +41,14 @@
       return {}
     },
     mounted(){
-      console.log('camera-photo-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
-      console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
       let msg = {
         'userId': '' + 1018,
         'type': 'wmtRrSpfx',
         'topic': 'ksRrSpfx',
+        'cameraId': this.$store.state.stp.video_analysis.cameraId,
         'streamId': 0
       }
+      console.log('send websocket message...')
       this.$globalws.ws.send(JSON.stringify(msg))
       this.initMouseEvent()
     },
