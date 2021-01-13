@@ -4,7 +4,7 @@
       <el-image style="width:100%;height:80%" :src="require('../../image/lwsk_spfx_main.jpg')"></el-image>
       <ul class="item-box" id="image-box">
         <li class="li-image" v-for="item in spfxs" :key="item.seq">
-          <el-image :src="require('../../image/lwsk_spfx_main.jpg')"></el-image>
+          <el-image :src="item.image"></el-image>
           <div>
             <div style="display: flex;justify-content: space-between;">
               <span>{{item.hphm}}</span>
@@ -43,31 +43,31 @@
         spfxs: [
           {
             seq: 1,
-            image: '../../image/lwsk_spfx_1.jpg',
+            image: require('../../image/lwsk_spfx_1.jpg'),
             hphm: '豫A-DF6218',
             time: '10s'
           },
           {
             seq: 2,
-            image: '../../image/lwsk_spfx_2.jpg',
+            image: require('../../image/lwsk_spfx_2.jpg'),
             hphm: '无',
             time: '11s'
           },
           {
             seq: 3,
-            image: '../../image/lwsk_spfx_3.jpg',
+            image: require('../../image/lwsk_spfx_3.jpg'),
             hphm: '豫A-36N2Y',
             time: '10s'
           },
           {
             seq: 4,
-            image: '../../image/lwsk_spfx_1.jpg',
+            image: require('../../image/lwsk_spfx_4.jpg'),
             hphm: '豫A-79R7E',
             time: '10s'
           },
           {
             seq: 5,
-            image: '../../image/lwsk_spfx_1.jpg',
+            image: require('../../image/lwsk_spfx_1.jpg'),
             hphm: '豫A-TY823',
             time: '10s'
           }
