@@ -1,14 +1,14 @@
 <template>
   <div class="camera-photo-dialog">
     <div class="wrapper">
-      <el-image style="width:100%;height:80%" :src="require('../../image/image-photo-example.jpg')"></el-image>
+      <el-image style="width:100%;height:80%" :src="require('../../image/lwsk_spfx_main.jpg')"></el-image>
       <ul class="item-box" id="image-box">
-        <li class="li-image" v-for="i in 10">
-          <el-image :src="require('../../image/image-photo-example.jpg')"></el-image>
+        <li class="li-image" v-for="item in spfxs" :key="item.seq">
+          <el-image :src="require('{{item.image}}')"></el-image>
           <div>
             <div style="display: flex;justify-content: space-between;">
-              <span>京A12082</span>
-              <span style="color:#00F6FF;">12ms以前</span>
+              <span>{{item.hphm}}</span>
+              <span style="color:#00F6FF;">{{item.time}}以前</span>
             </div>
             <div>
               无违规
@@ -20,12 +20,12 @@
       <div class="selected-image">
         <div class="title">违章详情</div>
         <div class="box">
-          <el-image :src="require('../../image/image-photo-example.jpg')" style="width:40%"></el-image>
+          <el-image :src="require('../../image/lwsk_spfx_2.jpg')" style="width:40%"></el-image>
           <div style="width:50%;">
-            <div>中山路</div>
-            <div>2012款奔驰</div>
-            <div>超速</div>
-            <div>2020-11-11 10:00:00</div>
+            <div>上地十街</div>
+            <div>摩托车</div>
+            <div>驾驶员不带头盔</div>
+            <div>{{violationTime}}</div>
           </div>
         </div>
 
@@ -38,7 +38,41 @@
   export default {
     components: {},
     data(){
-      return {}
+      return {
+        violationTime: '2021-01-15 09:32:29',
+        spfxs: [
+          {
+            seq: 1,
+            image: '../../image/lwsk_spfx_1.jpg',
+            hphm: '豫A-DF6218',
+            time: '10s'
+          },
+          {
+            seq: 2,
+            image: '../../image/lwsk_spfx_2.jpg',
+            hphm: '无',
+            time: '11s'
+          },
+          {
+            seq: 3,
+            image: '../../image/lwsk_spfx_3.jpg',
+            hphm: '豫A-36N2Y',
+            time: '10s'
+          },
+          {
+            seq: 4,
+            image: '../../image/lwsk_spfx_1.jpg',
+            hphm: '豫A-79R7E',
+            time: '10s'
+          },
+          {
+            seq: 5,
+            image: '../../image/lwsk_spfx_1.jpg',
+            hphm: '豫A-TY823',
+            time: '10s'
+          }
+        ]
+      }
     },
     mounted(){
       console.log('camera-photo-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
