@@ -2,7 +2,7 @@
   <div class="image-card">
     <el-image :src="image.image" fit="contain"></el-image>
     <div class="text">{{image.location}}</div>
-    <div class="text">{{image.time}}</div>
+    <div class="text">{{image.image}}</div>
   </div>
 </template>
 
