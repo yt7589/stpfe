@@ -184,7 +184,7 @@
        */
       searchMilvus() {
         console.log('以图搜车查询...')
-        this.data = this.data_demo
+        this.data = this.data_rst
       }
     }
   }
