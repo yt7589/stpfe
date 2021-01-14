@@ -99,7 +99,7 @@
         data_demo: [
           {
             imageId: 1,
-            image: '../image/ytsc_001.png',
+            image: '../../image/ytsc_001.png',
             location: '上地十街',
             time: '2020-12-25 10:23:55'
           },
