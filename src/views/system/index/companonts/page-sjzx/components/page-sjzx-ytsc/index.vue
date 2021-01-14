@@ -35,7 +35,7 @@
               :http-request="handleImageSelect">
               <el-image v-if="table.filter.image.url" :src="table.filter.image.url" style="width:100%;height:100%;"
                         fit="contain"></el-image>
-              <i v-else="" class="el-icon-plus avatar-uploader-icon"></i>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
           <el-form-item>
@@ -49,7 +49,7 @@
       <div class="column-2">
         <el-container style="width: 100%;height: 100%;">
           <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-            <image-card v-for="item in data" :image="item" class="image-card"></image-card>
+            <image-card v-for="item in data" :image="item" :key="item.imageId" class="image-card"></image-card>
           </el-main>
           <el-footer>
             <el-pagination
@@ -98,11 +98,13 @@
         data: [],
         data_demo: [
           {
+            imageId: 1,
             image: '../image/image-search.png',
             location: '上地十街',
             time: '2020-12-25 10:23:55'
           },
           {
+            imageId: 2,
             image: '../image/image-search.png',
             location: '西三旗',
             time: '2020-12-26 16:18:63'
