@@ -187,7 +187,7 @@
 
           res.data.ksvads.forEach((item)=>{
             this.cBarXData.push(item.name)
-            this.cBarSData.push(1)
+            this.cBarSData.push(item.count)
           })
 
           res.data.ksvrps.forEach((item)=>{
