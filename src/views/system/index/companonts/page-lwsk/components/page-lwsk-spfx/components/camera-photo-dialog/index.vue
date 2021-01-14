@@ -11,7 +11,7 @@
               <span style="color:#00F6FF;">{{item.time}}以前</span>
             </div>
             <div>
-              无违规
+              {{item.violationName}}
             </div>
           </div>
         </li>
@@ -45,31 +45,36 @@
             seq: 1,
             image: require('../../image/lwsk_spfx_1.jpg'),
             hphm: '豫A-DF6218',
-            time: '10s'
+            time: '10s',
+            violationName: '无违规'
           },
           {
             seq: 2,
             image: require('../../image/lwsk_spfx_2.jpg'),
             hphm: '无',
-            time: '11s'
+            time: '11s',
+            violationName: '摩托车不带头盔'
           },
           {
             seq: 3,
             image: require('../../image/lwsk_spfx_3.jpg'),
             hphm: '豫A-36N2Y',
-            time: '10s'
+            time: '10s',
+            violationName: '无违规'
           },
           {
             seq: 4,
             image: require('../../image/lwsk_spfx_4.jpg'),
             hphm: '豫A-79R7E',
-            time: '10s'
+            time: '10s',
+            violationName: '无违规'
           },
           {
             seq: 5,
             image: require('../../image/lwsk_spfx_1.jpg'),
             hphm: '豫A-TY823',
-            time: '10s'
+            time: '10s',
+            violationName: '无违规'
           }
         ]
       }
