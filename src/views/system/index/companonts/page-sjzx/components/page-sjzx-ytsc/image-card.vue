@@ -1,6 +1,6 @@
 <template>
   <div class="image-card">
-    <el-image :src="image.image" fit="contain"></el-image>
+    <el-image :src="require('../../image/ytsc_001.jpg')" fit="contain"></el-image>
     <div class="text">{{image.location}}</div>
     <div class="text">{{image.image}}</div>
   </div>
