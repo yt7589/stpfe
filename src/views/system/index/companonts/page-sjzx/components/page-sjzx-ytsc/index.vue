@@ -99,13 +99,13 @@
         data_demo: [
           {
             imageId: 1,
-            image: "require('../../image/ytsc_001.jpg')",
+            image: require('../../image/ytsc_001.jpg'),
             location: '上地十街',
             time: '2020-12-25 10:23:55'
           },
           {
             imageId: 2,
-            image: "require('../../image/ytsc_002.jpg')",
+            image: require('../../image/ytsc_002.jpg'),
             location: '西三旗',
             time: '2020-12-26 16:18:63'
           }
