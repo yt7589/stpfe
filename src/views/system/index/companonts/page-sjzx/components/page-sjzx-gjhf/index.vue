@@ -3,25 +3,26 @@
     <div class="header-crumb">
       <span>数据中心>轨迹回放</span>
     </div>
-    <div  class="body">
+    <div class="body">
       <div class="column-1">
-        <el-form class="search-form">
-          <el-form-item label="预测时间">
+        <el-form class="search-form" ref="form" :model="table.filter" :rules="table.rules">
+          <el-form-item label="预测时间" prop="time">
             <el-date-picker
               v-model="table.filter.time"
+              value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="车牌号码">
-            <el-input placeholder="" v-model="table.filter.type" class="type-select">
+          <el-form-item label="车牌号码" prop="hphm">
+            <el-input placeholder="" v-model="table.filter.hphm" class="type-select">
 
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="button-search">
+            <el-button class="button-search" @click="fetchData">
               回放
             </el-button>
           </el-form-item>
@@ -32,10 +33,10 @@
           <baidu-map ref="map" class="baidu-map" :zoom="map.zoom"
                      :center="map.center" :dragging="true"
                      @ready="onMapReady">
-            <!--<bm-marker v-for="(point,index) in pointList" :key="index"-->
-            <!--:position="{lng: point.longitude, lat: point.latitude}"-->
-            <!--v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">-->
-            <!--</bm-marker>-->
+            <bm-marker v-for="(point,index) in table.data" :key="index"
+                       :position="{lng: point.lng, lat: point.lat}"
+                       v-if="map.instance" :icon="getIcon(index,table.data.length)">
+            </bm-marker>
           </baidu-map>
         </div>
       </div>
@@ -44,21 +45,29 @@
 </template>
 
 <script>
-
+  import API from '@/api'
   import mapStyle from '@/assets/baiduMapStyle'
 
   export default {
     props: ['visible'],
     components: {},
     data(){
+      let markerIcon = require("../../image/image-start-point.png")
       return {
         loading: false,
         table: {
           data: [],
           filter: {
-            username: '',
-            phone: '',
-            company: ''
+            time: null,
+            hphm: null,
+          },
+          rules: {
+            time: [
+              {required: true, message: '请输入时间', trigger: 'blur'}
+            ],
+            hphm: [
+              {required: true, message: '请输入号牌', trigger: 'blur'}
+            ]
           },
           pagination: {
             currentPage: 1,
@@ -72,34 +81,74 @@
           center: {
             lng: 116.495843,
             lat: 39.90421
-          }
+          },
+          icon: markerIcon
         },
       }
     },
     mounted(){
     },
     methods: {
+      fetchData(){
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            API.sjzxQueryLocusReplay({
+              startTime: this.table.filter.time ? this.table.filter.time[0] : null,
+              endTime: this.table.filter.time ? this.table.filter.time[1] : null,
+              hphm: this.table.filter.hphm
+            }).then(res => {
+              this.table.data = res.data.lrSite
+              this.zoomFocus()
+            })
+          }
+        })
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-//        this.zoomFocus()
-        setTimeout(() => {
-          //TODO: 立即聚焦会出现白屏
-          this.zoomFocus()
-        }, 1000)
       },
       zoomFocus(){
         if (this.map.instance) {
-//          var points = []
-//          this.pointList.forEach((item) => {
-//            points.push(new BMap.Point(item.longitude, item.latitude))
-//          })
-//          this.map.instance.setViewport(points);
+          var points = []
+          this.table.data.forEach((item) => {
+            points.push(new BMap.Point(item.lng, item.lat))
+          })
+          let v = this.map.instance.getViewport(points);
+
+          this.map.center = v.center
+          this.map.zoom = v.zoom
         }
       },
+      getIcon(index, max){
+        if (index == 0) {
+          return {
+            url: require('../../image/image-start-point.png'),
+            size: {
+              width: 32,
+              height: 42
+            }
+          }
+        } else if (index == max - 1) {
+          return {
+            url: require('../../image/image-end-point.png'),
+            size: {
+              width: 32,
+              height: 42
+            }
+          }
+        } else {
+          return {
+            url: require('../../image/image-middle-point.png'),
+            size: {
+              width: 32,
+              height: 42
+            }
+          }
+        }
+      }
     }
   }
 </script>
@@ -135,6 +184,10 @@
           .el-form-item__label {
             font-size: 14px;
             color: #FFFFFF;
+          }
+
+          .el-form-item__error {
+            padding: unset;
           }
 
           .el-input__inner {

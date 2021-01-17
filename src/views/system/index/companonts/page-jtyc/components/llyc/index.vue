@@ -107,8 +107,8 @@
         bmMarkerStyle:{
           url: require('../../image/llyj-mark.png'),
           size: {
-            width: 39,
-            height: 27
+            width: 44,
+            height: 44
           },
         },
         yData:[],

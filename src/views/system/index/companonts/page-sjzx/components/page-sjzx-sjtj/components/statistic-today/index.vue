@@ -8,22 +8,22 @@
     <div class="row-1">
       <div class="value-box">
         <div class="line">
-          过车总量 <span class="big-text">1,321,456</span>
+          过车总量 <span class="big-text">{{getReadableNumber(todayData.vehicle)}}</span>
         </div>
         <div class="line">
-          本市车辆 <span style="color:#00F6FF;">12345</span>
-          外埠车辆 <span style="color:#00F6FF;">12345</span>
+          本市车辆 <span style="color:#00F6FF;">{{todayData.vehicle_city}}</span>
+          外埠车辆 <span style="color:#00F6FF;">{{todayData.vehicle_town}}</span>
         </div>
       </div>
       <div class="car-active">
-        <div class="pointer"></div>
-        <div class="value" style="color:#00F6FF">20%</div>
+        <div class="pointer" :style="carActiveStyle"></div>
+        <div class="value" style="color:#00F6FF">{{todayData.vehicle_city_act}}%</div>
         <div class="title">本市车辆活跃度</div>
       </div>
       <div class="car-online">
-        <div class="pointer"></div>
-        <div class="value" style="color:#E69B03">20%</div>
-        <div class="title">本市车辆在线率</div>
+        <div class="pointer" :style="deviceActiveStyle"></div>
+        <div class="value" style="color:#E69B03">{{todayData.device_online}}%</div>
+        <div class="title">本市设备在线率</div>
       </div>
     </div>
 
@@ -41,6 +41,7 @@
 <script>
   import ChartCard from '@/components/chart-card'
   export default {
+    props: ['todayData', 'outlandData', 'locationData'],
     components: {ChartCard},
     data(){
       return {
@@ -81,7 +82,7 @@
               gridLineWidth: 0,
               lineWidth: 0,
               lineColor: 'red',
-              categories: ['地区1', '地区2', '地区3', '地区4', '地区5'],
+              categories: [],
               labels: {
                 style: {
                   color: 'white',
@@ -163,7 +164,7 @@
               gridLineWidth: 0,
               lineWidth: 0,
               lineColor: 'red',
-              categories: ['地区1', '地区2', '地区3', '地区4', '地区5'],
+              categories: [],
               labels: {
                 style: {
                   color: 'white',
@@ -199,20 +200,122 @@
             series: [{
               name: '',
               color: '#A6A6A8',
-              data: [5, 3, 4, 7, 2],
+              data: [],
             }, {
               name: '',
               color: "#5CEDCA",
-              data: [3, 5, 4, 1, 6],
+              data: [],
             }]
           },
           instance: null
         },
       }
     },
-    mounted(){
+    computed: {
+      carActiveStyle(){
+        let rotate = -45
+        if (this.todayData.vehicle_city_act > 0) {
+          rotate = (2.7 * this.todayData.vehicle_city_act) - 45
+        }
+        return {
+          transform: 'rotate(' + rotate + 'deg)'
+        }
+      },
+      deviceActiveStyle(){
+        let rotate = -45
+        if (this.todayData.device_online > 0) {
+          rotate = (2.7 * this.todayData.device_online) - 45
+        }
+        return {
+          transform: 'rotate(' + rotate + 'deg)'
+        }
+      }
     },
-    methods: {}
+    watch: {
+      outlandData(){
+        this.updateOutlandChartData()
+      },
+      locationData(){
+        this.updateLocationChartData()
+      }
+    },
+    mounted(){
+      this.updateOutlandChartData()
+      this.updateLocationChartData()
+    },
+    methods: {
+      getReadableNumber(num){
+        let p1 = parseInt(num / 1000000)
+        let p2 = parseInt(num / 1000)
+        let p3 = parseInt(num % 1000)
+
+        let str = ""
+        if (p1 > 0) {
+          str += p1 + ","
+        }
+        if (p2 > 0) {
+          str += p2 + ","
+        }
+        str += p3
+        return str
+      },
+      updateOutlandChartData(){
+        if (this.outlandData) {
+          let array = this.outlandData.concat([])
+          array.sort((t1, t2) => t2.count - t1.count)
+
+          let categories = []
+          let data = []
+          let max = 10;
+          array.forEach(item => {
+            let value = parseInt(item.count)
+            categories.push(item.areaName)
+            data.push(value)
+
+            if (value > max) {
+              max = value
+            }
+          })
+
+          let bgData = []
+          data.forEach(i => {
+            bgData.push(max - i)
+          })
+
+          this.outlandChart.option.xAxis.categories = categories
+          this.outlandChart.option.series[0].data = bgData
+          this.outlandChart.option.series[1].data = data
+        }
+      },
+      updateLocationChartData(){
+        if (this.locationData) {
+          let array = this.locationData.concat([])
+          array.sort((t1, t2) => t2.count - t1.count)
+
+          let categories = []
+          let data = []
+          let max = 10;
+          array.forEach(item => {
+            let value = parseInt(item.count)
+            categories.push(item.siteName)
+            data.push(value)
+
+            if (value > max) {
+              max = value
+            }
+          })
+
+          let bgData = []
+          data.forEach(i => {
+            bgData.push(max - i)
+          })
+
+          this.locationChart.option.xAxis.categories = categories
+          this.locationChart.option.series[0].data = bgData
+          this.locationChart.option.series[1].data = data
+        }
+      }
+    }
   }
 </script>
 

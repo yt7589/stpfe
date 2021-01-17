@@ -1,31 +1,33 @@
 <template>
   <div class="camera-photo-dialog">
     <div class="wrapper">
-      <el-image style="width:100%;height:80%" :src="require('../../image/image-photo-example.jpg')"></el-image>
+      <el-image style="width:100%;height:80%" :src="table.current?table.current.picUrl:''">
+      </el-image>
       <ul class="item-box" id="image-box">
-        <li class="li-image" v-for="i in 10">
-          <el-image :src="require('../../image/image-photo-example.jpg')"></el-image>
+        <li class="li-image" v-for="(item,index) in table.data" :key="index" @click="table.current=item">
+          <el-image :src="item.picUrl">
+          </el-image>
           <div>
             <div style="display: flex;justify-content: space-between;">
-              <span>京A12082</span>
-              <span style="color:#00F6FF;">12ms以前</span>
+              <span>{{item.hphm}}</span>
+              <span style="color:#00F6FF;">{{getTimeOffset(item.time)}}</span>
             </div>
             <div>
-              无违规
+              {{item.ilsType}}
             </div>
           </div>
         </li>
       </ul>
       <!--<i class="el-icon-close"></i>-->
-      <div class="selected-image">
+      <div class="selected-image" v-if="table.current">
         <div class="title">违章详情</div>
         <div class="box">
-          <el-image :src="require('../../image/image-photo-example.jpg')" style="width:40%"></el-image>
+          <el-image :src="table.current.picUrl" style="width:40%"></el-image>
           <div style="width:50%;">
-            <div>中山路</div>
-            <div>2012款奔驰</div>
-            <div>超速</div>
-            <div>2020-11-11 10:00:00</div>
+            <div>{{table.current.siteName}}</div>
+            <div>{{table.current.yModel + (table.current.yModel ? "款" : "") }}</div>
+            <div>{{table.current.ilsType}}</div>
+            <div>{{table.current.time}}</div>
           </div>
         </div>
 
@@ -35,12 +37,25 @@
 </template>
 
 <script>
+  import dayjs from 'dayjs'
   export default {
+    props: ['data'],
     components: {},
     data(){
-      return {}
+      return {
+        table: {
+          data: [],
+          pagination: {
+            currentPage: 1,
+            total: 0,
+            pageSize: 20
+          },
+          current: null
+        },
+      }
     },
     mounted(){
+      this.initData()
       console.log('camera-photo-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
       console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
       let msg = {
@@ -60,6 +75,30 @@
         let selector = document.querySelector("#image-box")
         if (selector) {
           selector.scrollLeft += (e.deltaY > 0 ? 20 : -20);
+        }
+      },
+      initData(){
+        if (this.data) {
+          this.table.data = this.data.recs
+          this.table.pagination.total = this.data.total
+          if (this.table.data.length > 0) {
+            this.table.current = this.table.data[0]
+          }
+        }
+      },
+      getTimeOffset(str){
+        let sec = dayjs().diff(dayjs(str), 'second')
+
+        if (sec > 3600 * 24 * 30) {
+          return dayjs().diff(dayjs(str), 'month') + "月以前"
+        } else if (sec > 3600 * 24) {
+          return parseInt(sec / (3600 * 24)) + "天以前"
+        } else if (sec > 3600) {
+          return parseInt(sec / 3600) + "小时以前"
+        } else if (sec > 60) {
+          return parseInt(sec / 60) + "分钟以前"
+        } else {
+          return parseInt(sec) + "秒以前"
         }
       }
     }
@@ -102,6 +141,7 @@
       margin-right: 4px;
       color: white;
       display: inline-block;
+      cursor: pointer;
 
       .el-image {
         height: calc(100% - 40px);
@@ -131,6 +171,11 @@
         justify-content: space-around;
         width: calc(100% - 10px);
         height: calc(100% - 40px);
+
+        .el-image {
+          width: 123px;
+          height: 133px;
+        }
       }
     }
 

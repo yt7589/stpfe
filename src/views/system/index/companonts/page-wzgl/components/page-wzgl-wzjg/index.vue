@@ -17,6 +17,7 @@
           </el-form-item>
           <el-form-item>
             <el-select placeholder="类别" v-model="table.filter.type">
+              <el-option v-for="item in table.option.areaOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -112,7 +113,17 @@
             company: ''
           },
           option: {
-            typeOptions: []
+            typeOptions: [],
+            areaOptions: [{
+              label: "全部",
+              value: null
+            },{
+              label: "本地",
+              value: 0
+            }, {
+              label: "外埠",
+              value: 1
+            }]
           },
           pagination: {
             currentPage: 1,

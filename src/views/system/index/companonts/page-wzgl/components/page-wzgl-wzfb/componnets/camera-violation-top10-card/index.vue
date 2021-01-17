@@ -38,7 +38,7 @@
               enabled: false,
             },
             xAxis: {
-              categories: ['监控点1', '监控点2', '监控点3', '监控点4', '监控点5', '监控点6', '监控点7', '监控点8', '监控点9', '监控点10'],
+              categories: [],
               title: {
                 text: null
               },
@@ -77,7 +77,7 @@
             },
             series: [{
               name: '',
-              data: [107, 31, 635, 203, 2, 22, 33, 44, 55, 11],
+              data: [],
               borderWidth: 0,
               colorByPoint: true,
               colors: ['#D1494EFF', '#E69B03FF', '#8CC246FF', '#16755BFF', '#00C087FF', '#36AFCEFF', '#2A47B2FF', '#22C0C6FF', '#1D6FA9FF', '#00C087FF'],
@@ -99,7 +99,18 @@
     methods: {
       updateChartData(){
         if (this.data) {
-
+          if (this.data) {
+            let array = this.data.concat([])
+            array.sort((i1, i2) => i2.count - i1.count)
+            let categories = []
+            let data = []
+            array.forEach(item => {
+              categories.push(item.siteName)
+              data.push(item.count)
+            })
+            this.chart.option.xAxis.categories = categories
+            this.chart.option.series[0].data = data
+          }
         }
       }
     }

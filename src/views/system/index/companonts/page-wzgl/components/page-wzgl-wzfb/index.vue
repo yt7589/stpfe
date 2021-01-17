@@ -17,7 +17,7 @@
           </el-form-item>
           <el-form-item>
             <el-select placeholder="类别" v-model="table.filter.type" class="type-select">
-
+              <el-option v-for="item in table.option.areaOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
             <el-button class="button-search">
               搜索
@@ -27,8 +27,8 @@
         </el-form>
 
         <div class="wrapper" v-if="visible">
-          <area-violation-top10-card class="area-violation-top10-card "></area-violation-top10-card>
-          <camera-violation-top10-card class="camera-violation-top10-card"></camera-violation-top10-card>
+          <area-violation-top10-card :data="illData.ilsAreaDTO" class="area-violation-top10-card "></area-violation-top10-card>
+          <camera-violation-top10-card :data="illData.ilsSiteDTO"  class="camera-violation-top10-card"></camera-violation-top10-card>
         </div>
       </div>
       <div class="column-2">
@@ -51,12 +51,12 @@
 </template>
 
 <script>
-  import AreaViolationTop10Card from './componnets/area-violation-top10-card'
-  import CameraViolationTop10Card from './componnets/camera-violation-top10-card'
-  import ViolationTable from './componnets/violation-table'
-
+  import AreaViolationTop10Card from './componnets/area-violation-top10-card/index.vue'
+  import CameraViolationTop10Card from './componnets/camera-violation-top10-card/index.vue'
+  import ViolationTable from './componnets/violation-table/index.vue'
 
   import mapStyle from '@/assets/baiduMapStyle'
+  import API from '@/api'
 
   export default {
     props: ['visible'],
@@ -70,6 +70,18 @@
             username: '',
             phone: '',
             company: ''
+          },
+          option:{
+            areaOptions: [{
+              label: "全部",
+              value: null
+            },{
+              label: "本地",
+              value: 0
+            }, {
+              label: "外埠",
+              value: 1
+            }]
           },
           pagination: {
             currentPage: 1,
@@ -85,9 +97,11 @@
             lat: 39.90421
           }
         },
+        illData:{}
       }
     },
     mounted(){
+        this.fetchData()
     },
     methods: {
       onMapReady ({BMap, map}) {
@@ -96,21 +110,12 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-//        this.zoomFocus()
-        setTimeout(() => {
-          //TODO: 立即聚焦会出现白屏
-          this.zoomFocus()
-        }, 1000)
       },
-      zoomFocus(){
-        if (this.map.instance) {
-//          var points = []
-//          this.pointList.forEach((item) => {
-//            points.push(new BMap.Point(item.longitude, item.latitude))
-//          })
-//          this.map.instance.setViewport(points);
-        }
-      },
+      fetchData(){
+        API.queryIllegalDistribution().then(res => {
+          this.illData = res.data
+        })
+      }
     }
   }
 </script>

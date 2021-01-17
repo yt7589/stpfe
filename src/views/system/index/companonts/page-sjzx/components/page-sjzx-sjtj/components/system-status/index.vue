@@ -9,21 +9,21 @@
       <div class="card">
         <el-image fit="contain" :src="require('../../image/image-camera.png')"></el-image>
         <div>
-          <div class="text-value">2345</div>
+          <div class="text-value">{{data.device}}</div>
           <div class="text-title">设备总数</div>
         </div>
       </div>
       <div class="card">
         <el-image fit="contain" :src="require('../../image/image-focus.png')"></el-image>
         <div>
-          <div class="text-value">245</div>
+          <div class="text-value">{{data.control}}</div>
           <div class="text-title">布控数量</div>
         </div>
       </div>
       <div class="card">
         <el-image fit="contain" :src="require('../../image/image-warn.png')"></el-image>
         <div>
-          <div class="text-value">245</div>
+          <div class="text-value">{{data.alerts}}</div>
           <div class="text-title">报警数量</div>
         </div>
       </div>
@@ -33,21 +33,21 @@
       <div class="card">
         <el-image fit="contain" :src="require('../../image/image-car-special.png')"></el-image>
         <div>
-          <div class="text-value">2345</div>
+          <div class="text-value">{{data.keyVehicle}}</div>
           <div class="text-title">重点车辆</div>
         </div>
       </div>
       <div class="card">
         <el-image fit="contain" :src="require('../../image/image-car-violation.png')"></el-image>
         <div>
-          <div class="text-value">245</div>
-          <div class="text-title">违法总数</div>
+          <div class="text-value">{{data.ils}}</div>
+          <div class="text-title">违章总数</div>
         </div>
       </div>
       <div class="card">
         <el-image fit="contain" :src="require('../../image/image-car.png')"></el-image>
         <div>
-          <div class="text-value">245</div>
+          <div class="text-value">{{data.truck}}</div>
           <div class="text-title">大货车总数</div>
         </div>
       </div>
@@ -57,6 +57,7 @@
 
 <script>
   export default {
+    props: ['data'],
     components: {},
     data(){
       return {}

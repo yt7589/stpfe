@@ -5,14 +5,14 @@
       过车统计量
     </div>
     <div class="title-box">
-      <span style="background: #06A6FF;">本地</span>
+      <span style="background: #06A6FF;">本日</span>
       <span style="background: #E69B03;">本周</span>
       <span style="background: #D1494E;">本月</span>
     </div>
     <div class="value-box">
-      <span style="background: #06A6FF;">1234辆</span>
-      <span style="background: #E69B03;">1234辆</span>
-      <span style="background: #D1494E;">1234辆</span>
+      <span style="background: #06A6FF;">{{current.today_st}}辆</span>
+      <span style="background: #E69B03;">{{current.week_st}}辆</span>
+      <span style="background: #D1494E;">{{current.month_st}}辆</span>
     </div>
 
     <highcharts class="chart" :options="chart.option"></highcharts>
@@ -20,7 +20,9 @@
 </template>
 
 <script>
+  import dayjs from 'dayjs'
   export default {
+    props: ['data'],
     components: {},
     data(){
       return {
@@ -48,7 +50,7 @@
               enabled: false,
             },
             xAxis: {
-              categories: ['1月', '2月','3月', '4月','5月', '6月','7月', '8月','9月', '10月', '11月','12月'],
+              categories: [],
               title: {
                 text: null
               },
@@ -72,7 +74,7 @@
                 text: '',
               },
               labels: {
-                enabled:false
+                enabled: false
               }
             },
             plotOptions: {
@@ -88,21 +90,21 @@
             },
             series: [{
               name: 'null',
-              data: [100, 100, 100, 100, 100,100, 100, 100, 100, 100,100, 100],
+              data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
               borderWidth: 0,
               stack: 1,
               animation: false,
-              dataLabels:{
-                enabled:false,
+              dataLabels: {
+                enabled: false,
               },
               color: "#1A2C4B"
             }, {
               name: '',
-              data: [17, 31, 63, 20, 2, 22, 33, 44, 55, 11,11,33],
+              data: [17, 31, 63, 20, 2, 22, 33, 44, 55, 11, 11, 33],
               borderWidth: 0,
               colorByPoint: true,
-              dataLabels:{
-                align:'left',
+              dataLabels: {
+                align: 'left',
                 style: {
                   color: 'white',
                   fontSize: '0.09375rem',
@@ -114,11 +116,56 @@
           instance: null,
           style: {}
         },
+        current: {}
+      }
+    },
+    watch: {
+      data(){
+        this.updateChartData()
       }
     },
     mounted(){
+      this.updateChartData()
     },
-    methods: {}
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let array = this.data.concat([])
+          array.sort((t1, t2) => t1.name > t2.name)
+          let categories = []
+          let data = []
+          let max = 100;
+          let month = dayjs().month() + 1
+
+          array.forEach(item => {
+            let label = parseInt(item.name)
+            let value = parseInt(item.month_st)
+            data.push(value)
+            categories.push(label + "月")
+
+            // 更新最大值
+            if (value > max) {
+              max = value
+            }
+
+            // 更新当前月
+            if (label == month) {
+              this.current = item;
+            }
+          })
+
+          let bgData = []
+          for (let i = 0; i < categories.length; i++) {
+            bgData.push(max)
+          }
+
+          this.chart.option.xAxis.categories = categories
+          this.chart.option.yAxis.max = max
+          this.chart.option.series[0].data = bgData
+          this.chart.option.series[1].data = data
+        }
+      }
+    }
   }
 </script>
 

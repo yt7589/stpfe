@@ -39,6 +39,8 @@
 
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
+  import API from '@/api'
+
   export default {
     props: ['visible'],
     components: {},
@@ -68,7 +70,7 @@
               enabled: false,
             },
             xAxis: {
-              categories: ['监控点1', '监控点2', '监控点3', '监控点4', '监控点5', '监控点6', '监控点7', '监控点8', '监控点9', '监控点10'],
+              categories: [],
               title: {
                 text: null
               },
@@ -107,7 +109,7 @@
             },
             series: [{
               name: '',
-              data: [107, 31, 635, 203, 2, 22, 33, 44, 55, 11],
+              data: [],
               borderWidth: 0,
               colorByPoint: true,
               colors: ['#D1494EFF', '#E69B03FF', '#8CC246FF', '#16755BFF', '#00C087FF', '#36AFCEFF', '#2A47B2FF', '#22C0C6FF', '#1D6FA9FF', '#00C087FF'],
@@ -240,32 +242,47 @@
             lat: 39.90421
           }
         },
+        data: {
+          //地图点位
+          tvsd: [],
+          // 点位过车前10
+          tvts: [],
+          // 路网过车数量走势
+          tvtv: []
+        }
       }
     },
     mounted(){
+      this.fetchData()
     },
     methods: {
+      fetchData(){
+        API.queryVehicleStatistics().then(res => {
+          this.data = res.data
+          this.initData()
+        })
+      },
+      initData(){
+        if (this.data.tvts) {
+          let array = this.data.tvts.concat([])
+          array.sort((t1, t2) => t2.count - t1.count)
+          let categories = []
+          let data = []
+          array.forEach(item => {
+            categories.push(item.name)
+            data.push(parseInt(item.count / 1000))
+          })
+          this.cameraChart.option.xAxis.categories = categories
+          this.cameraChart.option.series[0].data = data
+        }
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-//        this.zoomFocus()
-        setTimeout(() => {
-          //TODO: 立即聚焦会出现白屏
-          this.zoomFocus()
-        }, 1000)
-      },
-      zoomFocus(){
-        if (this.map.instance) {
-//          var points = []
-//          this.pointList.forEach((item) => {
-//            points.push(new BMap.Point(item.longitude, item.latitude))
-//          })
-//          this.map.instance.setViewport(points);
-        }
-      },
+      }
     }
   }
 </script>

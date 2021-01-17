@@ -6,12 +6,12 @@
     </div>
 
     <div class="card-box">
-      <div v-for="item in chart.data" class="chart-line">
+      <div v-for="(item,index) in chart.data" :key="index" class="chart-line">
         <span class="chart-name">{{item.name}}</span>
         <span>
-            <el-image v-for="i in item.count" class="chart-image" :src="require('../../image/image-car-blue.png')"
+            <el-image v-for="i in item.count" :key="i+'@'+index" class="chart-image" :src="require('../../image/image-car-blue.png')"
                       fit="contain"></el-image>
-            <el-image v-for="i in (12-item.count)" class="chart-image"
+            <el-image v-for="j in (12-item.count)" :key="j+'#'+index" class="chart-image"
                       :src="require('../../image/image-car-invalid.png')"
                       fit="contain"></el-image>
         </span>
@@ -23,52 +23,49 @@
 
 <script>
   export default {
+    props: ['data'],
     components: {},
     data(){
       return {
         chart: {
-          data: [
-            {
-              name: '点位1',
-              count: 2,
-              value: 320,
-            },
-            {
-              name: '点位1',
-              count: 5,
-              value: 320,
-            }, {
-              name: '点位2',
-              count: 4,
-              value: 320,
-            }, {
-              name: '点位3',
-              count: 3,
-              value: 320,
-            }, {
-              name: '点位4',
-              count: 4,
-              value: 320,
-            }, {
-              name: '点位5',
-              count: 1,
-              value: 320,
-            }, {
-              name: '点位6',
-              count: 2,
-              value: 320,
-            }, {
-              name: '点位7',
-              count: 2,
-              value: 320,
-            }
-          ]
+          data: []
         }
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let array = this.data.concat([])
+          array.sort((t1, t2) => t2.count - t1.count)
+
+          let data = []
+          let max = 100
+          array.forEach(item => {
+            data.push({
+              name: item.siteName,
+              count: 0,
+              value: parseInt(item.count),
+            })
+            if (item.count > max) {
+              max = item.count
+            }
+          })
+          data.forEach(item => {
+            item.count = parseInt((item.value * 12) / max)
+          })
+
+          this.chart.data = data
+        }
+      }
+    }
   }
 </script>
 

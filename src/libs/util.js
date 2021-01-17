@@ -31,6 +31,25 @@ util.open = function (url) {
   document.body.removeChild(document.getElementById('d2admin-link-temp'))
 }
 
+util.getObjectURL = function (file) {
+  let url = null;
+  if (window.createObjectURL != undefined) { // basic
+    url = window.createObjectURL(file);
+  } else if (window.URL != undefined) { // mozilla(firefox)
+    url = window.URL.createObjectURL(file);
+  } else if (window.webkitURL != undefined) { // webkit or chrome
+    url = window.webkitURL.createObjectURL(file);
+  }
+  return url;
+}
+
+util.getFileBase64 = function (file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+  })
+}
+
 Object.clone = function (origin, include = null, exclude = null) {
   var object = {}
   Object.keys(origin).forEach(key => {

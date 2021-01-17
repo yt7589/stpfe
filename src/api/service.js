@@ -22,11 +22,12 @@ function createService() {
         config.params = {}
       }
 
-      // config.params.p='pc'
-      // config.params.v='1.0'
+      config.params.p = 'pc'
+      config.params.v = '1.0.1'
+
       if (config.params.page && config.params.pageSize) {
         // 分页请求
-        config.params.startIndex = config.params.page * config.params.pageSize
+        config.params.startIndex = (config.params.page - 1) * config.params.pageSize
         config.params.amount = config.params.pageSize
         config.params.direction = 'next'
 
@@ -49,7 +50,7 @@ function createService() {
       const dataAxios = response.data
       // 这个状态码是和后端约定的
       let code = dataAxios.code
-      let error = dataAxios.message?dataAxios.message:"未知错误"
+      let error = dataAxios.message ? dataAxios.message : "未知错误"
       let silent = response.config && response.config.silent
       // 根据 code 进行判断
       if (code === undefined) {

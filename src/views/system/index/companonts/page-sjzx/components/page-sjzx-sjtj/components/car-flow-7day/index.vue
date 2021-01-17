@@ -12,6 +12,7 @@
 <script>
   import ChartCard from '@/components/chart-card'
   export default {
+    props: ['data'],
     components: {ChartCard},
     data(){
       return {
@@ -34,11 +35,11 @@
             },
             xAxis: {
               lineWidth: 0,
-              categories: ['8-21', '8-22', '8-23', '8-24', '8-25', '8-26', '8-27'],
+              categories: [],
               labels: {
                 style: {
                   color: 'white',
-                  fontSize:'0.0625rem'
+                  fontSize: '0.0625rem'
                 }
               }
             },
@@ -53,7 +54,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize:'0.0625rem'
+                  fontSize: '0.0625rem'
                 }
               }
             },
@@ -83,7 +84,7 @@
             },
             series: [{
               name: '',
-              data: [7.0, 6.9, 9.5, 14.5, 18.4, 16.5, 15.2],
+              data: [],
               //data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#00E7EC',
               color: {
@@ -102,9 +103,28 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let categories = []
+          let data = []
+          this.data.forEach(item => {
+            categories.push(item.name)
+            data.push(parseInt(item.count/10000))
+          })
+          this.chart.option.xAxis.categories = categories
+          this.chart.option.series[0].data = data
+        }
+      }
+    }
   }
 </script>
 

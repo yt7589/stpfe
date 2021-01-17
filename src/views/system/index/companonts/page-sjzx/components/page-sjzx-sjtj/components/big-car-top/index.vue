@@ -1,8 +1,8 @@
 <template>
   <div class="big-car-top">
     <div class="title">
-      <el-image fit="contain" :src="require('../../image/image-shape-red.png')"></el-image>
-      重点车辆点位排名TOP7
+      <el-image fit="contain" :src="require('../../image/image-shape-blue.png')"></el-image>
+      大货车点位排行TOP7
     </div>
 
     <div class="card-box">
@@ -14,6 +14,7 @@
 
 <script>
   export default {
+    props: ['data'],
     components: {},
     data(){
       return {
@@ -40,8 +41,8 @@
             legend: {
               enabled: false,
             },
-            xAxis: [{
-              categories: ['点位1', '点位2','点位3', '点位4','点位5', '点位6','点位7'],
+            xAxis: {
+              categories: [],
               title: {
                 text: null
               },
@@ -54,11 +55,11 @@
                   //fontSize: '0.09375rem',
                 }
               }
-            }],
+            },
             yAxis: {
               lineWidth: 0,
               gridLineWidth: 1,
-              gridLineColor:'#9797973F',
+              gridLineColor: '#9797973F',
               minorGridLineWidth: 0,
               min: 0,
               max: 100,
@@ -66,7 +67,7 @@
                 text: '',
               },
               labels: {
-                enabled:false
+                enabled: false
               }
             },
             plotOptions: {
@@ -83,10 +84,10 @@
             },
             series: [{
               name: '',
-              data: [56, 99, 99, 70, 2, 22, 33],
+              data: [],
               borderWidth: 0,
-              dataLabels:{
-                align:'left',
+              dataLabels: {
+                align: 'left',
                 style: {
                   color: 'white',
                   //fontSize: '0.09375rem',
@@ -105,9 +106,40 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let array = this.data.concat([])
+          array.sort((t1, t2) => t1.count > t2.count)
+          let categories = []
+          let data = []
+          let max = 100;
+
+          array.forEach(item => {
+            let value = parseInt(item.count)
+            data.push(value)
+            categories.push(item.siteName)
+
+            // 更新最大值
+            if (value > max) {
+              max = value
+            }
+          })
+
+          this.chart.option.xAxis.categories = categories
+          this.chart.option.yAxis.max = max
+          this.chart.option.series[0].data = data
+        }
+      }
+    }
   }
 </script>
 

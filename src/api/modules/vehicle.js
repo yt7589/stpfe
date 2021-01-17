@@ -83,7 +83,6 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   GetCameraSiteList(){
     return request({
-      //url: '/camera/site',
       url: '/tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
       method: 'get',
     })
@@ -95,11 +94,19 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       params
     })
   },
-  GetQueryDeviceSum() {
+  GetQueryDeviceSum(params) {
     return request({
       url: '/tn/va/queryDevice?p=pc&v=0.0.1',
       method: 'get',
-      //params
+      params
+    })
+  },
+  querySdPic(params){
+    // 设备视图详情
+    return request({
+      url: '/tn/va/querySdPic',
+      method: 'get',
+      params
     })
   },
   GetTrafficViolationList(params){

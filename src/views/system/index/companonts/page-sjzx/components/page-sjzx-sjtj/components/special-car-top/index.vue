@@ -14,6 +14,7 @@
 
 <script>
   export default {
+    props: ['data'],
     components: {},
     data(){
       return {
@@ -40,7 +41,7 @@
             legend: {
               enabled: false,
             },
-            xAxis: [{
+            xAxis: {
               categories: ['点位1', '点位2', '点位3', '点位4', '点位5', '点位6', '点位7'],
               title: {
                 text: null
@@ -54,7 +55,7 @@
                   fontSize: '0.0625rem',
                 }
               }
-            }],
+            },
             yAxis: {
               lineWidth: 0,
               gridLineWidth: 1,
@@ -115,9 +116,46 @@
         },
       }
     },
-    mounted(){
+    watch: {
+      data(){
+        this.updateChartData()
+      }
     },
-    methods: {}
+    mounted(){
+      this.updateChartData()
+    },
+    methods: {
+      updateChartData(){
+        if (this.data) {
+          let array = this.data.concat([])
+          array.sort((t1, t2) => t1.count > t2.count)
+          let categories = []
+          let data = []
+          let max = 100;
+
+          array.forEach(item => {
+            let value = parseInt(item.count)
+            data.push(value)
+            categories.push(item.siteName)
+
+            // 更新最大值
+            if (value > max) {
+              max = value
+            }
+          })
+
+          let bgData = []
+          for (let i = 0; i < categories.length; i++) {
+            bgData.push(max)
+          }
+
+          this.chart.option.xAxis.categories = categories
+          this.chart.option.yAxis.max = max
+          this.chart.option.series[0].data = bgData
+          this.chart.option.series[1].data = data
+        }
+      }
+    }
   }
 </script>
 

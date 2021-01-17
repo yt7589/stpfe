@@ -11,7 +11,7 @@
       </bm-marker>
     </baidu-map>
     <div class="camera-info">
-      <div class="success-info info-box" @click="zoomFocus">
+      <div class="success-info info-box">
         <el-image :src="require('../../image/image-camera.png')"></el-image>
         共接入摄像头 {{cameraInfo.camera}} 个
       </div>
@@ -36,7 +36,7 @@
 
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
-  import CameraInfoWindow from './components/camera-info-window'
+  import CameraInfoWindow from './components/camera-info-window/index.vue'
 
   import API from '@/api'
 
@@ -57,39 +57,13 @@
           marker: {
             url: markerIcon,
             size: {
-              width: 300,
-              height: 157
+              width: 33,
+              height: 44
             }
           }
         },
         siteList: [],
         cameraInfo: {},
-        pointList: [
-          {
-            longitude: 116.479745,
-            latitude: 39.895797,
-            cameraList: [
-              {
-                location: '海淀区>上地',
-                to: '向北',
-                type: "普通摄像头"
-              },
-              {
-                location: '海淀区>上地',
-                to: '向北',
-                type: "抓拍机"
-              }, {
-                location: '海淀区>上地',
-                to: '向北',
-                type: "抓拍机"
-              }
-            ]
-          },
-          {
-            longitude: 116.490094,
-            latitude: 39.857702
-          }
-        ],
         cameraDialog: {
           visible: false,
           data: []
@@ -113,25 +87,6 @@
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
-//        this.zoomFocus()
-//        setTimeout(() => {
-//          //TODO: 立即聚焦会出现白屏
-//          this.zoomFocus()
-//        }, 3000)
-      },
-      zoomFocus(){
-        if (this.map.instance) {
-          var points = []
-          this.pointList.forEach((item) => {
-            points.push(new BMap.Point(item.longitude, item.latitude))
-          })
-          let v = this.map.instance.getViewport(points);
-
-          this.map.center = v.center
-          this.map.zoom = v.zoom
-
-          console.log(v)
-        }
       },
       zoomIn(){
         if (this.map.zoom < 18) {
@@ -147,7 +102,6 @@
        * 点击点位图标响应函数
        */
       onPointClick(point){
-        console.log('point.siteId: ' + point.siteId + "!")
         API.GetCameraList({siteId: point.siteId}).then(res => {
           this.cameraDialog.visible = true
           this.cameraDialog.data = res.data
@@ -159,7 +113,6 @@
       getSiteList(){
         API.GetCameraSiteList().then(res => {
           this.siteList = res.data.recs
-          //this.cameraInfo = res.data.recs
         })
       },
       getQueryDeviceSum() {

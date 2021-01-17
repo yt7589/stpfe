@@ -16,29 +16,27 @@
           <el-table-column prop="category" align="center" label="类别" minWidth="80"></el-table-column>
           <el-table-column prop="status" align="center" label="状态" minWidth="40">
             <template slot-scope="scope">
-              <div :style="scope.row.status=='已接入'?{}:{color:'red'}">{{scope.row.status=='已接入' ? "正常" : "异常"}}</div>
+              <div :style="scope.row.status=='已接入'?{}:{color:'red'}">{{scope.row.status == '已接入' ? "正常" : "异常"}}</div>
             </template>
           </el-table-column>
         </el-table>
-        <!--<div class="button-box">-->
-        <!--<el-button type="text" icon="el-icon-arrow-up">上一页</el-button>-->
-        <!--<el-button type="text" icon="el-icon-arrow-down">下一页</el-button>-->
-        <!--</div>-->
       </div>
     </div>
-
-    <div class="small-image-box">
-
+    <div class="button-box" v-show="!cameraPhotoDialog.visible">
+      <el-button type="text" icon="el-icon-arrow-up" :disabled="hasPrevious">上一页</el-button>
+      <el-button type="text" icon="el-icon-arrow-down" :disabled="hasNext">下一页</el-button>
     </div>
 
-    <el-dialog :visible.sync="cameraPhotoDialog.visible" class="camera-photo-dialog" :modal="true" style="overflow: hidden;">
+    <el-dialog :visible.sync="cameraPhotoDialog.visible" custom-class="camera-photo-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
       <camera-photo-dialog v-if="cameraPhotoDialog.visible" :data="cameraPhotoDialog.data"></camera-photo-dialog>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import CameraPhotoDialog from '../camera-photo-dialog'
+  import CameraPhotoDialog from '../camera-photo-dialog/index.vue'
+  import API from '@/api'
+
   export default {
     props: ['data'],
     components: {CameraPhotoDialog},
@@ -51,19 +49,29 @@
         }
       }
     },
+    computed: {
+      hasNext(){
+        return false
+      },
+      hasPrevious(){
+        return false
+      }
+    },
     mounted(){
     },
     methods: {
       onRowClick(row, column, event){
         this.$store.commit("stp/video_analysis/setCameraId", 101)
-        this.cameraPhotoDialog.data = row
-        this.cameraPhotoDialog.visible = true;
-        this.visible = false
+
+        API.querySdPic({diId: row.diId}).then(res => {
+          this.cameraPhotoDialog.data = res.data
+          this.cameraPhotoDialog.visible = true;
+          this.visible = false
+        })
       },
       close(){
         this.$emit("close")
       },
-
     }
   }
 </script>
@@ -86,7 +94,7 @@
     .window-wrapper {
       position: absolute;
       top: 22px;
-      bottom: 14px;
+      /*bottom: 14px;*/
       left: 20px;
       right: 20px;
     }
@@ -113,7 +121,9 @@
     }
 
     .button-box {
-      margin-top: 14px;
+      position: absolute;
+      bottom: 20px;
+      left: calc(50% - 88px);
       text-align: center;
 
       .el-button {
@@ -124,16 +134,21 @@
 
         padding-left: 10px;
         padding-right: 10px;
+
+        &.is-disabled {
+          background: #045FE04D;
+        }
       }
     }
+  }
 
-    .camera-photo-dialog {
-      .el-dialog {
-        background: transparent;
-      }
-      .el-dialog__header {
-        display: none;
-      }
+  .camera-photo-dialog {
+    background: transparent;
+    .el-dialog {
+      background: transparent;
+    }
+    .el-dialog__header {
+      display: none;
     }
   }
 </style>
