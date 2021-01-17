@@ -50,7 +50,7 @@
       <div class="column-2">
         <el-container style="width: 100%;height: 100%;">
           <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-            <image-card v-for="item in table.data" :image="item" class="image-card"></image-card>
+            <image-card v-for="(item,index) in table.data" :key="index" :image="item" class="image-card"></image-card>
           </el-main>
           <el-footer>
             <el-pagination

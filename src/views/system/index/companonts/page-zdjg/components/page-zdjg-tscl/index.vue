@@ -54,7 +54,7 @@
                     </el-row>
                     <el-row class="col-2-row-3">
                       <el-table class="col-2-row-3-table" :data="tableData" v-loading="loading" :header-row-style="{padding:'0px'}" :cell-style="{padding:'0px'}">
-                          <el-table-column prop="seq"  align="center" label="序号" minWidth="30"></el-table-column>
+                          <el-table-column type="index" :index="indexMethod"  align="center" label="序号" minWidth="30"></el-table-column>
                           <el-table-column prop="hphm"  align="center" label="车牌号" minWidth="70"></el-table-column>
                           <el-table-column prop="ppcx"  align="center" label="车辆品牌" ></el-table-column>
                           <el-table-column prop="trafficViolationTypeName"  align="center" label="违法预警" ></el-table-column>
@@ -187,7 +187,7 @@
 
           res.data.ksvads.forEach((item)=>{
             this.cBarXData.push(item.name)
-            this.cBarSData.push(1)
+            this.cBarSData.push(item.count)
           })
 
           res.data.ksvrps.forEach((item)=>{
@@ -199,7 +199,7 @@
           this.todayWarnNum = res.data.htfs.todayWarnNum
           this.todayKakvNum = res.data.htfs.todayKakvNum
 
-          this.tableData = res.data.svtvs
+          this.tableData = res.data.svtvs.slice(0,5)
 
           res.data.ksvsss.forEach((item)=>{
             this.pBarXData.push(item.siteName)
@@ -228,6 +228,9 @@
 
 
         })
+      },
+      indexMethod(index) {
+        return index + 1;
       }
 
     }

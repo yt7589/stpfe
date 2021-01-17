@@ -62,8 +62,10 @@
         'userId': '' + 1018,
         'type': 'wmtRrSpfx',
         'topic': 'ksRrSpfx',
+        'cameraId': this.$store.state.stp.video_analysis.cameraId,
         'streamId': 0
       }
+      console.log('send websocket message...')
       this.$globalws.ws.send(JSON.stringify(msg))
       this.initMouseEvent()
     },
@@ -114,6 +116,7 @@
     border: 2px solid #00F6FF;
 
     position: relative;
+    z-index: 8000;
 
     .wrapper {
       position: absolute;
@@ -121,6 +124,7 @@
       left: 20px;
       right: 20px;
       bottom: 20px;
+      z-index: 8000;
     }
 
     .item-box {
@@ -178,6 +182,5 @@
         }
       }
     }
-
   }
 </style>
