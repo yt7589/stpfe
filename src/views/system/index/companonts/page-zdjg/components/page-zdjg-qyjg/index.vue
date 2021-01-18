@@ -21,7 +21,7 @@
                                 </el-table-column>
                             </el-table>
                         </el-main>
-                        <div  class="button-page-group" v-show="this.tableData.length >= 10">
+                        <div  class="button-page-group" >
                             <el-button @click="getAreaListPrev()" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
                             <el-button @click="getAreaListNext()" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
@@ -165,8 +165,11 @@
         tableData:[],
         frm:{
           direction:0,
+          amount:10,
+          startIndex:0,
           areaName:'',
         },
+        page:1,
         map: {
           instance: null,
           zoom: 12,
@@ -274,11 +277,21 @@
         })
       },
       getAreaListPrev(){
-        this.frm.direction = 'prev'
+        let page = this.page
+        if (page > 1){
+          this.page = page - 1
+          this.frm.startIndex = (this.page - 1) * this.frm.amount
+        }else{
+          this.frm.startIndex = 0
+        }
+        this.frm.direction = 0
         this.getAreaList()
       },
       getAreaListNext(){
-        this.frm.direction = 'next'
+        let page = this.page
+        this.page = page + 1
+        this.frm.startIndex = (this.page - 1) * this.frm.amount
+        this.frm.direction = 1
         this.getAreaList()
       },
 
