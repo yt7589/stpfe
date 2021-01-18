@@ -320,6 +320,7 @@
     .page-zdjg-clbk {
         height: calc(100% - 170px);
         overflow-y: hidden;
+        overflow-x: hidden;
         .body {
             margin-top: 8px;
             width: 100%;

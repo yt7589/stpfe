@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="header-crumb">
+        <div class="custom-header-crumb">
             <span>{{firstItem}}>{{secondItem}}</span>
         </div>
     </div>
@@ -25,7 +25,7 @@
 </script>
 
 <style scoped lang="scss">
-    .header-crumb {
+    .custom-header-crumb {
         width: 100%;
         height: 64px;
 

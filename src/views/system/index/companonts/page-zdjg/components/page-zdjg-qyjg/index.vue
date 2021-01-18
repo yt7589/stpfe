@@ -3,7 +3,7 @@
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
         <div class="body" style="">
             <el-row class="qy-row" >
-                <el-col :span="5" class="col" style="width: 23%;">
+                <el-col :span="5" class="col">
                     <div class="search-form" >
                         <el-input v-model="frm.areaName" placeholder="地区名称" class="search-input"></el-input>
                         <button class="search-button" @click="getAreaListNext"><span>搜索</span></button>
@@ -47,7 +47,7 @@
                         </baidu-map>
                     </div>
                 </el-col >
-                <el-col :span="5" class="col" style="width: 23%">
+                <el-col :span="5" class="col" >
                     <div class="dt-title">
                         <el-row>
                             <el-col :span="3">  <el-avatar  :src="require('../../image/dt@1x.png')"></el-avatar></el-col>
@@ -365,7 +365,7 @@
     .page-zdjg-qyjg {
         height: calc(100% - 170px);
         overflow-y: hidden;
-
+        overflow-x: hidden;
         .body {
             margin-top: 8px;
             width: 100%;
@@ -386,6 +386,7 @@
         min-height: 100px;
         height: 100%;
         position: relative;
+        width: 23%;
         .map{
             position: relative;
             height:100%;
