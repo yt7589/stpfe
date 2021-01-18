@@ -2,6 +2,50 @@
     <div class="page-system-wdzh">
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
         <div flex-box="1" class="body">
+            <div class="column-1">
+                <div class="custom-card">
+                    <div class="title">账号资料</div>
+                </div>
+                <div class="user-account">
+                    <span class="user-info">账号：admin</span>
+                    <div class="line"></div>
+                </div>
+                <div class="user-name">
+                    <span class="user-info">姓名：大数据</span>
+                    <div class="line"></div>
+                </div>
+                <div class="user-phone">
+                    <span class="user-info">手机号：133********</span>
+                    <div class="line"></div>
+                </div>
+                <div class="custom-card up-pass">
+                    <div class="title">修改密码</div>
+                </div>
+                <div class="up-form">
+                    <el-form class="search-form">
+                        <el-form-item label="原始密码" label-width="80px">
+                            <el-input  v-model="frm.pwd">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="新密码"  label-width="80px">
+                            <el-input  v-model="frm.pwd">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="再输一次"  label-width="80px">
+                            <el-input  v-model="frm.pwd">
+                            </el-input>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button class="button-search">
+                                确定
+                            </el-button>
+                        </el-form-item>
+
+                    </el-form>
+                </div>
+            </div>
+
 
         </div>
     </div>
@@ -26,6 +70,14 @@
     components:{
       HeaderCrumb,
     },
+    data(){
+      return {
+        frm:{
+          pwd:'',
+        }
+      }
+
+    },
   }
 </script>
 
@@ -35,7 +87,145 @@
             margin-top: 8px;
             width: 100%;
             display: flex;
+            height: calc(100% - 72px);
+            background: rgba(0, 115, 255, 0.2);
+        }
+        .column-1 {
+            width: 20%;
+            height: 100%;
 
         }
+        .custom-card {
+            position: relative;
+
+            .title {
+                position: absolute;
+                top: 32px;
+                left: 20px;
+                width: 100%;
+                height: 30px;
+
+
+                font-size: 18px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: #00F6FF;
+
+
+                background: url(../../image/bg-card-head.png) no-repeat;
+                background-size: 100% 60%;
+                -moz-background-size: 100% 60%;
+                /*padding-bottom: 3px;*/
+                background-position: bottom;
+            }
+
+            .body {
+                position: absolute;
+                width: 100%;
+                top: 38px;
+                bottom: 0px;
+            }
+        }
+        .up-pass{
+            top: 116px;
+        }
+        .user-account{
+            position: relative;
+            top:75px;
+            left: 20px;
+        }
+        .user-name {
+            position: relative;
+            top:90px;
+            left: 30px;
+        }
+        .user-phone{
+            position: relative;
+            top:100px;
+            left: 20px;
+        }
+        .user-info{
+            font-size: 14px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 20px;
+
+        }
+        .up-form{
+            position: relative;
+            top:166px;
+            left: 20px;
+        }
+        .line {
+            border-bottom:1px dashed rgba(4, 95, 224, 1);
+        }
+        .search-form {
+            position: absolute;
+            top: 24px;
+            left: 0px;
+            right: 0px;
+            .el-form-item {
+                margin-bottom: 8px;
+            }
+            .el-form-item__label{
+                font-size: 14px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #FFFFFF;
+
+            }
+
+            .el-input__inner {
+                padding: 15px;
+                background: rgba(4, 95, 224, 0.5);
+                border-radius: 4px;
+                border: 1px solid #045FE0;
+                color: white;
+                text-align: center;
+            }
+
+            .button-search {
+                width: 283px;
+                margin-left: 77px;
+
+                background: #045FE0;
+                border-radius: 4px;
+                border: unset;
+
+                font-size: 14px;
+                color: #FFFFFF;
+
+                &:active {
+                    opacity: 0.8;
+                }
+
+                .el-image {
+                    width: 16px;
+                    float: right;
+                }
+            }
+
+            .button-export {
+                width: 100%;
+
+                background: #00C087;
+                border-radius: 4px;
+                border: unset;
+
+                font-size: 14px;
+                color: #FFFFFF;
+
+                &:active {
+                    opacity: 0.8;
+                }
+
+                .el-image {
+                    width: 16px;
+                    float: right;
+                }
+            }
+        }
+
     }
 </style>

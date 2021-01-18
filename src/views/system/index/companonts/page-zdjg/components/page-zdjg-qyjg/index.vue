@@ -3,7 +3,7 @@
         <header-crumb :first-item="firstItem" :second-item="secondItem"></header-crumb>
         <div class="body" style="">
             <el-row class="qy-row" >
-                <el-col :span="5" class="col" style="width: 23%;">
+                <el-col :span="5" class="col">
                     <div class="search-form" >
                         <el-input v-model="frm.areaName" placeholder="地区名称" class="search-input"></el-input>
                         <button class="search-button" @click="getAreaListNext"><span>搜索</span></button>
@@ -21,7 +21,7 @@
                                 </el-table-column>
                             </el-table>
                         </el-main>
-                        <div  class="button-page-group" v-show="this.tableData.length >= 10">
+                        <div  class="button-page-group" >
                             <el-button @click="getAreaListPrev()" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
                             <el-button @click="getAreaListNext()" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
@@ -47,7 +47,7 @@
                         </baidu-map>
                     </div>
                 </el-col >
-                <el-col :span="5" class="col" style="width: 23%">
+                <el-col :span="5" class="col" >
                     <div class="dt-title">
                         <el-row>
                             <el-col :span="3">  <el-avatar  :src="require('../../image/dt@1x.png')"></el-avatar></el-col>
@@ -165,8 +165,11 @@
         tableData:[],
         frm:{
           direction:0,
+          amount:10,
+          startIndex:0,
           areaName:'',
         },
+        page:1,
         map: {
           instance: null,
           zoom: 12,
@@ -274,11 +277,21 @@
         })
       },
       getAreaListPrev(){
-        this.frm.direction = 'prev'
+        let page = this.page
+        if (page > 1){
+          this.page = page - 1
+          this.frm.startIndex = (this.page - 1) * this.frm.amount
+        }else{
+          this.frm.startIndex = 0
+        }
+        this.frm.direction = 0
         this.getAreaList()
       },
       getAreaListNext(){
-        this.frm.direction = 'next'
+        let page = this.page
+        this.page = page + 1
+        this.frm.startIndex = (this.page - 1) * this.frm.amount
+        this.frm.direction = 1
         this.getAreaList()
       },
 
@@ -352,7 +365,7 @@
     .page-zdjg-qyjg {
         height: calc(100% - 170px);
         overflow-y: hidden;
-
+        overflow-x: hidden;
         .body {
             margin-top: 8px;
             width: 100%;
@@ -373,6 +386,7 @@
         min-height: 100px;
         height: 100%;
         position: relative;
+        width: 23%;
         .map{
             position: relative;
             height:100%;

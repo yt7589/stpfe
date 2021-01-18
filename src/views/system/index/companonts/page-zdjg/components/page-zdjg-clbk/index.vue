@@ -21,9 +21,9 @@
                                 </el-table-column>
                             </el-table>
                         </el-main>
-                        <div  class="button-page-group" v-show="this.tableData.length >= 10">
-                            <el-button class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
-                            <el-button class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
+                        <div  class="button-page-group">
+                            <el-button  @click="getListPrev()" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
+                            <el-button  @click="getListNext()" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
                     </div>
                 </el-col>
@@ -186,9 +186,12 @@
         dtData:[],
         alarmData:[],
         frm:{
+          amount:10,
+          startIndex:0,
           direction:0,
           hphm:'',
         },
+        page:1,
         delId:0,
         dialogVisibleConfirm:false,
       }
@@ -234,6 +237,24 @@
         this.dialogData = {
           hphm:'',
         }
+      },
+      getListPrev(){
+        let page = this.page
+        if (page > 1){
+          this.page = page - 1
+          this.frm.startIndex = (this.page - 1) * this.frm.amount
+        }else{
+          this.frm.startIndex = 0
+        }
+        this.frm.direction = 0
+        this.getList()
+      },
+      getListNext(){
+        let page = this.page
+        this.page = page + 1
+        this.frm.startIndex = (this.page - 1) * this.frm.amount
+        this.frm.direction = 1
+        this.getList()
       },
       getList(){
         this.loading = true
@@ -299,6 +320,7 @@
     .page-zdjg-clbk {
         height: calc(100% - 170px);
         overflow-y: hidden;
+        overflow-x: hidden;
         .body {
             margin-top: 8px;
             width: 100%;
