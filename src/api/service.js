@@ -29,7 +29,7 @@ function createService() {
         // 分页请求
         config.params.startIndex = (config.params.page - 1) * config.params.pageSize
         config.params.amount = config.params.pageSize
-        config.params.direction = 'next'
+        config.params.direction = 1
 
         config.params.page = undefined
         config.params.pageSize = undefined
