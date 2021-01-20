@@ -31,5 +31,26 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       method: 'GET',
       params
     })
-  }
+  },
+  exportIls(params){
+    return request({
+      url: '/vm/ils/export',
+      method: 'GET',
+      params
+    })
+  },
+  queryIlsDat(params){
+    return request({
+      url: '/vm/ils/queryIlsDat',
+      method: 'GET',
+      params
+    })
+  },
+  queryIlsVehicleHistory(params){
+    return request({
+      url: '/vm/ils/queryIlsVehicleHistoric',
+      method: 'GET',
+      params
+    })
+  },
 })

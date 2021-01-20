@@ -1,107 +1,114 @@
 <template>
-  <div class="page-wzgl-wzjg" flex="dir:top">
-    <div class="header-crumb">
-      <span>违章管理>违章监管</span>
-    </div>
-    <div class="body">
-      <div class="column-1">
-        <el-form class="search-form">
-          <el-form-item label="">
-            <el-date-picker
-              v-model="table.filter.date"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="类别" v-model="table.filter.type">
-              <el-option v-for="item in table.option.areaOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="车辆类型" v-model="table.filter.carType">
-              <el-option v-for="item in table.option.typeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="违章类型" v-model="table.filter.wzlx">
-              <el-option v-for="item in table.option.ilsTypeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input placeholder="车牌号" v-model="table.filter.cph">
-
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-input placeholder="地点" v-model="table.filter.location">
-
-            </el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <el-button class="button-search" @click="fetchData">
-              搜索
-              <el-image :src="require('../../image/image-search.png')"></el-image>
-            </el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="button-export">
-              导出
-              <el-image :src="require('../../image/image-export.png')"></el-image>
-            </el-button>
-          </el-form-item>
-        </el-form>
+  <div>
+    <div class="page-wzgl-wzjg" v-if="!ilsDetail.visible && !ilsHistory.visible">
+      <div class="header-crumb">
+        <span>违章管理>违章监管</span>
       </div>
-      <div class="column-2">
-        <el-container class="table-container">
-          <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-            <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
-              <el-table-column align="center" prop="ilTime" label="时间" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="ilAddr" label="地点" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="hmhp" label="车牌号" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="types" label="车辆类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="ilTypes" label="违章类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="" label="详情" minWidth="60">
-                <template slot-scope="scope">
-                  <el-image :src="scope.row.imageUrl">
-                    <div slot="error"></div>
-                  </el-image>
-                </template>
-              </el-table-column>
-              <el-table-column align="center" prop="" label="操作" minWidth="60">
-                <template slot-scope="scope">
-                  <el-button size="small" type="text">车辆历史</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-main>
-          <el-footer>
-            <el-pagination
-              class="custom-pagination"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="table.pagination.currentPage"
-              :page-sizes="[20, 50, 100, 200]"
-              :page-size="table.pagination.pageSize"
-              layout="prev, pager,sizes, next,total"
-              :total="table.pagination.total">
-            </el-pagination>
-          </el-footer>
-        </el-container>
+      <div class="body">
+        <div class="column-1">
+          <el-form class="search-form">
+            <el-form-item label="">
+              <el-date-picker
+                v-model="table.filter.date"
+                type="daterange"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              <el-select placeholder="类别" v-model="table.filter.type">
+                <el-option v-for="item in table.option.areaOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-select placeholder="车辆类型" v-model="table.filter.carType">
+                <el-option v-for="item in table.option.typeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-select placeholder="违章类型" v-model="table.filter.wzlx">
+                <el-option v-for="item in table.option.ilsTypeOptions" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input placeholder="车牌号" v-model="table.filter.cph">
+
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input placeholder="地点" v-model="table.filter.location">
+
+              </el-input>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button class="button-search" @click="fetchData">
+                搜索
+                <el-image :src="require('../../image/image-search.png')"></el-image>
+              </el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button class="button-export">
+                导出
+                <el-image :src="require('../../image/image-export.png')"></el-image>
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="column-2">
+          <el-container class="table-container">
+            <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
+              <el-table class="custom-table wzgl-table" :data="table.data" height="100%">
+                <el-table-column align="center" prop="ilTime" label="时间" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="ilAddr" label="地点" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="hmhp" label="车牌号" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="types" label="车辆类型" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="ilTypes" label="违章类型" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="" label="详情" minWidth="60">
+                  <template slot-scope="scope">
+                    <el-image :src="scope.row.imageUrl">
+                      <div slot="error"></div>
+                    </el-image>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" prop="" label="操作" minWidth="60">
+                  <template slot-scope="scope">
+                    <el-button size="small" type="text" @click="handleDetailView(scope.row)">查看详情</el-button>
+                    <el-button size="small" type="text" @click="handleHistoryView(scope.row)">车辆历史</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-main>
+            <el-footer>
+              <el-pagination
+                class="custom-pagination"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page.sync="table.pagination.currentPage"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="table.pagination.pageSize"
+                layout="prev, pager,sizes, next,total"
+                :total="table.pagination.total">
+              </el-pagination>
+            </el-footer>
+          </el-container>
+        </div>
       </div>
+
     </div>
+    <ils-detail :visible.sync="ilsDetail.visible" :data="ilsDetail.data" class="page-wzgl-wzjg-ils-detail"></ils-detail>
+    <ils-history v-if="ilsHistory.visible" :visible.sync="ilsHistory.visible" :data="ilsHistory.data" @view="handleDetailView" class="page-wzgl-wzjg-ils-history"></ils-history>
   </div>
 </template>
 
 <script>
   import API from '@/api'
-
+  import IlsDetail from './ils-detail.vue'
+  import IlsHistory from './ils-history.vue'
   export default {
-    components: {},
+    components: {IlsDetail, IlsHistory},
     data(){
       return {
         loading: false,
@@ -117,7 +124,7 @@
             areaOptions: [{
               label: "全部",
               value: null
-            },{
+            }, {
               label: "本地",
               value: 0
             }, {
@@ -130,6 +137,14 @@
             total: 0,
             pageSize: 20
           }
+        },
+        ilsDetail: {
+          visible: false,
+          data: {}
+        },
+        ilsHistory: {
+          visible: false,
+          data: {}
         }
       }
     },
@@ -162,6 +177,17 @@
       handleCurrentChange(page){
         this.table.pagination.page = page
         this.fetchData(page)
+      },
+      handleDetailView(row){
+        API.queryIlsDat({ilId: row.ilId}).then(res => {
+          this.ilsDetail.data = res.data
+          this.ilsDetail.visible = true
+          this.ilsHistory.visible = false
+        })
+      },
+      handleHistoryView(row){
+        this.ilsHistory.data = row
+        this.ilsHistory.visible = true
       }
     }
   }
@@ -169,7 +195,8 @@
 
 <style lang="scss">
   .page-wzgl-wzjg {
-
+    width: 100%;
+    height: 100%;
     .body {
       width: 100%;
       height: calc(100% - 72px);

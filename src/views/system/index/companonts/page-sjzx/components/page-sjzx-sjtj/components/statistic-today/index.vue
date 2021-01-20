@@ -394,10 +394,10 @@
       .car-online, .car-active {
         .pointer {
           position: absolute;
-          top: 58px;
-          right: 50px;
-          width: 62px;
-          height: 20px;
+          top: 67px;
+          right: 11px;
+          width: 103px;
+          height: 18px;
         }
 
         .title {
