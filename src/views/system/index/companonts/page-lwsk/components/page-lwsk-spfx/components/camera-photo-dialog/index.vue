@@ -1,19 +1,19 @@
 <template>
   <div class="camera-photo-dialog">
     <div class="wrapper">
-      <el-image style="width:100%;height:80%" :src="table.current?table.current.picUrl:''">
+      <el-image id="img001" style="width:100%;height:80%" :src="originImage">
       </el-image>
       <ul class="item-box" id="image-box">
-        <li class="li-image" v-for="(item,index) in table.data" :key="index" @click="table.current=item">
-          <el-image :src="item.picUrl">
+        <li class="li-image" v-for="(item,index) in vehs" :key="index" @click="selVeh=item">
+          <el-image :src="item.cutImgUrl">
           </el-image>
           <div>
             <div style="display: flex;justify-content: space-between;">
               <span>{{item.hphm}}</span>
-              <span style="color:#00F6FF;">{{getTimeOffset(item.time)}}</span>
+              <span style="color:#00F6FF;">{{getTimeOffset(item.crossTime)}}</span>
             </div>
             <div>
-              {{item.ilsType}}
+              {{item.trafficViolationName}}
             </div>
           </div>
         </li>
@@ -22,7 +22,7 @@
       <div class="selected-image" v-if="table.current">
         <div class="title">违章详情</div>
         <div class="box">
-          <el-image :src="table.current.picUrl" style="width:40%"></el-image>
+          <el-image :src="require('../../image/lwsk_spfx_2.jpg')" style="width:40%"></el-image>
           <div style="width:50%;">
             <div>{{table.current.siteName}}</div>
             <div>{{table.current.yModel + (table.current.yModel ? "款" : "") }}</div>
@@ -39,10 +39,14 @@
 <script>
   import dayjs from 'dayjs'
   export default {
-    props: ['data'],
+    //props: ['data'],
     components: {},
     data(){
       return {
+        data: [],
+        vehs: [],
+        selVeh: null,
+        originImage: 'https://tpc.googlesyndication.com/simgad/11123356258384329839?sqp=4sqPyQQ7QjkqNxABHQAAtEIgASgBMAk4A0DwkwlYAWBfcAKAAQGIAQGdAQAAgD-oAQGwAYCt4gS4AV_FAS2ynT4&rs=AOga4qkNjeYFQQtX6f_hzVFyjvyUGLo_bg',
         table: {
           data: [],
           pagination: {
@@ -65,8 +69,40 @@
         'cameraId': this.$store.state.stp.video_analysis.cameraId,
         'streamId': 0
       }
-      console.log('send websocket message...')
+      this.$globalws.ws.pageObj = this
       this.$globalws.ws.send(JSON.stringify(msg))
+      this.$globalws.ws.onmessage = function(data) {
+        let rst = JSON.parse(data.data)
+        let img001 = document.getElementById("img001")
+        img001.src = rst.originImage
+        let recs = rst.data
+        let hasVeh = false
+        let vehLen = 0
+        recs.forEach(element => {
+          hasVeh = false
+          this.pageObj.vehs.forEach(item => {
+            if (item.trackId == element.trackId) {
+              // 更新现有元素信息
+              item.vehIdx = element.vehIdx
+              item.ppcxnk = element.ppcxnk
+              item.hphm = element.hphm
+              item.cutImgUrl = element.cutImgUrl
+              item.crossTime = element.crossTime
+              item.trafficViolationName = element.trafficViolationName
+              hasVeh = true
+            }
+          })
+          if (!hasVeh && this.pageObj.vehs.length > 0) {
+            vehLen = this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
+            if (vehLen > 100) { // 只跟踪100辆车，老的车辆信息将丢弃
+              this.pageObj.vehs.pop()
+            }
+          } else {
+            this.pageObj.vehs.push(element)
+          }
+          console.log('hphm:' + element.hphm + '; ppcxnk:' + element.cutImgUrl + '!')
+        })
+      }
       this.initMouseEvent()
     },
     methods: {
@@ -80,13 +116,6 @@
         }
       },
       initData(){
-        if (this.data) {
-          this.table.data = this.data.recs
-          this.table.pagination.total = this.data.total
-          if (this.table.data.length > 0) {
-            this.table.current = this.table.data[0]
-          }
-        }
       },
       getTimeOffset(str){
         let sec = dayjs().diff(dayjs(str), 'second')

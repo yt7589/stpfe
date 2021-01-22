@@ -27,7 +27,7 @@ export default {
         // 先写死地址，后可加在配置中
         that.ws = new WebSocket('ws://222.128.117.234:9003/stp');
         that.$globalws.setWs(that.ws);
-        that.ws.onopen = that.onopen();
+        that.ws.onopen = that.onopen;
 
         that.ws.onclose = function() {
           // 关闭 websocket
