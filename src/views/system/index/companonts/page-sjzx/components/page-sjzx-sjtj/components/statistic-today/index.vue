@@ -395,9 +395,9 @@
         .pointer {
           position: absolute;
           top: 67px;
-          right: 11px;
+          right: 8px;
           width: 103px;
-          height: 18px;
+          height: 10px;
         }
 
         .title {
