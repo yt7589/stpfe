@@ -61,9 +61,9 @@
     },
     mounted(){
       this.fetchData()
-//      this.timer = setInterval(() => {
-//        this.fetchData()
-//      }, 3000)
+      this.timer = setInterval(() => {
+        this.fetchData()
+      }, 3000)
     },
     beforeDestroy(){
       clearInterval(this.timer)
