@@ -316,6 +316,7 @@
         this.sendSubscribeMsg('ksRssLsvs',2)
 
         that.$globalws.ws.onmessage =  (res)=> {
+          console.log('-------------',res)
           let data = JSON.parse(res.data)
           if (data.length > 0 ){
             if(data[0].occurTime){

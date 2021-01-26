@@ -77,7 +77,9 @@
         let rst = JSON.parse(data.data)
         let img001 = document.getElementById("img001")
         img001.src = rst.originImage
+        // 车图片数组
         let recs = rst.data
+        console.log('接收的车图片数组长度：',recs.length)
         let hasVeh = false
         let vehLen = 0
         console.log('pageObj.vehs' + JSON.stringify(this.pageObj.vehs) + '!')
@@ -96,8 +98,11 @@
               hasVeh = true
             }
           })
+          // 替换元素后 hashVeh为true，进入不到if  会进else？
           if (!hasVeh && this.pageObj.vehs.length > 0) {
+            // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
             vehLen = this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
+            // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
             if (vehLen > 100) { // 只跟踪100辆车，老的车辆信息将丢弃
               this.pageObj.vehs.pop()
             }
