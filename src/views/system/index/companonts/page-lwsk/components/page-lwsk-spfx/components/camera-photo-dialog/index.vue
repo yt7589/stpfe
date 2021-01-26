@@ -4,16 +4,17 @@
       <el-image id="img001" style="width:100%;height:80%" :src="originImage">
       </el-image>
       <ul class="item-box" id="image-box">
-        <li class="li-image" v-for="(item,index) in vehs" :key="index" @click="selVeh=item">
-          <el-image :src="item.cutImgUrl">
+        <li class="li-image" v-for="item in vehs" :key="item.wsmVfvvIdx" @click="selVeh=item">
+          <el-image :src="item.cutImgUrl" :alt="originImage">
           </el-image>
           <div>
             <div style="display: flex;justify-content: space-between;">
               <span>{{item.hphm}}</span>
-              <span style="color:#00F6FF;">{{getTimeOffset(item.crossTime)}}</span>
+              <span style="color:#00F6FF;">{{item.crossTime}}</span>
             </div>
             <div>
-              {{item.trafficViolationName}}
+              <!-- {{item.trafficViolationName}}:{{item.trackId}}:{{item.cutImgUrl.substring(item.cutImgUrl.length-10)}} -->
+              trackId: {{item.trackId}};
             </div>
           </div>
         </li>
@@ -72,17 +73,20 @@
       this.$globalws.ws.pageObj = this
       this.$globalws.ws.send(JSON.stringify(msg))
       this.$globalws.ws.onmessage = function(data) {
+        console.log('websocket on message......:' + data.data + '!')
         let rst = JSON.parse(data.data)
         let img001 = document.getElementById("img001")
         img001.src = rst.originImage
         let recs = rst.data
         let hasVeh = false
         let vehLen = 0
+        console.log('pageObj.vehs' + JSON.stringify(this.pageObj.vehs) + '!')
         recs.forEach(element => {
           hasVeh = false
           this.pageObj.vehs.forEach(item => {
-            if (item.trackId == element.trackId) {
+            if (element.trackId!=-1 && item.trackId == element.trackId) {
               // 更新现有元素信息
+              item.wsmVfvvIdx = element.wsmVfvvIdx
               item.vehIdx = element.vehIdx
               item.ppcxnk = element.ppcxnk
               item.hphm = element.hphm
@@ -97,10 +101,9 @@
             if (vehLen > 100) { // 只跟踪100辆车，老的车辆信息将丢弃
               this.pageObj.vehs.pop()
             }
-          } else {
+          } else if (!hasVeh) {
             this.pageObj.vehs.push(element)
           }
-          console.log('hphm:' + element.hphm + '; ppcxnk:' + element.cutImgUrl + '!')
         })
       }
       this.initMouseEvent()
