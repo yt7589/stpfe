@@ -77,11 +77,11 @@
         let rst = JSON.parse(data.data)
         let img001 = document.getElementById("img001")
         img001.src = rst.originImage
+        console.log('img001.src: ' + img001.src + '; this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
         // 车图片数组
         let recs = rst.data
         let hasVeh = false
         let vehLen = 0
-        console.log('befor: ' + JSON.stringify(this.pageObj.vehs))
         recs.forEach(element => {
           hasVeh = false
           this.pageObj.vehs.forEach(item => {
@@ -98,18 +98,31 @@
             }
           })
           // 替换元素后 hashVeh为true，进入不到if  会进else？
+          if (!hasVeh) {
+            if (this.pageObj.vehs.length > 0) {
+              this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
+              vehLen = this.pageObj.vehs.length
+              // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
+              if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
+                this.pageObj.vehs.pop()
+              }
+            } else {
+              this.pageObj.vehs.push(element)
+            }
+          }
+          /*
           if (!hasVeh && this.pageObj.vehs.length > 0) {
             // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
-            vehLen = this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
+            this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
+            vehLen = this.pageObj.vehs.length
             // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
             if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
               this.pageObj.vehs.pop()
             }
           } else if (!hasVeh) {
             this.pageObj.vehs.push(element)
-          }
+          }*/
         })
-        console.log('after: ' + JSON.stringify(this.pageObj.vehs))
       }
       this.initMouseEvent()
     },
