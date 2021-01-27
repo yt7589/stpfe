@@ -47,7 +47,7 @@
         data: [],
         vehs: [],
         selVeh: null,
-        originImage: 'https://tpc.googlesyndication.com/simgad/11123356258384329839?sqp=4sqPyQQ7QjkqNxABHQAAtEIgASgBMAk4A0DwkwlYAWBfcAKAAQGIAQGdAQAAgD-oAQGwAYCt4gS4AV_FAS2ynT4&rs=AOga4qkNjeYFQQtX6f_hzVFyjvyUGLo_bg',
+        originImage: 'http://222.128.117.234:8090/www/images/a.jpg',
         table: {
           data: [],
           pagination: {
@@ -79,10 +79,9 @@
         img001.src = rst.originImage
         // 车图片数组
         let recs = rst.data
-        console.log('接收的车图片数组长度：',recs.length)
         let hasVeh = false
         let vehLen = 0
-        console.log('pageObj.vehs' + JSON.stringify(this.pageObj.vehs) + '!')
+        console.log('befor: ' + JSON.stringify(this.pageObj.vehs))
         recs.forEach(element => {
           hasVeh = false
           this.pageObj.vehs.forEach(item => {
@@ -103,13 +102,14 @@
             // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
             vehLen = this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
             // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
-            if (vehLen > 100) { // 只跟踪100辆车，老的车辆信息将丢弃
+            if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
               this.pageObj.vehs.pop()
             }
           } else if (!hasVeh) {
             this.pageObj.vehs.push(element)
           }
         })
+        console.log('after: ' + JSON.stringify(this.pageObj.vehs))
       }
       this.initMouseEvent()
     },
