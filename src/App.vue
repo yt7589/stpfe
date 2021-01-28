@@ -51,3 +51,15 @@ export default {
 <style lang="scss">
 @import '~@/assets/style/public-class.scss';
 </style>
+<style>
+.el-message-box{
+  background-color: #002960 !important;
+  border-color: #002960 !important;
+}
+
+.el-button--primary{
+  background-color: #045FE0 !important;
+  border-color: #045FE0 !important;
+}
+</style>
+
