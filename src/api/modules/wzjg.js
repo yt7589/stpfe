@@ -53,4 +53,11 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       params
     })
   },
+  querySiteIllegal(params){
+    return request({
+      url: '/vm/ils/querySiteIllegal',
+      method: 'GET',
+      params
+    })
+  }
 })

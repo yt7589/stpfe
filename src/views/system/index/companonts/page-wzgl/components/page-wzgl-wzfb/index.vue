@@ -19,7 +19,7 @@
             <el-select placeholder="类别" v-model="table.filter.type" class="type-select">
               <el-option v-for="item in table.option.areaOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
-            <el-button class="button-search">
+            <el-button class="button-search" @click="fetchData">
               搜索
               <el-image :src="require('../../image/image-search.png')"></el-image>
             </el-button>
@@ -28,7 +28,7 @@
 
         <div class="wrapper" v-if="visible">
           <area-violation-top10-card :data="illData.ilsAreaDTO" class="area-violation-top10-card "></area-violation-top10-card>
-          <camera-violation-top10-card :data="illData.ilsSiteDTO"  class="camera-violation-top10-card"></camera-violation-top10-card>
+          <camera-violation-top10-card :data="illData.ilsSiteDTO" class="camera-violation-top10-card"></camera-violation-top10-card>
         </div>
       </div>
       <div class="column-2">
@@ -36,11 +36,11 @@
           <baidu-map ref="map" class="baidu-map" :zoom="map.zoom"
                      :center="map.center" :dragging="true"
                      :scroll-wheel-zoom="true"
-                     @ready="onMapReady">
-            <!--<bm-marker v-for="(point,index) in pointList" :key="index"-->
-            <!--:position="{lng: point.longitude, lat: point.latitude}"-->
-            <!--v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">-->
-            <!--</bm-marker>-->
+                     @ready="onMapReady" @tilesloaded="onMapLoaded">
+            <bm-marker v-for="(point,index) in siteData" :key="index"
+                       :position="{lng: point.lng, lat: point.lat}"
+                       v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">
+            </bm-marker>
           </baidu-map>
         </div>
       </div>
@@ -72,11 +72,11 @@
             phone: '',
             company: ''
           },
-          option:{
+          option: {
             areaOptions: [{
               label: "全部",
               value: null
-            },{
+            }, {
               label: "本地",
               value: 0
             }, {
@@ -92,22 +92,30 @@
         },
         map: {
           instance: null,
+          ready: false,
           zoom: 12,
           center: {
             lng: 116.495843,
             lat: 39.90421
           }
         },
-        illData:{}
+        illData: {},
+        siteData: []
       }
     },
     mounted(){
-        this.fetchData()
+      this.fetchData()
     },
     methods: {
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
+        setTimeout(() => {
+          this.map.ready = true
+          this.zoomFocus();
+        }, 2000)
+      },
+      onMapLoaded(){
       },
       initMap () {
         this.map.instance.setMapStyleV2(mapStyle)
@@ -116,7 +124,23 @@
         API.queryIllegalDistribution().then(res => {
           this.illData = res.data
         })
-      }
+        API.querySiteIllegal().then(res => {
+          this.siteData = res.data.recs
+          this.zoomFocus();
+        })
+      },
+      zoomFocus(){
+        if (this.map.ready) {
+          var points = []
+          this.siteData.forEach((item) => {
+            points.push(new BMap.Point(item.lng, item.lat))
+          })
+          let v = this.map.instance.getViewport(points);
+
+          this.map.center = v.center
+          this.map.zoom = v.zoom
+        }
+      },
     }
   }
 </script>
