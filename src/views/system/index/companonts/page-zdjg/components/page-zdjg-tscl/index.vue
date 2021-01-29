@@ -19,13 +19,13 @@
                 <!--</bm-marker>-->
             <!--</baidu-map>-->
                 <el-col class="col-1">
-                    <el-row class="col-common col-1-1">
+                    <el-row class="col-common-left col-1-1">
                         <constitute-pie ref="pie" :s-data="cPieData"></constitute-pie>
                     </el-row>
-                    <el-row class="col-common col-1-2">
+                    <el-row class="col-common-left col-1-2">
                         <area-bar ref="bar" :x-data="cBarXData" :series-data="cBarSData"></area-bar>
                     </el-row>
-                    <el-row class="col-common col-1-3">
+                    <el-row class="col-common-left col-1-3">
                         <monitor-realtime-image :images="images"></monitor-realtime-image>
                     </el-row>
                 </el-col>
@@ -49,13 +49,13 @@
                         </el-col>
 
                     </el-row>
-                    <el-row class="col-2-row-2">
+                    <el-row class="col-2-row-2" @click.stop.prevent>
 
                     </el-row>
                     <el-row class="col-2-row-3">
                       <el-table class="col-2-row-3-table" :data="tableData" v-loading="loading" :header-row-style="{padding:'0px'}" :cell-style="{padding:'0px'}">
-                          <el-table-column type="index" :index="indexMethod"  align="center" label="序号" minWidth="30"></el-table-column>
-                          <el-table-column prop="hphm"  align="center" label="车牌号" minWidth="70"></el-table-column>
+                          <el-table-column type="index" :index="indexMethod"  align="center" label="序号" width="90"></el-table-column>
+                          <el-table-column prop="hphm"  align="center" label="车牌号"></el-table-column>
                           <el-table-column prop="ppcx"  align="center" label="车辆品牌" ></el-table-column>
                           <el-table-column prop="trafficViolationTypeName"  align="center" label="违法预警" ></el-table-column>
                           <el-table-column prop="siteName"  align="center" label="点位" ></el-table-column>
@@ -64,13 +64,13 @@
                     </el-row>
                 </el-col>
                 <el-col  class="col-3">
-                    <el-row class="col-common col-3-1">
+                    <el-row class="col-common-right col-3-1">
                         <constitute-line ref="line" :x-data="LxData" :line-data="LineData" :line-data2="Line2Data" ></constitute-line>
                     </el-row>
-                    <el-row class="col-common col-3-2">
+                    <el-row class="col-common-right col-3-2">
                         <point-bar :x-data="pBarXData" :series-data="pBarSData"></point-bar>
                     </el-row>
-                    <el-row class="col-common col-3-3">
+                    <el-row class="col-common-right col-3-3">
                         <violation-realtime-image :images="images2"></violation-realtime-image>
                     </el-row>
                 </el-col>
@@ -303,15 +303,22 @@
             }
             .col-2-row-3 {
                 position: absolute;
+                width: 100%;
                 bottom: 3%;
                 height: 180px;
             }
 
         }
-        .col-common {
+        .col-common-left {
             width: 100%;
             height: 32%;
             background: url("../../image/col-1-1.png") no-repeat;
+            background-size: 100% 98%;
+        }
+        .col-common-right {
+            width: 100%;
+            height: 32%;
+            background: url("../../image/col-2-1.png") no-repeat;
             background-size: 100% 98%;
         }
         .col-3 {
@@ -327,7 +334,6 @@
             background: url("../../image/tscl_table@1x.png") no-repeat;
             background-size: 100% 100%;
             min-height: 180px;
-
         }
         .col-2-row-3-table  .el-table__header th,.el-table__header tr,.el-table__row{
             background-color:transparent !important;
@@ -336,7 +342,6 @@
             color: #ffffff;
             font-size: 12px;
         }
-
         .col-2-row-3-table  tr:hover>td {
             background-color:transparent !important;
         }

@@ -32,6 +32,7 @@
         <div class="wrapper">
           <baidu-map ref="map" class="baidu-map" :zoom="map.zoom"
                      :center="map.center" :dragging="true"
+                     :scroll-wheel-zoom="true"
                      @ready="onMapReady">
             <bm-marker v-for="(point,index) in table.data" :key="index"
                        :position="{lng: point.lng, lat: point.lat}"

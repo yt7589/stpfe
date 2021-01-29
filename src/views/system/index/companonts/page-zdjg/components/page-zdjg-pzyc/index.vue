@@ -14,7 +14,7 @@
                 <el-col :span="12" class="col bg-color col-2">
                     <div  class="map">
                         <baidu-map  ref="map-qyjg" class="baidu-map" :zoom="map.zoom"
-                                    :center="map.center" :dragging="false"
+                                    :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
                             <div v-for="(item,index) in markerPoints" :key="index">

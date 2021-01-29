@@ -19,7 +19,8 @@
           </div>
         </el-col>
         <el-col :span="18" class="column-chart">
-          <highcharts class="chart" :options="chart.option"></highcharts>
+          <div id="carTypeCard" class="chart"  />
+          <!-- <highcharts class="chart" :options="chart.option"></highcharts> -->
         </el-col>
       </el-row>
     </div>
@@ -28,99 +29,12 @@
 
 <script>
   import CustomCard from '../custom-card'
-
+  import echarts from 'echarts'
   export default {
     props: ['typeData', 'data'],
     components: {CustomCard},
     data(){
       return {
-        chart: {
-          option: {
-            chart: {
-              type: 'variablepie',
-              plotBackgroundColor: 'transparent',
-              backgroundColor: 'transparent',
-              spacing: [0, 0, 0, 0]
-            },
-            title: {
-              text: '',
-            },
-            tooltip: {
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              shadow: false,
-              padding: -5,
-              style: {
-                color: '#00F6FFFF',
-                fontSize: '0.0625rem',
-              },
-              formatter: function () {
-                return parseInt(this.percentage) + '%';
-              }
-            },
-            credits: {
-              enabled: false
-            },
-            exporting: {
-              enabled: false
-            },
-            plotOptions: {
-              variablepie: {
-                size:'60%',
-                borderWidth: 0,
-                dataLabels: {
-                  enabled: true,
-                  softConnector: false,
-                  formatter: function () {
-                    return parseInt(this.percentage) + '%';
-                  },
-                  style: {
-                    "color": 'white',
-                    fontSize: '0.0425rem',
-                  }
-                },
-                showInLegend: true,
-                colors: ['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF', '#045FE0', '#FFFFFF']
-              }
-            },
-            legend: {
-              enabled: true,
-              labelFormat: "{name}",
-              useHTML: true,
-              align: 'right',
-              verticalAlign: 'middle',
-              layout: 'vertical',
-              symbolRadius: 0,
-              itemStyle: {
-                color: "white",
-                fontSize: '0.0625rem',
-              }
-            },
-            series: [{
-              minPointSize: 1,
-              data: [
-//                {
-//                  name: '',
-//                  y: 0,
-//                  z: 0
-//                }
-              ]
-            }],
-            responsive: {
-              rules: [{
-                condition: {
-                  maxHeight: 120
-                },
-                chartOptions: {
-                  series: [{
-                    minPointSize: 15,
-                  }],
-                }
-              }]
-            }
-          },
-          instance: null
-        },
         car: {
           local: 0,
           localStyle: {},
@@ -138,25 +52,81 @@
       }
     },
     mounted(){
+      // 左侧
       this.updateCarTypeData()
+      this.initChart()
       this.updateChartData()
+      window.onresize = ()=>{
+        console.log('大小变化挂')
+        // this.chart.dispose()
+        // this.chart = null
+        // this.initChart();
+        this.chart.resize();
+      }
+    },
+    beforeDestroy() {
+      if (!this.chart) {
+        return
+      }
+      this.chart.dispose()
+      this.chart = null
     },
     methods: {
+      initChart(){
+        this.chart = echarts.init(document.getElementById('carTypeCard'))
+      },
+      setOptions(names,datas){
+        this.chart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{d}%'
+          },
+          legend: {
+            orient: 'vertical',
+            right: 0,
+            top: 'middle',
+            textStyle:{
+              color: '#FFF'    
+            },
+            data: names,
+            itemWidth: 12,
+            itemHeight: 12,
+            itemGap: 5,
+            icon: 'rect'
+          },
+          series: [
+            {
+              name:'',
+              type:'pie',
+              center: ['40%', '50%'],
+              radius: ['0', '70%'],
+              roseType: 'radius',
+              data:datas,
+              labelLine:{
+                length: 5,
+                length2:5
+              }
+            }
+          ],
+          color:['#00F6FF', '#E69B03', '#4C49EC', '#00C087', '#06A6FF', '#045FE0', '#FFFFFF']
+        })
+      },
       updateChartData(){
         if (this.data) {
-          let chartSeries = this.chart.option.series[0]
-          let data = []
+          let datas = []
+          let names = []
           this.data.forEach(item => {
             let value = parseFloat(item.count)
-            data.push({
+            datas.push({
               name: item.name,
-              y: value,
-              z: value
+              value: value
             })
+            names.push(item.name)
           })
-          chartSeries.data = data
+          this.setOptions(names,datas)
         }
       },
+      // 左侧
       updateCarTypeData(){
         if (this.typeData) {
           // 0 - 80 %

@@ -10,9 +10,9 @@
       <span style="background: #D1494E;">本月</span>
     </div>
     <div class="value-box">
-      <span style="background: #06A6FF;">{{current.today_st}}辆</span>
-      <span style="background: #E69B03;">{{current.week_st}}辆</span>
-      <span style="background: #D1494E;">{{current.month_st}}辆</span>
+      <span style="background: #06A6FF;">{{data.today_st}}辆</span>
+      <span style="background: #E69B03;">{{data.week_st}}辆</span>
+      <span style="background: #D1494E;">{{data.month_st}}辆</span>
     </div>
 
     <highcharts class="chart" :options="chart.option"></highcharts>
@@ -90,7 +90,7 @@
             },
             series: [{
               name: 'null',
-              data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+              data: [],
               borderWidth: 0,
               stack: 1,
               animation: false,
@@ -100,7 +100,7 @@
               color: "#1A2C4B"
             }, {
               name: '',
-              data: [17, 31, 63, 20, 2, 22, 33, 44, 55, 11, 11, 33],
+              data: [],
               borderWidth: 0,
               colorByPoint: true,
               dataLabels: {
@@ -115,8 +115,7 @@
           },
           instance: null,
           style: {}
-        },
-        current: {}
+        }
       }
     },
     watch: {
@@ -130,27 +129,19 @@
     methods: {
       updateChartData(){
         if (this.data) {
-          let array = this.data.concat([])
-          array.sort((t1, t2) => t1.name > t2.name)
           let categories = []
           let data = []
           let max = 100;
-          let month = dayjs().month() + 1
-
-          array.forEach(item => {
-            let label = parseInt(item.name)
-            let value = parseInt(item.month_st)
-            data.push(value)
-            categories.push(label + "月")
+          if(!this.data.dcstVmDTO){
+            return;
+          }
+          this.data.dcstVmDTO.forEach(item => {
+            data.push(item.count)
+            categories.push(item.name)
 
             // 更新最大值
-            if (value > max) {
-              max = value
-            }
-
-            // 更新当前月
-            if (label == month) {
-              this.current = item;
+            if (item.count > max) {
+              max = item.count
             }
           })
 

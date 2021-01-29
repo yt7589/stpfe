@@ -25,11 +25,12 @@
         <div class="wrapper">
           <baidu-map ref="map" class="baidu-map" :zoom="map.zoom"
                      :center="map.center" :dragging="true"
+                     :scroll-wheel-zoom="true"
                      @ready="onMapReady">
-            <!--<bm-marker v-for="(point,index) in pointList" :key="index"-->
-            <!--:position="{lng: point.longitude, lat: point.latitude}"-->
-            <!--v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">-->
-            <!--</bm-marker>-->
+            <bm-marker v-for="(point,index) in data.tvsd" :key="index"
+              :position="{lng: point.lng, lat: point.lat}"
+              v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">
+            </bm-marker>
           </baidu-map>
         </div>
       </div>
@@ -270,7 +271,7 @@
           let data = []
           array.forEach(item => {
             categories.push(item.name)
-            data.push(parseInt(item.count / 1000))
+            data.push(parseInt(item.count / 10000))
           })
           this.cameraChart.option.xAxis.categories = categories
           this.cameraChart.option.series[0].data = data

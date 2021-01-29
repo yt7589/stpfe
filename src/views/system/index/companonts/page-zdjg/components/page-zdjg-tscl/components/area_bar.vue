@@ -125,7 +125,11 @@
               //   color: 'rgba(151, 151, 151, 1)'
               // }
             },
-
+            splitLine: {
+              lineStyle: {
+                color: '#979797'
+              }
+            }
           }],
           series: [{
             type: 'bar',

@@ -73,6 +73,7 @@
 <script>
   import API from '@/api'
   import ImageCard from './image-card.vue'
+import { error } from 'highcharts'
   export default {
     props: ['visible'],
     components: {ImageCard},
@@ -129,6 +130,12 @@
         this.fetchData(page)
       },
       fetchData(){
+        if(this.table.filter.image.url == null){
+          this.$alert('请选择图片', '提示', {
+            confirmButtonText: '确定'            
+          });
+          return;
+        }
         this.$refs.form.validate((valid) => {
           if (valid) {
             let pageOption = {
