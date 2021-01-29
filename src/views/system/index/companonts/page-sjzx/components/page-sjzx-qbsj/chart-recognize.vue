@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import API from '@/api'
   export default {
     components: {},
     data(){
@@ -48,7 +49,7 @@
             },
             xAxis: {
               lineWidth: 0,
-              categories: ['1', '2', '3', '4', '5', '6', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+              categories: [],  //['1', '2', '3', '4', '5', '6', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
               labels: {
                 style: {
                   color: 'white',
@@ -95,7 +96,7 @@
                   ]
                 },
                 borderRadius: '4px',
-                data: [252,221,313,556,777,123,223,221,123,456,252,221,313,556,777,123,223,221,123,456,252,221,313,556,777,123,223,221,123,456]
+                data: [],  //[252,221,313,556,777,123,223,221,123,456,252,221,313,556,777,123,223,221,123,456,252,221,313,556,777,123,223,221,123,456]
               }
             ],
           },
@@ -104,8 +105,25 @@
       }
     },
     mounted(){
+      this.getRecQty()
     },
-    methods: {}
+    methods: {
+      getRecQty(){
+        let pageObj = this
+        API.getTrendParam().then(res => {
+          let arr_categories = []
+          let arr_data = []
+          let tdrt = res.data.dit
+          let vtLen= tdrt.length
+          for (let i=0; i<vtLen; i++) {
+            arr_categories.push(tdrt[i]['name'])
+            arr_data.push(tdrt[i]['count'])
+          }
+          this.chart.option.xAxis.categories = arr_categories
+          this.chart.option.series[0].data = arr_data
+        })
+      }
+    }
   }
 </script>
 
