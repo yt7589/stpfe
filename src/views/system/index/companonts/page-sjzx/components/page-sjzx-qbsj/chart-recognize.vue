@@ -117,7 +117,7 @@ import API from '@/api'
           let vtLen= tdrt.length
           for (let i=0; i<vtLen; i++) {
             arr_categories.push(tdrt[i]['name'])
-            arr_data.push(tdrt[i]['count'])
+            arr_data.push(tdrt[i]['count']/10000)
           }
           this.chart.option.xAxis.categories = arr_categories
           this.chart.option.series[0].data = arr_data
