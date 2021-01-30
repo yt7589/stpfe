@@ -321,13 +321,8 @@
         this.sendSubscribeMsg('ksAsLsvs',1)
 
         that.$globalws.ws.onmessage =  (res)=> {
-          // console.log('................,',res)
           let data = JSON.parse(res.data)
-          console.log('-------:',res.data)
-          // console.log('数据集合：',data)
           if (data.length > 0 ){
-          console.log('数据进来了:',data[0])
-
             if(data[0].occurTime){
               //动态列表
               this.dtData = data

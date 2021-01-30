@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import API from '@/api'
   export default {
     components: {},
     data(){
@@ -35,7 +36,7 @@
             },
             xAxis: {
               lineWidth: 0,
-              categories: ['1', '2', '3', '4', '5', '6', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+              categories: [],  //['1', '2', '3', '4', '5', '6', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
               labels: {
                 style: {
                   color: 'white'
@@ -89,7 +90,7 @@
             },
             series: [{
               name: '小型车',
-              data: [7.0, 11.5, 15.2, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 14.5, 14.5, 18.4, 21.5, 25.2, 18.4, 14.5, 18.4, 21.5, 25.2, 21.5, 25.2, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+              data: [], //[7.0, 11.5, 15.2, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 14.5, 14.5, 18.4, 21.5, 25.2, 18.4, 14.5, 18.4, 21.5, 25.2, 21.5, 25.2, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
               lineColor: '#D1494E',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -113,8 +114,24 @@
       }
     },
     mounted(){
+      this.getVioQty()
     },
-    methods: {}
+    methods: {
+      getVioQty(){
+        API.getTrendParam().then(res => {
+          let arr_categories = []
+          let arr_data = []
+          let tdit = res.data.dit
+          let vtLen= tdit.length
+          for (let i=0; i<vtLen; i++) {
+            arr_categories.push(tdit[i]['name'])
+            arr_data.push(tdit[i]['count'])
+          }
+          this.chart.option.xAxis.categories = arr_categories
+          this.chart.option.series[0].data = arr_data
+        })
+      }
+    }
   }
 </script>
 

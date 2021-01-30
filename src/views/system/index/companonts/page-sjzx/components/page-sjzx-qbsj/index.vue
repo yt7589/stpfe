@@ -90,28 +90,28 @@
           <div class="card card-blue">
             <div class="card-value">
               <el-image :src="require('../../image/image-recognize.png')"></el-image>
-              <span>6688</span>
+              <span>{{loadIlsTotal['total_recognition']}}</span>
             </div>
             <div class="card-title">累计识别量</div>
           </div>
           <div class="card card-green">
             <div class="card-value">
               <el-image :src="require('../../image/image-violation.png')"></el-image>
-              <span>6688</span>
+              <span>{{loadIlsTotal['total_violation']}}</span>
             </div>
             <div class="card-title">累计违章量</div>
           </div>
           <div class="card card-yellow">
             <div class="card-value">
               <el-image :src="require('../../image/image-local-car.png')"></el-image>
-              <span>6688</span>
+              <span>{{loadIlsTotal['total_violation_city']}}</span>
             </div>
             <div class="card-title">累计本市违章量</div>
           </div>
           <div class="card card-red">
             <div class="card-value">
               <el-image :src="require('../../image/image-outland-car.png')"></el-image>
-              <span>6688</span>
+              <span>{{loadIlsTotal['total_violation_town']}}</span>
             </div>
             <div class="card-title">累计外埠违章量</div>
           </div>
@@ -168,6 +168,7 @@
         pageSize: 20,
         total: 0,
         vehicles: [],
+        loadIlsTotal:'',//累计识别违章量
         table: {
           data: [],
           filter: {},
@@ -183,6 +184,7 @@
       this.getVehicleTypes()
       this.getIlsTypes()
       this.queryVehicles()
+      this.loadIlsQty()
     },
     methods: {
       /**
@@ -286,7 +288,15 @@
         this.currentPage = page
         this.startIndex = (page - 1) * this.pageSize
         this.queryVehicles()
-      }
+      },
+      /**
+       * 右侧图表数据显示
+       */
+      loadIlsQty(){
+        API.loadIlsQty().then(res => {
+          this.loadIlsTotal =res.data
+        })
+      },
     }
   }
   /**

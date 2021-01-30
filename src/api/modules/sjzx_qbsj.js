@@ -23,6 +23,18 @@ getDcAdVehicles(params) {
         params,
     })
 },
+loadIlsQty(){
+    return request({
+        url: '/dc/hp/queryDataAnalysis?p=pc&v=0.0.1',
+        method: 'GET',
+    })
+},
+getTrendParam(){
+    return request({
+        url: 'dc/hp/queryDataAnalysis?p=pc&v=0.0.1',
+        method: 'GET',
+    })
+},
 test001(params) {
     console.log('数据中心=》全部数据')
 }

@@ -6,7 +6,7 @@
                 <el-col class="col-1">
                     <el-row class="col-1-row col-1-row-1">
                         <div class="date-time-select">
-                            <el-form :model="form" label-width="90px">
+                            <el-form :model="form" label-position="right" label-width="20%">
                                 <el-form-item label="预测时间">
                                     <el-date-picker
                                             align="right"
@@ -34,7 +34,7 @@
                 <el-col class="col-2">
                     <div class="map">
                         <baidu-map  class="baidu-map" :zoom="map.zoom"
-                                    :center="map.center" :dragging="false"
+                                    :center="map.center" :dragging="true"
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
                             <div v-for="(item,index) in markerPoints" :key="index">
@@ -190,7 +190,6 @@
                         margin-bottom: 2%;
                         .date-time-select {
                             padding-top: 34px;
-
                         }
                     }
                     .btn{
