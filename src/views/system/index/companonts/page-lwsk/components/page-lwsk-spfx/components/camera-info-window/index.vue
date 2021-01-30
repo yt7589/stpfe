@@ -30,20 +30,28 @@
     <el-dialog :visible.sync="cameraPhotoDialog.visible" custom-class="camera-photo-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
       <camera-photo-dialog v-if="cameraPhotoDialog.visible" :data="cameraPhotoDialog.data"></camera-photo-dialog>
     </el-dialog>
+    <el-dialog :visible.sync="cameraVideoDialog.visible" custom-class="camera-video-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
+      <camera-video-dialog v-if="cameraVideoDialog.visible" :data="cameraVideoDialog.data"></camera-video-dialog>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import CameraPhotoDialog from '../camera-photo-dialog/index.vue'
+  import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import API from '@/api'
 
   export default {
     props: ['data'],
-    components: {CameraPhotoDialog},
+    components: {CameraPhotoDialog, CameraVideoDialog},
     data(){
       return {
         visible: true,
         cameraPhotoDialog: {
+          visible: false,
+          data: {}
+        },
+        cameraVideoDialog: {
           visible: false,
           data: {}
         }
@@ -62,10 +70,9 @@
     methods: {
       onRowClick(row, column, event){
         this.$store.commit("stp/video_analysis/setCameraId", 101)
-
         API.querySdPic({diId: row.diId}).then(res => {
-          this.cameraPhotoDialog.data = res.data
-          this.cameraPhotoDialog.visible = true;
+          this.cameraVideoDialog.data = res.data
+          this.cameraVideoDialog.visible = true;
           this.visible = false
         })
       },

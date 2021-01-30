@@ -1,5 +1,5 @@
 <template>
-  <div class="camera-photo-dialog">
+  <div class="camera-photo-dialog" style="background-color: red;">
     <div class="wrapper">
       <el-image id="img001" style="width:100%;height:80%" :src="originImage">
       </el-image>
