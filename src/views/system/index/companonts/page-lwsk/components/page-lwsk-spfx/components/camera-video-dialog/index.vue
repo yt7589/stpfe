@@ -61,7 +61,7 @@
     },
     mounted(){
       this.initData()
-      console.log('########### Yantao: camera-photo-dialog')
+      console.log('############ yantao: camera-video-dialog')
       console.log('camera-photo-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
       console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
       let msg = {

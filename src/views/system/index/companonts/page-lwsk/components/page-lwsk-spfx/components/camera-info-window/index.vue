@@ -1,6 +1,6 @@
 <template>
   <div class="camera-info-window">
-    <div class="main-content" v-show="!cameraPhotoDialog.visible">
+    <div class="main-content" v-show="(!cameraVideoDialog.visible && !cameraPhotoDialog.visible)">
       <div class="window-wrapper">
         <div class="header">
         <span>
@@ -22,11 +22,14 @@
         </el-table>
       </div>
     </div>
-    <div class="button-box" v-show="!cameraPhotoDialog.visible">
+    <div class="button-box" v-show="(!cameraVideoDialog.visible && !cameraPhotoDialog.visible)">
       <el-button type="text" icon="el-icon-arrow-up" :disabled="hasPrevious">上一页</el-button>
       <el-button type="text" icon="el-icon-arrow-down" :disabled="hasNext">下一页</el-button>
     </div>
 
+    <el-dialog :visible.sync="cameraVideoDialog.visible" custom-class="camera-photo-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
+      <camera-video-dialog v-if="cameraVideoDialog.visible" :data="cameraVideoDialog.data"></camera-video-dialog>
+    </el-dialog>
     <el-dialog :visible.sync="cameraPhotoDialog.visible" custom-class="camera-photo-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
       <camera-photo-dialog v-if="cameraPhotoDialog.visible" :data="cameraPhotoDialog.data"></camera-photo-dialog>
     </el-dialog>
@@ -34,15 +37,20 @@
 </template>
 
 <script>
+  import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import CameraPhotoDialog from '../camera-photo-dialog/index.vue'
   import API from '@/api'
 
   export default {
     props: ['data'],
-    components: {CameraPhotoDialog},
+    components: {CameraVideoDialog, CameraPhotoDialog},
     data(){
       return {
         visible: true,
+        cameraVideoDialog: {
+          visible: false,
+          data: {}
+        },
         cameraPhotoDialog: {
           visible: false,
           data: {}
@@ -61,13 +69,16 @@
     },
     methods: {
       onRowClick(row, column, event){
-        this.$store.commit("stp/video_analysis/setCameraId", 101)
-
-        API.querySdPic({diId: row.diId}).then(res => {
-          this.cameraPhotoDialog.data = res.data
-          this.cameraPhotoDialog.visible = true;
+        this.$store.commit("stp/video_analysis/setCameraId", row.diId)
+        if ('抓拍机' == row.category) {
+          this.cameraPhotoDialog.data = row
+          this.cameraPhotoDialog.visible = true
           this.visible = false
-        })
+        } else {
+          this.cameraVideoDialog.data = row
+          this.cameraVideoDialog.visible = true
+          this.visible = false
+        }
       },
       close(){
         this.$emit("close")
