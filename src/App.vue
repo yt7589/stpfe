@@ -56,6 +56,9 @@ export default {
   background-color: #002960 !important;
   border-color: #002960 !important;
 }
+.el-message-box__title{
+  color: #FFFFFF !important;
+}
 
 .el-button--primary{
   background-color: #045FE0 !important;

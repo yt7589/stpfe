@@ -20,4 +20,11 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       params,
     })
   },
+  sjzxQueryDataReport(params){
+    return request({
+      url: '/dc/rt/queryDataReport',
+      method: 'GET',
+      params,
+    })
+  }
 })

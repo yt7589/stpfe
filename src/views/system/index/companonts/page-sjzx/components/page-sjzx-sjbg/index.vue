@@ -2,61 +2,123 @@
   <div class="page-sjzx-sjbg">
     <div class="top">
         选择时段 
-        <el-button :class="buttonKey=='today'?'is-active':'un-active'" value="today" @click="buttonKey='today'">今日</el-button>
-        <el-button :class="buttonKey=='week'?'is-active':'un-active'" value="week" @click="buttonKey='week'">近七日</el-button>
-        <el-button :class="buttonKey=='month'?'is-active':'un-active'" value="month" @click="buttonKey='month'">近一月</el-button>
-        <el-button :class="buttonKey=='quarter'?'is-active':'un-active'" value="quarter" @click="buttonKey='quarter'">近三月</el-button>
-        <el-button :class="buttonKey=='half'?'is-active':'un-active'" value="half" @click="buttonKey='half'">近半年</el-button>
-        <el-button :class="buttonKey=='year'?'is-active':'un-active'" value="year" @click="buttonKey='year'">近一年</el-button>
+        <el-button :class="buttonKey=='today'?'is-active':'un-active'" value="today" @click="buttonKey='today';fetchData()">今日</el-button>
+        <el-button :class="buttonKey=='week'?'is-active':'un-active'" value="week" @click="buttonKey='week';fetchData()">近七日</el-button>
+        <el-button :class="buttonKey=='month'?'is-active':'un-active'" value="month" @click="buttonKey='month';fetchData()">近一月</el-button>
+        <el-button :class="buttonKey=='quarter'?'is-active':'un-active'" value="quarter" @click="buttonKey='quarter';fetchData()">近三月</el-button>
+        <el-button :class="buttonKey=='half'?'is-active':'un-active'" value="half" @click="buttonKey='half';fetchData()">近半年</el-button>
+        <el-button :class="buttonKey=='year'?'is-active':'un-active'" value="year" @click="buttonKey='year';fetchData()">近一年</el-button>
         <el-button class="button-save" icon="el-icon-delete">保存为PDF</el-button>
-      <!-- <system-status :data="data.dcSys ?data.dcSys:{}" style="height:33%;"></system-status> -->
-      <!-- <car-flow :data="data.dcVSt?data.dcVSt:[]" style="height:67%;"></car-flow> -->
+    </div>
+    <div class="title">
+      北京市一日交通数据报告
+    </div>
+    <div class="chart-1">
+      <fsdydqs id="line1" :x-data="rtjXData?rtjXData:[]" :line-data="rtjLineData?rtjLineData:[]" 
+      :title="params[0].title" :icon="params[0].icon" :chartItem="params[0].chartItem"></fsdydqs>
     </div>
 
-    <div class="column-2">
-      <!-- <statistic-today :todayData="data.dcToday ?data.dcToday:{}" :outlandData="data.dcVArea?data.dcVArea:[]" :locationData="data.dcVSite?data.dcVSite:[]" class="statistic-today"></statistic-today> -->
-      <!-- <car-flow7day :data="data.dcVTrend?data.dcVTrend:[]" class="car-flow7day"></car-flow7day> -->
+    <div class="chart-2">
+      <fqgfsd :data="data.raj?data.raj:[]" :title="params[1].title" :icon="params[1].icon"></fqgfsd>
     </div>
-
-    <div class="column-3">
-      <!-- <violation-top :data="data.dcIlSite?data.dcIlSite:[]" style="width:100%;height:32%;"></violation-top> -->
-      <!-- <special-car-top :data="data.dcKvSite?data.dcKvSite:[]" style="width:100%;height:32%;margin-top:4%;"></special-car-top> -->
-      <!-- <big-car-top :data="data.dcTsSite?data.dcTsSite:[]" style="width:100%;height:32%;margin-top:4%;"></big-car-top> -->
+    <div class="chart-3">
+      <fsdydqs id="line2" :x-data="rtvXData?rtvXData:[]" :line-data="rtvLineData?rtvLineData:[]" 
+      :title="params[2].title" :icon="params[2].icon" :chartItem="params[2].chartItem"></fsdydqs>
+    </div>
+    <div class="chart-4">
+      <fqgcl :data="data.rav?data.rav:[]" :title="params[3].title" :icon="params[3].icon"></fqgcl>
+      <el-image class="image-legend" :src="require('./image/image-legend.png')"></el-image>
+    </div>
+    <div class="chart-5">
+      <fqgfsd :data="data.rrj?data.rrj:[]" :title="params[4].title" :icon="params[4].icon"></fqgfsd>
     </div>
   </div>
 </template>
 
 <script>
-//   import CarFlow7day from './components/car-flow-7day/index.vue'
-//   import BigCarTop from './components/big-car-top/index.vue'
-//   import CarFlow from './components/car-flow/index.vue'
-//   import SpecialCarTop from './components/special-car-top/index.vue'
-//   import StatisticToday from './components/statistic-today/index.vue'
-//   import SystemStatus from './components/system-status/index.vue'
-//   import ViolationTop from './components/violation-top/index.vue'
-
+  import fqgcl from './components/fqgcl/index.vue'
+  import fsdydqs from './components/fsdydqs/index.vue'
+  import fqgfsd from './components/fqgfsd/index.vue'
   import API from '@/api'
 
   export default {
-    // components: {
-    //   CarFlow7day, BigCarTop, CarFlow, SpecialCarTop,
-    //   StatisticToday, SystemStatus, ViolationTop
-    // },
+    components: {
+      fqgcl,fqgfsd,fsdydqs
+    },
     data(){
       return {
         data: {
             
         },
-        buttonKey: 'today'
+        params:[
+          {
+            title: '分时段拥堵趋势',
+            icon: 'icon-1.png',
+            chartItem: {
+              xAxisName: '时间',
+              yAxisName: '拥堵指数',
+              lineColor: '#00F6FF',
+              areaColor1: '#00FBFF',
+              areaColor2: '#001537'
+            }
+          },
+          {
+            title: '分区高峰时段拥堵排名',
+            icon: 'icon-2.png'
+          },
+          {
+            title: '分时段过车量',
+            icon: 'icon-3.png',
+            chartItem: {
+              xAxisName: '时间',
+              yAxisName: '辆/百万',
+              lineColor: '#FF5200',
+              areaColor1: '#E69B03',
+              areaColor2: '#001537'
+            }
+          },
+          {
+            title: '分区过车量排名',
+            icon: 'icon-4.png'
+          },
+          {
+            title: '高峰时段拥堵路段排名',
+            icon: 'icon-5.png'
+          },
+        ],
+        buttonKey: 'today',
+        // 分时段拥堵趋势--x轴数据
+        rtjXData:[],
+        // 分时段拥堵趋势--y轴数据
+        rtjLineData:[],
+        // 分时段过车量--x轴数据
+        rtvXData:[],
+        // 分时段过车量--y轴数据
+        rtvLineData:[]
       }
     },
     mounted(){
-    //   this.fetchData()
+      this.fetchData()
     },
     methods: {
       fetchData(){
-        API.sjzxQueryDataStatistics().then(res => {
+        API.sjzxQueryDataReport({buttonKey:this.buttonKey}).then(res => {
           this.data = res.data
+          // 解析分时段拥堵趋势数据
+          let rtjData = this.data.rtj;
+          this.rtjXData = [];
+          this.rtjLineData = [];
+          rtjData.forEach(item => {
+            this.rtjXData.push(item.name);
+            this.rtjLineData.push(item.count);
+          });
+          let rtvData = this.data.rtv;
+          this.rtvXData = [];
+          this.rtvLineData = [];
+          rtvData.forEach(item => {
+            this.rtvXData.push(item.name);
+            this.rtvLineData.push(item.count);
+          });
         })
       }
     }
@@ -65,11 +127,11 @@
 
 <style lang="scss">
   .page-sjzx-sjbg {
-    // display: flex;
-    // justify-content: center;
+    overflow-y: scroll;
     .top{
         display: inline-block;
-        // background-color: red;
+        font-size: 14px;
+        color: #FFFFFF;
         .is-active{
             background: #045FE0;
             border: unset;
@@ -79,6 +141,8 @@
         .un-active{
             border-color: #045FE0;
             font-size: 14px;
+            color: #FFFFFF;
+            background-color: #000;
         }
         .button-save {
             margin-left: 66px;
@@ -101,48 +165,66 @@
             }
           }
     }
+    .title{
+      font-size: 24px;
+      color: #FFFFFF;
+      font-weight: 500;
+      margin-top: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .chart-1{
+      width: 100%;
+      height: 356px;
+    }
+    .chart-2 {
+      margin-top: 24px;
+      width: 100%;
+      height: 617px;
+    }
+    .chart-3 {
+      margin-top: 24px;
+      width: 100%;
+      height: 356px;
+    }
+    .chart-4 {
+      margin-top: 24px;
+      width: 100%;
+      height: 617px;
+      .image-legend {
+        width: 72px;
+        left: 50px;
+        top: -200px;
+        z-index: 111;
+      }
+    }
+    .chart-5 {
+      margin-top: 24px;
+      width: 100%;
+      height: 617px;
+    }
+  }
 
-    .column-1 {
-      width: 27%;
-      height: 100%;
+  > .layout-background {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+      z-index: 99;
+      pointer-events: none;
 
-      background: #001537;
-      border-radius: 4px;
-
-      .decoration-left {
+      > .piece-5 {
         position: absolute;
-        top: 0px;
-        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        top: 217px;
+        width: 1270px;
+
+        background: url(../../../../image/background-piece_5.png) no-repeat;
+        background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+
       }
-    }
-
-    .column-2 {
-      width: calc(48% - 48px);
-      height: 100%;
-
-      .statistic-today {
-        width: 100%;
-        height: 55%;
-        background: #001537;
-        border-radius: 4px;
-      }
-
-      .car-flow7day {
-        width: 100%;
-        height: calc(45% - 16px);
-        margin-top: 16px;
-
-        background: #001537;
-        border-radius: 4px;
-      }
-    }
-
-    .column-3 {
-      width: 26%;
-      height: 100%;
-
-      background: #001537;
-      border-radius: 4px;
-    }
   }
 </style>
