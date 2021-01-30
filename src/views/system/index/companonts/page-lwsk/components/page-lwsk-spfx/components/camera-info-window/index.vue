@@ -69,7 +69,6 @@
     },
     methods: {
       onRowClick(row, column, event){
-<<<<<<< HEAD
         this.$store.commit("stp/video_analysis/setCameraId", row.diId)
         if ('抓拍机' == row.category) {
           this.cameraPhotoDialog.data = row
@@ -78,12 +77,6 @@
         } else {
           this.cameraVideoDialog.data = row
           this.cameraVideoDialog.visible = true
-=======
-        this.$store.commit("stp/video_analysis/setCameraId", 101)
-        API.querySdPic({diId: row.diId}).then(res => {
-          this.cameraVideoDialog.data = res.data
-          this.cameraVideoDialog.visible = true;
->>>>>>> 7b6f0d3c80e8dbd817dbc8988f28aa5e8c8d0f4a
           this.visible = false
         }
       },
