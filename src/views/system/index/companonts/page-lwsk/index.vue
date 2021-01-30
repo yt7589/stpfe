@@ -5,6 +5,7 @@
             :class="curPage===option?'is-active':''" @click="curPage=option">{{option.label}}</span>
     </div>
     <page-lwsk-spfx v-show="curPage.label=='视频分析'" class="page-lwsk-spfx custom-main-content-full"></page-lwsk-spfx>
+    <page-lwsk-spfx v-show="curPage.label=='图像分析'" class="page-lwsk-spfx custom-main-content-full"></page-lwsk-txfx>
     <page-lwsk-lwgc v-show="curPage.label=='路网过车'" :visible="curPage.label=='路网过车'"
                     class="page-lwsk-spfx custom-main-content"></page-lwsk-lwgc>
   </div>
@@ -12,10 +13,11 @@
 
 <script>
   import PageLwskSpfx from './components/page-lwsk-spfx'
+  import PageLwskTxfx from './components/page-lwsk-txfx'
   import PageLwskLwgc from './components/page-lwsk-lwgc'
 
   export default {
-    components: {PageLwskSpfx, PageLwskLwgc},
+    components: {PageLwskSpfx, PageLwskTxfx, PageLwskLwgc},
     data(){
       return {
         loading: false,
