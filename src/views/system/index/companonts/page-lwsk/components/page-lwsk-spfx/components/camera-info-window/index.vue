@@ -27,6 +27,9 @@
       <el-button type="text" icon="el-icon-arrow-down" :disabled="hasNext">下一页</el-button>
     </div>
 
+    <el-dialog :visible.sync="cameraVideoDialog.visible" custom-class="camera-video-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
+      <camera-video-dialog v-if="cameraVideoDialog.visible" :data="cameraVideoDialog.data"></camera-video-dialog>
+    </el-dialog>
     <el-dialog :visible.sync="cameraPhotoDialog.visible" custom-class="camera-photo-dialog" :modal="true" :append-to-body="true" style="overflow: hidden;">
       <camera-photo-dialog v-if="cameraPhotoDialog.visible" :data="cameraPhotoDialog.data"></camera-photo-dialog>
     </el-dialog>
@@ -34,15 +37,20 @@
 </template>
 
 <script>
+  import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import CameraPhotoDialog from '../camera-photo-dialog/index.vue'
   import API from '@/api'
 
   export default {
     props: ['data'],
-    components: {CameraPhotoDialog},
+    components: {CameraVideoDialog, CameraPhotoDialog},
     data(){
       return {
         visible: true,
+        cameraVideoDialog: {
+          visible: false,
+          data: {}
+        },
         cameraPhotoDialog: {
           visible: false,
           data: {}
