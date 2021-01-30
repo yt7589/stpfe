@@ -25,7 +25,8 @@
         curPage: {},
         pageOptions: [
           {label: '视频分析'},
-          {label: '路网过车'},
+          {label: '图像分析'},
+          {label: '路网过车'}
         ],
       }
     },
