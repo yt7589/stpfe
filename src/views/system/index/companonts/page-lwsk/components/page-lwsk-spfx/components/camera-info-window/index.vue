@@ -39,7 +39,6 @@
 <script>
   import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import CameraPhotoDialog from '../camera-photo-dialog/index.vue'
-  import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import API from '@/api'
 
   export default {
