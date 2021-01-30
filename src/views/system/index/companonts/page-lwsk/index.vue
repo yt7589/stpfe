@@ -15,7 +15,7 @@
   import PageLwskLwgc from './components/page-lwsk-lwgc'
 
   export default {
-    components: {PageLwskSpfx, PageLwskLwgc},
+    components: {PageLwskSpfx, PageLwskTxfx, PageLwskLwgc},
     data(){
       return {
         loading: false,
@@ -23,7 +23,7 @@
         curPage: {},
         pageOptions: [
           {label: '视频分析'},
-          {label: '路网过车'},
+          {label: '路网过车'}
         ],
       }
     },
