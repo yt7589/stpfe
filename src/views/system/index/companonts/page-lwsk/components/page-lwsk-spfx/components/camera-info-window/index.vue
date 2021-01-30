@@ -39,6 +39,7 @@
 <script>
   import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import CameraPhotoDialog from '../camera-photo-dialog/index.vue'
+  import CameraVideoDialog from '../camera-video-dialog/index.vue'
   import API from '@/api'
 
   export default {
@@ -52,6 +53,10 @@
           data: {}
         },
         cameraPhotoDialog: {
+          visible: false,
+          data: {}
+        },
+        cameraVideoDialog: {
           visible: false,
           data: {}
         }
@@ -70,10 +75,9 @@
     methods: {
       onRowClick(row, column, event){
         this.$store.commit("stp/video_analysis/setCameraId", 101)
-
         API.querySdPic({diId: row.diId}).then(res => {
-          this.cameraPhotoDialog.data = res.data
-          this.cameraPhotoDialog.visible = true;
+          this.cameraVideoDialog.data = res.data
+          this.cameraVideoDialog.visible = true;
           this.visible = false
         })
       },
