@@ -15,7 +15,7 @@
   import PageLwskLwgc from './components/page-lwsk-lwgc'
 
   export default {
-    components: {PageLwskSpfx, PageLwskTxfx, PageLwskLwgc},
+    components: {PageLwskSpfx, PageLwskLwgc},
     data(){
       return {
         loading: false,
