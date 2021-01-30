@@ -14,7 +14,7 @@
             </div>
             <div>
               <!-- {{item.trafficViolationName}}:{{item.trackId}}:{{item.cutImgUrl.substring(item.cutImgUrl.length-10)}} -->
-              trackId: {{item.trackId}};
+              {{item.trafficViolationName}}
             </div>
           </div>
         </li>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+  import API from '@/api'
   import dayjs from 'dayjs'
   export default {
     //props: ['data'],
@@ -62,72 +63,27 @@
     mounted(){
       this.initData()
       console.log('########### Yantao: camera-photo-dialog')
-      console.log('camera-photo-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
-      console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
-      let msg = {
-        'userId': '' + 1018,
-        'type': 'wmtRrSpfx',
-        'topic': 'ksRrSpfx',
-        'cameraId': this.$store.state.stp.video_analysis.cameraId,
-        'streamId': 0
-      }
-      this.$globalws.ws.pageObj = this
-      this.$globalws.ws.send(JSON.stringify(msg))
-      this.$globalws.ws.onmessage = function(data) {
-        console.log('websocket on message......:' + data.data + '!')
-        let rst = JSON.parse(data.data)
-        let img001 = document.getElementById("img001")
-        img001.src = rst.originImage
-        console.log('img001.src: ' + img001.src + '; this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
-        // 车图片数组
-        let recs = rst.data
-        let hasVeh = false
-        let vehLen = 0
-        recs.forEach(element => {
-          hasVeh = false
-          this.pageObj.vehs.forEach(item => {
-            if (element.trackId!=-1 && item.trackId == element.trackId) {
-              // 更新现有元素信息
-              item.wsmVfvvIdx = element.wsmVfvvIdx
-              item.vehIdx = element.vehIdx
-              item.ppcxnk = element.ppcxnk
-              item.hphm = element.hphm
-              item.cutImgUrl = element.cutImgUrl
-              item.crossTime = element.crossTime
-              item.trafficViolationName = element.trafficViolationName
-              hasVeh = true
-            }
-          })
-          // 替换元素后 hashVeh为true，进入不到if  会进else？
-          if (!hasVeh) {
-            if (this.pageObj.vehs.length > 0) {
-              this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
-              vehLen = this.pageObj.vehs.length
-              // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
-              if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
-                this.pageObj.vehs.pop()
-              }
-            } else {
-              this.pageObj.vehs.push(element)
-            }
-          }
-          /*
-          if (!hasVeh && this.pageObj.vehs.length > 0) {
-            // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
-            this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
-            vehLen = this.pageObj.vehs.length
-            // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
-            if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
-              this.pageObj.vehs.pop()
-            }
-          } else if (!hasVeh) {
-            this.pageObj.vehs.push(element)
-          }*/
-        })
-      }
       this.initMouseEvent()
+      this.getTvisAnalysisResult()
     },
     methods: {
+      getTvisAnalysisResult() {
+        let cameraId = this.$store.state.stp.video_analysis.cameraId
+        let params = {
+          p: 'pc',
+          v: '0.0.1',
+          cameraId: cameraId,
+          baseTvisJsonId: -1,
+          direction: 0
+        }
+        let pageObj = this
+        API.getTvisAnalysisResult(params).then(res => {
+          if (res.data != null) {
+            pageObj.originImage = res.data.originImage
+            pageObj.vehs = res.data.data
+          }
+        })
+      },
       initMouseEvent(){
         window.addEventListener('mousewheel', this.handleScroll, false)
       },
