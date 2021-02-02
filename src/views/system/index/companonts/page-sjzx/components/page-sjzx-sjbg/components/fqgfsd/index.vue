@@ -10,10 +10,13 @@
           <div class="left"> 
             <div class="map">
                 <baidu-map  class="baidu-map" :zoom="map.zoom"
-                            :center="map.center" :dragging="true"
-                            @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom">
+                            :center="map.center"
+                            @ready="onMapReady" 
+                            @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom" :double-click-zoom="false">
+                    <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
                     <div v-for="(item,index) in markerPoints" :key="index">
-                      <bm-marker :icon="bmMarkerStyle"  :position="{lat:item.lat,lng:item.lng}" :dragging="true">
+                      <bm-marker :icon="item"  :position="{lat:item.lat,lng:item.lng}"
+                      :label="item.name">
                       </bm-marker>
                     </div>
                 </baidu-map>
@@ -83,7 +86,7 @@
         markerPoints:[],
         tVehicle:'',
         bmMarkerStyle:{
-          url: require('../../image/icon-1.png'),
+          url: require('../../image/circle.png'),
           size: {
             width: 44,
             height: 44
@@ -100,10 +103,15 @@
         handler(val) {
           this.map.center.lng = val[0].lng;
           this.map.center.lat = val[0].lat;
-          val.forEach(item => {
+          val.forEach((item,index) => {
             this.markerPoints.push({
               lat : item.lat,
-              lng : item.lng
+              lng : item.lng,
+              url: require('../../image/circle' + (index+1) + '.png'),
+              size: {
+                width: 48-(index * 4),
+                height: 48-(index * 4)
+              },
             })
           });
         }
@@ -113,6 +121,11 @@
      
     },
     methods:{
+      draw ({el, BMap, map}) {
+        const pixel = map.pointToOverlayPixel(new BMap.Point(116.404, 39.915))
+        el.style.left = pixel.x - 60 + 'px'
+        el.style.top = pixel.y - 20 + 'px'
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()

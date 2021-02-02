@@ -10,8 +10,9 @@
           <div class="left"> 
             <div class="map">
                 <baidu-map class="baidu-map" :zoom="map.zoom"
-                          :center="map.center" :dragging="true"
-                          @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom">
+                          :center="map.center"
+                          @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom" :double-click-zoom="false">
+                  <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
                   <bm-boundary v-for="item in data" :name="city + item.areaName" :strokeWeight="2" strokeColor="#06A6FF"
                               :fillColor="getColor(item.count)"></bm-boundary>
                 </baidu-map>

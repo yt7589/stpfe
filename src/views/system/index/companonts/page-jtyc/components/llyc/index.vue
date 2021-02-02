@@ -15,6 +15,7 @@
                                         value-format="yyyy-MM-dd"
                                         v-model="form.date"
                                         :clearable="false"
+                                        @change="getData"
                                         placeholder="选择日期"
                                         style="width: 100%;">
                                     </el-date-picker>
@@ -23,6 +24,7 @@
                                     <el-time-picker
                                         v-model="form.time"
                                         :clearable="false"
+                                        @change="getData"
                                         placeholder="选择时间"
                                         format="HH:mm"
                                         value-format="HH:mm"
@@ -67,6 +69,7 @@
   import HeaderCrumb from '@components/custom/header-crumb'
   import LlycChart from './charts'
   import API from '@/api'
+  import util from '@/libs/util'
   export default {
     name: 'jtyc-llyc',
     props:{
@@ -86,7 +89,8 @@
       LlycChart
     },
     data(){
-      let st = new Date().toLocaleDateString().split('/').join('-')
+      // let st = new Date().toLocaleDateString().split('/').join('-')
+      let st = util.time.getFormatTime1();
       return {
         form:{
           date:st,
