@@ -75,8 +75,8 @@
         this.chart.setOption({
           grid: {
             left:'55',
-            top:'5',
-            bottom:'68',
+            top:'20',
+            bottom:'100',
 
           },
           xAxis: [{
@@ -85,7 +85,7 @@
               margin: 5,
               color: '#FFFFFF',
               textStyle: {
-                fontSize: '12'
+                fontSize: '14'
               },
             },
 
@@ -111,7 +111,7 @@
               interval:0,
               textStyle: {
                 color: '#FFFFFF',
-                fontSize: '12'
+                fontSize: '14'
               },
             },
             splitNumber:0,
@@ -137,8 +137,8 @@
               show: true,
               axisLabel: {
                 textStyle: {
-                  color: '#ffffff',
-                  fontSize: '12'
+                  color: '#00C087',
+                  fontSize: '18'
                 },
               },
               //data:[78,56,63,123,22,330,11,22]

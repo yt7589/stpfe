@@ -53,7 +53,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem',
+                  fontSize: 12,
                 }
               }
             },
@@ -69,7 +69,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem',
+                  fontSize: 12,
                 }
               }
             },
@@ -90,7 +90,7 @@
               symbolRadius: 0,
               itemStyle: {
                 "color": "white",
-                fontSize: '0.0625rem',
+                fontSize: 12,
               }
             },
             series: [

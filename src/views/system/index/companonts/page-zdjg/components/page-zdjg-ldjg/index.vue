@@ -50,7 +50,9 @@
                 <el-col :span="5" class="col" style="width: 23%">
                     <div class="dt-title">
                         <el-row>
-                            <el-col :span="3">  <el-avatar  :src="require('../../image/dt@1x.png')"></el-avatar></el-col>
+                            <el-col :span="3">
+                              <img src="../../image/dt@1x.png" alt="">  
+                            </el-col>
                             <el-col :span="6" class="jgdt-text">  <span class="jgdt-span">监管动态</span></el-col>
                         </el-row>
                     </div>
@@ -394,10 +396,10 @@
             padding: 1%;
         }
         .jgdt-text{
-
+          margin-left: -15px;
         }
         .jgdt-span{
-            font-size: 8px;
+            font-size: 18px;
             color: white;
 
         }
@@ -447,8 +449,12 @@
 
     }
     .dt-title {
-        padding: 8px 0 0 16px;
+        padding: 16px 0 16px 16px;
         position: relative;
+        img{
+          height: 24px;
+          width: 24px;
+        }
     }
 
     .dt-list{

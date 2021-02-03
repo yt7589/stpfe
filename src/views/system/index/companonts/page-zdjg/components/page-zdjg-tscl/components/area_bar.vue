@@ -83,7 +83,7 @@
             top: '10%',
             // right: '3%',
             left: '15%',
-            bottom: '82'
+            bottom: '100'
           },
           xAxis: [{
             type: 'category',

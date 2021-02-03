@@ -73,10 +73,10 @@
       setOptions(xData,seriesData){
         this.chart.setOption({
           grid: {
-            top: '10%',
+            top: '5%',
             // right: '3%',
             left: '20%',
-            bottom: '70'
+            bottom: '80'
           },
           xAxis: [{
             type: 'value',

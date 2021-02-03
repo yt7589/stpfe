@@ -47,12 +47,17 @@
                         </baidu-map>
                     </div>
                 </el-col >
-                <el-col :span="5" class="col" style="width: 23%">
+                <el-col :span="5" class="col" style="width: 23%;">
+                  <el-row style="height: 45%;width:100%">
                     <div class="dt-title">
-                        <el-row>
-                            <el-col :span="3">  <el-avatar  :src="require('../../image/clbkdt@1x.png')"></el-avatar></el-col>
-                            <el-col :span="6" class="jgdt-text" >  <span class="jgdt-span">布控动态</span></el-col>
-                            <el-col :span="15" class="col-more"><span class="clbk-more">更多>></span></el-col>
+                        <el-row type="flex"  justify="space-between">
+                            <el-col :span="10">
+                              <div class="left">
+                                <img src="../../image/clbkdt@1x.png" alt="">
+                                <div class="jgdt-span">布控动态</div>
+                              </div>
+                              </el-col>
+                            <el-col :span="5" class="col-more"><span class="clbk-more">更多>></span></el-col>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -72,12 +77,18 @@
                         </el-row>
 
                     </div>
-
+                  </el-row>
+                  <el-row style="height:10%"></el-row>
+                  <el-row style="height: 45%;width:100%">
                     <div class="dt-title">
-                        <el-row>
-                            <el-col :span="3">  <el-avatar  :src="require('../../image/bjdt@1x.png')"></el-avatar></el-col>
-                            <el-col :span="6" class="jgdt-text" >  <span class="jgdt-span">报警动态</span></el-col>
-                            <el-col :span="15" class="col-more"><span class="clbk-more">更多>></span></el-col>
+                      <el-row type="flex"  justify="space-between">
+                            <el-col :span="10">
+                              <div class="left">
+                                <img src="../../image/bjdt@1x.png" alt="">
+                                <div class="jgdt-span">报警动态</div>
+                              </div>
+                              </el-col>
+                            <el-col :span="5" class="col-more"><span class="clbk-more">更多>></span></el-col>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -97,6 +108,7 @@
                         </el-row>
 
                     </div>
+                  </el-row>
                 </el-col>
             </el-row>
         </div>
@@ -350,12 +362,21 @@
 
         }
         .jgdt-text{
+          width: 72px;
+          height: 25px;
+          font-size: 18px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: #FFFFFF;
+          line-height: 25px;
+
+          margin-left: -5px;
 
         }
         .jgdt-span{
-            font-size: 8px;
-            color: white;
-
+          margin-left: 8px;
+          font-size: 18px;
+          color: #FFFFFF;
         }
     }
     .bt {
@@ -403,8 +424,17 @@
 
     }
     .dt-title {
-        padding: 8px 0 0 16px;
-        position: relative;
+        padding: 16px 0 16px 16px;
+        .left{
+          display: flex;
+          flex-direction: row;
+          justify-content: start;
+          align-content: center;
+          img{
+            width: 24px;
+            height: 24px;
+          }
+        }
     }
 
     .dt-list{
@@ -412,7 +442,7 @@
         padding: 0px 16px 8px 16px;
     }
     .col-more{
-        text-align: end;
+        text-align: start;
     }
     .clbk-more{
         width: 58px;

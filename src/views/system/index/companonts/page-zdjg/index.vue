@@ -217,14 +217,16 @@
         height: 100%;
         .menu-bg {
             width: 100%;
-
             position: absolute;
-
+            background: url(./image/header-mask.png) no-repeat;
+            height: 200px;
+            top: 0px;
             z-index: 1;
-            background: url("./image/menu-bg.png") no-repeat;
+            background-size: 100% 85%;
+            -moz-background-size: 100% 85%;
         }
         .menu-hight {
-            height: 153px;
+            // height: 200px;
         }
         .baidu-map-tscl-home{
             height: 100%;

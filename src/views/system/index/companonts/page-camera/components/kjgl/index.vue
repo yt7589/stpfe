@@ -19,13 +19,14 @@
                     </el-main>
                     <el-footer>
                         <el-pagination
-                                class="custom-pagination"
+                                background
+                                class="custom-pagination zq-pagination"
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
                                 :page.sync="frm.startIndex + 1"
                                 :page-sizes="[20, 50, 100, 200]"
                                 :page-size="frm.amount"
-                                layout="prev, pager,sizes, next,total"
+                                layout="total,prev, pager, next,sizes,jumper"
                                 :total="total">
                         </el-pagination>
                     </el-footer>
