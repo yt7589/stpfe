@@ -69,6 +69,7 @@
     methods: {
       getTvisAnalysisResult() {
         let cameraId = this.$store.state.stp.video_analysis.cameraId
+        console.log('cameraId=' + cameraId + '!')
         let params = {
           p: 'pc',
           v: '0.0.1',
@@ -78,7 +79,9 @@
         }
         let pageObj = this
         API.getTvisAnalysisResult(params).then(res => {
+          console.log('get the result of getTvisAnalysisResult!')
           if (res.data != null) {
+            console.log('result: ' + JSON.stringify(res.data) + '!')
             pageObj.originImage = res.data.originImage
             pageObj.vehs = res.data.data
           }
