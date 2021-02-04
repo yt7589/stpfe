@@ -1,7 +1,7 @@
 <template>
   <div class="page-sjzx-ytsc" flex="dir:top">
     <div class="header-crumb">
-      <span>数据中心>以图搜车</span>
+      <span>数据中心>以图搜车Yt</span>
     </div>
     <div class="body">
       <div class="column-1">
@@ -110,6 +110,15 @@ import { error } from 'highcharts'
       handleImageSelect(file){
         this.table.filter.image.url = this.getObjectURL(file.file)
         this.table.filter.image.file = file.file
+        console.log('handleImageSelect 1 url:' + this.table.filter.image.url + '!')
+        console.log('handleImageSelect 1 file:' + JSON.stringify(this.table.filter.image.file) + '!')
+
+        API.recognizeYtscImage(file).then(res => {
+          console.log('get the response')
+        })
+
+
+
       },
       getObjectURL(file) {
         let url = null;
@@ -137,22 +146,41 @@ import { error } from 'highcharts'
           });
           return;
         }
-        console.log('step 1')
-        console.log('table.filter.date:' + this.table.filter.date + '!')
         this.$refs.form.validate((valid) => {
-          console.log('step 2')
           if (valid) {
-            console.log('step 3')
             let pageOption = {
               page: this.table.pagination.currentPage,
               pageSize: this.table.pagination.pageSize,
+              startDate:  this.formatDate('YYYY-mm-dd', this.table.filter.date[0]),
+              endDate: this.formatDate('YYYY-mm-dd', this.table.filter.date[1]),
+              startTime: this.formatDate('HH:MM', this.table.filter.time[0]),
+              endTime: this.formatDate('HH:MM', this.table.filter.time[1])
             }
-            API.sjzxQueryVehicle({...pageOption}).then(res => {
+            API.sjzxQueryVehicle(pageOption).then(res => {
               this.table.data = res.data.recs
               this.table.pagination.total = res.data.total
             })
           }
         })
+      },
+      formatDate(fmt, date) {
+          let ret;
+          const opt = {
+              "Y+": date.getFullYear().toString(),        // 年
+              "m+": (date.getMonth() + 1).toString(),     // 月
+              "d+": date.getDate().toString(),            // 日
+              "H+": date.getHours().toString(),           // 时
+              "M+": date.getMinutes().toString(),         // 分
+              "S+": date.getSeconds().toString()          // 秒
+              // 有其他格式化字符需求可以继续添加，必须转化成字符串
+          };
+          for (let k in opt) {
+              ret = new RegExp("(" + k + ")").exec(fmt);
+              if (ret) {
+                  fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+              };
+          };
+          return fmt;
       }
     }
   }
