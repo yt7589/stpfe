@@ -21,8 +21,8 @@
               v-model="table.filter.time"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              start-placeholder="开始时间"
+              end-placeholder="结束时间">
             </el-time-picker>
           </el-form-item>
 
@@ -136,8 +136,12 @@ import { error } from 'highcharts'
           });
           return;
         }
+        console.log('step 1')
+        console.log('table.filter.date:' + this.table.filter.date + '!')
         this.$refs.form.validate((valid) => {
+          console.log('step 2')
           if (valid) {
+            console.log('step 3')
             let pageOption = {
               page: this.table.pagination.currentPage,
               pageSize: this.table.pagination.pageSize,
