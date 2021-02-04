@@ -52,7 +52,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem',
+                  // fontSize: '0.0625rem',
                 }
               }
             },
@@ -100,7 +100,9 @@
                 align: 'left',
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem',
+                  fontWeight: 'lighter',
+                  textOutline: "0px 0px contrast"
+                  // fontSize: '0.09375rem',
                 }
               },
               color: {

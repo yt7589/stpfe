@@ -140,7 +140,7 @@
       position: absolute;
       right: 15px;
       top: -5px;
-      font-size: 12px;
+      font-size: '0.0625rem';
       color: #FFFFFF;
     }
   }

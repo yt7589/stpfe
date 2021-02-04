@@ -90,7 +90,9 @@
                 align: 'left',
                 style: {
                   color: 'white',
-                  //fontSize: '0.09375rem',
+                  fontWeight: 'lighter',
+                  textOutline: "0px 0px contrast"
+                  // fontSize: '0.09375rem',
                 }
               },
               color: {

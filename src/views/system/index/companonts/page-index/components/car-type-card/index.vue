@@ -57,7 +57,7 @@
       this.initChart()
       this.updateChartData()
       window.onresize = ()=>{
-        console.log('大小变化挂')
+        console.log('大小变化')
         // this.chart.dispose()
         // this.chart = null
         // this.initChart();
@@ -87,7 +87,6 @@
             top: 'middle',
             textStyle:{
               color: '#FFF',
-              fontSize: 12  
             },
             data: names,
             itemWidth: 12,

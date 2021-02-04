@@ -15,16 +15,21 @@
           外埠车辆 <span style="color:#00F6FF;">{{todayData.vehicle_town}}</span>
         </div>
       </div>
-      <div class="car-active">
+      <div class="left-car">
+        <div class="car-active">
         <div class="pointer" :style="carActiveStyle"></div>
         <div class="value" style="color:#00F6FF">{{todayData.vehicle_city_act}}%</div>
         <div class="title">本市车辆活跃度</div>
       </div>
-      <div class="car-online">
+      </div>
+      <div class="right-car">
+        <div class="car-online">
         <div class="pointer" :style="deviceActiveStyle"></div>
         <div class="value" style="color:#E69B03">{{todayData.device_online}}%</div>
         <div class="title">本市设备在线率</div>
       </div>
+      </div>
+      
     </div>
 
     <div class="row-2">
@@ -354,55 +359,64 @@
           }
         }
       }
+      .left-car{
+          position: absolute;
+          right: 250px;
+          width: 120px;
+          height: 120px;
+        .car-active {
+          // top: -30px;
+          width: 120px;
+          height: 98px;
 
-      .car-active {
-        position: absolute;
-        top: -30px;
-        right: 210px;
-        width: 120px;
-        height: 120px;
-
-        background: url('../../image/image-round-chart-1.png') no-repeat;
-        background-size: 100% 100%;
-        -moz-background-size: 100% 100%;
-
-        .pointer {
-          background: url('../../image/image-round-chart-1-pointer.png') no-repeat;
+          background: url('../../image/image-round-chart-2.png') no-repeat;
           background-size: 100% 100%;
           -moz-background-size: 100% 100%;
+          background-size: cover;
+
+          .pointer {
+            background: url('../../image/image-round-chart-2-pointer.png') no-repeat;
+            background-size: 100% 100%;
+            -moz-background-size: 100% 100%;
+            background-size: cover;
+          }
         }
       }
+      .right-car{
+          position: absolute;
+          right: 57px;
+          width: 120px;
+          height: 120px;
+        .car-online {
+          // top: -30px;
+          width: 120px;
+          height: 98px;
 
-      .car-online {
-        position: absolute;
-        top: -30px;
-        right: 67px;
-        width: 120px;
-        height: 120px;
-
-        background: url('../../image/image-round-chart-2.png') no-repeat;
-        background-size: 100% 100%;
-        -moz-background-size: 100% 100%;
-
-        .pointer {
-          background: url('../../image/image-round-chart-2-pointer.png') no-repeat;
+          background: url('../../image/image-round-chart-1.png') no-repeat;
           background-size: 100% 100%;
           -moz-background-size: 100% 100%;
+          background-size: cover;
+
+          .pointer {
+            background: url('../../image/image-round-chart-1-pointer.png') no-repeat;
+            background-size: 100% 100%;
+            -moz-background-size: 100% 100%;
+            background-size: cover;
+          }
         }
       }
-
       .car-online, .car-active {
         .pointer {
-          position: absolute;
-          top: 67px;
-          right: 8px;
-          width: 103px;
-          height: 10px;
+          position: relative;
+          top: 55px;
+          left: 7px;
+          width: 108px;
+          height: 8px;
         }
 
         .title {
           position: absolute;
-          bottom: -25px;
+          bottom: -10px;
           font-size: 12px;
           left: 0px;
           right: 0px;

@@ -39,7 +39,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem'
+                  // fontSize: '0.0625rem'
                 }
               }
             },
@@ -54,7 +54,7 @@
               labels: {
                 style: {
                   color: 'white',
-                  fontSize: '0.0625rem'
+                  // fontSize: '0.0625rem'
                 }
               }
             },
@@ -68,7 +68,7 @@
               padding: -5,
               style: {
                 color: '#00F6FFFF',
-                fontSize: '0.0625rem',
+                // fontSize: '0.0625rem',
               },
               formatter: function () {
                 return this.y;
@@ -151,7 +151,7 @@
       position: absolute;
       right: 15px;
       top: 15px;
-      font-size: 12px;
+      font-size: '0.0625rem';
       color: #FFFFFF;
     }
   }

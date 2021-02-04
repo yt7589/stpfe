@@ -97,7 +97,9 @@
         align-items: center;
 
         .chart-name {
-          font-size: 12px;
+          width: 30px;
+          text-align: right;
+          font-size: '0.0625rem';
           color: #FFFFFF;
           line-height: 17px;
         }
@@ -110,7 +112,7 @@
         }
 
         .chart-value {
-          font-size: 12px;
+          font-size: '0.0625rem';
           color: #FFFFFF;
           line-height: 17px;
         }

@@ -35,7 +35,8 @@
               categories: ['2', '4', '6', '8', '10', '12', '14', '16', '18', '20', '22', '24时'],
               labels: {
                 style: {
-                  color: 'white'
+                  color: 'white',
+                  // fontSize: '0.0625rem'
                 }
               }
             },
@@ -48,7 +49,8 @@
               tickAmount: 6,
               labels: {
                 style: {
-                  color: 'white'
+                  color: 'white',
+                  // fontSize: '0.0625rem'
                 }
               }
             },
@@ -60,7 +62,7 @@
               symbolRadius: 0,
               itemStyle: {
                 "color": "white",
-                fontSize: '0.0625rem',
+                // fontSize: '0.06rem',
               }
             },
             tooltip: {
@@ -69,7 +71,7 @@
               shadow: false,
               padding: -5,
               style: {
-                color: '#00F6FFFF',
+                color: '#00F6FF',
                 fontSize: '0.0625rem',
               },
               formatter: function () {
@@ -202,7 +204,7 @@
       position: absolute;
       right: 15px;
       top: -5px;
-      font-size: 12px;
+      font-size: '0.0625rem';
       color: #FFFFFF;
     }
   }

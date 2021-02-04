@@ -85,8 +85,10 @@
         this.page = page
       },
       showOverviewPage(){
-        let basePath = process.env.VUE_APP_PUBLIC_PATH
-        util.open(basePath + "/#/overview");
+        let routeUrl = this.$router.resolve({
+          path: "/overview"
+        });
+        window.open(routeUrl.href, '_blank');
       }
     }
   }
