@@ -76,7 +76,7 @@
           grid: {
             left:'50',
             top:'5',
-            bottom:'68'
+            bottom:'70'
           },
           xAxis: [{
             type: 'value',
@@ -168,7 +168,7 @@
             background: url('../../../image/fqytj-icon.png') no-repeat;
             background-size: cover;
         }
-        margin-top: 24px;
+        margin-top: 10px;
         margin-left: 23px;
         display: flex;
         .content {

@@ -86,7 +86,8 @@
             right: 0,
             top: 'middle',
             textStyle:{
-              color: '#FFF'    
+              color: '#FFF',
+              fontSize: 12  
             },
             data: names,
             itemWidth: 12,

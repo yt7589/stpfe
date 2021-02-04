@@ -143,10 +143,13 @@
       },
       getData(){
         API.QueryTrafficForecast(this.form).then((res) => {
+          console.log('数据：',res.data)
           this.map.center.lat = res.data.tfs[0].lat
           this.map.center.lng = res.data.tfs[0].lng
           this.markerPoints = res.data.tfs
           this.tVehicle = res.data.tVehicle
+          
+          
 
           res.data.tfst.forEach((item)=>{
             this.yData.push(item.name)

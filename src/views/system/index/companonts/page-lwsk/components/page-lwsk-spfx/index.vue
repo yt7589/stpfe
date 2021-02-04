@@ -129,16 +129,17 @@
   .page-lwsk-spfx {
     z-index: 0;
     .header-menu-mask {
+
       position: absolute;
       top: 0px;
       width: 100%;
-      height: 163px;
+      height: 200px;
 
       z-index: 98;
 
-      background: url(../../image/background-menu-mask.png) no-repeat;
-      background-size: 100% 100%;
-      -moz-background-size: 100% 100%;
+      background: url(./image/header-mask.png) no-repeat;
+      background-size: 100% 85%;
+      -moz-background-size: 100% 85%;
     }
     .baidu-map {
       position: absolute;

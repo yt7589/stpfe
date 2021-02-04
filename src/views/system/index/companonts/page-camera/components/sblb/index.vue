@@ -50,13 +50,14 @@
                     </el-main>
                     <el-footer>
                         <el-pagination
-                                class="custom-pagination"
+                                background
+                                class="custom-pagination zq-pagination"
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
+                                layout="total,prev, pager, next,sizes,jumper"
                                 :page.sync="frm.startIndex + 1"
                                 :page-sizes="[20, 50, 100, 200]"
                                 :page-size="frm.amount"
-                                layout="prev, pager,sizes, next,total"
                                 :total="total">
                         </el-pagination>
                     </el-footer>
@@ -432,7 +433,6 @@
             color: rgba(0, 246, 255, 1);
         }
         .el-table .cell {
-            color: #ffffff;
             font-size: 14px;
         }
 

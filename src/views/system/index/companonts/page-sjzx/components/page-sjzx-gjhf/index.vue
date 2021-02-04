@@ -222,7 +222,7 @@
 
           .button-search {
             width: calc(100% - 108px);
-            margin-left: 66px;
+            margin-left: 78px;
             margin-top: 4px;
             display: inline-block;
 

@@ -57,12 +57,12 @@
           <el-container class="table-container">
             <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
               <el-table class="custom-table wzgl-table" :data="vehicles" height="100%">
-                <el-table-column align="center" prop="dcTime" label="时间" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="dcAddr" label="地点" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="hphm" label="车牌号" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="isIl" label="违章" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
+                <el-table-column align="center" prop="dcTime" label="时间" minWidth="90"></el-table-column>
+                <el-table-column align="center" prop="dcAddr" label="地点" minWidth="90"></el-table-column>
+                <el-table-column align="center" prop="hphm" label="车牌号" minWidth="50"></el-table-column>
+                <el-table-column align="center" prop="category" label="类别" minWidth="40"></el-table-column>
+                <el-table-column align="center" prop="isIl" label="违章" minWidth="40"></el-table-column>
+                <el-table-column align="center" prop="ilType" label="违章类型" minWidth="50"></el-table-column>
                 <el-table-column align="center" prop="" label="详情" minWidth="60">
                   <template slot-scope="scope">
                     <span :id="scope.row.dcId" @click="selectVehicle(scope.row.dcId)">...</span>
@@ -72,13 +72,14 @@
             </el-main>
             <el-footer>
               <el-pagination
-                class="custom-pagination"
+                background
+                class="custom-pagination zq-pagination"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page.sync="currentPage"
                 :page-sizes="[20, 50, 100, 200]"
                 :page-size="pageSize"
-                layout="prev, pager,sizes, next,total"
+                layout="total,prev, pager, next,sizes,jumper"
                 :total="total">
               </el-pagination>
             </el-footer>

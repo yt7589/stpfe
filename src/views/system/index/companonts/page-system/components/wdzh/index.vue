@@ -7,15 +7,24 @@
                     <div class="title">账号资料</div>
                 </div>
                 <div class="user-account">
-                    <span class="user-info">账号：admin</span>
+                    <div class="user-info">
+                        <div class="info-left">账号：</div>
+                        <div class="info-right">admin</div>
+                    </div>
                     <div class="line"></div>
                 </div>
-                <div class="user-name">
-                    <span class="user-info">姓名：大数据</span>
+                <div class="user-account">
+                    <div class="user-info">
+                        <div class="info-left">姓名：</div>
+                        <div class="info-right">大数据</div>
+                    </div>
                     <div class="line"></div>
                 </div>
-                <div class="user-phone">
-                    <span class="user-info">手机号：133********</span>
+                <div class="user-account">
+                    <div class="user-info">
+                        <div class="info-left">手机号：</div>
+                        <div class="info-right">133********</div>
+                    </div>
                     <div class="line"></div>
                 </div>
                 <div class="custom-card up-pass">
@@ -23,15 +32,15 @@
                 </div>
                 <div class="up-form">
                     <el-form class="search-form">
-                        <el-form-item label="原始密码" label-width="80px">
+                        <el-form-item label="原始密码" label-width="90px">
                             <el-input  v-model="frm.pwd">
                             </el-input>
                         </el-form-item>
-                        <el-form-item label="新密码"  label-width="80px">
+                        <el-form-item label="新密码"  label-width="90px">
                             <el-input  v-model="frm.pwd">
                             </el-input>
                         </el-form-item>
-                        <el-form-item label="再输一次"  label-width="80px">
+                        <el-form-item label="再输一次"  label-width="90px">
                             <el-input  v-model="frm.pwd">
                             </el-input>
                         </el-form-item>
@@ -45,8 +54,6 @@
                     </el-form>
                 </div>
             </div>
-
-
         </div>
     </div>
 </template>
@@ -131,26 +138,27 @@
         }
         .user-account{
             position: relative;
+            height: 50px;
             top:75px;
             left: 20px;
         }
-        .user-name {
-            position: relative;
-            top:90px;
-            left: 30px;
-        }
-        .user-phone{
-            position: relative;
-            top:100px;
-            left: 20px;
-        }
         .user-info{
+            display: flex;
+            flex-direction: row;
             font-size: 14px;
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             color: #FFFFFF;
             line-height: 20px;
+            .info-left{
+                width: 60px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+            .info-right{
 
+            }
         }
         .up-form{
             position: relative;
@@ -186,8 +194,8 @@
             }
 
             .button-search {
-                width: 283px;
-                margin-left: 77px;
+                width: 290px;
+                margin-left: 70px;
 
                 background: #045FE0;
                 border-radius: 4px;

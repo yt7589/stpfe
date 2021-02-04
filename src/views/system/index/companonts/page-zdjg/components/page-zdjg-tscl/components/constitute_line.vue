@@ -99,9 +99,9 @@
           },
           grid: {
             left: '15%',
-            top: '20%',
+            top: '15%',
             // right: '4%',
-            bottom: '75',
+            bottom: '100',
             // containLabel: true
           },
           legend: {

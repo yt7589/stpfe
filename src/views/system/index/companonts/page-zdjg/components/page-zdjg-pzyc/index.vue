@@ -270,7 +270,7 @@
         }
         .fqytj{
             background: rgba(0, 115, 255, 0.2);
-            height: 35%;
+            height: 36%;
         }
     }
     .bg-color{

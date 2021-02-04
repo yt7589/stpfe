@@ -115,13 +115,15 @@
 .custom-pagination {
   text-align: right;
   .el-pager li {
+
     color: #87D0FF !important;
     background: transparent !important;
     border: 1px solid rgba(135, 208, 255, 1) !important;
+    margin: 0 5px;
 
     &.active {
       color: white;
-      background: rgba(29, 113, 206, 1) !important;
+      background: #045FE0 !important;
     }
   }
 
@@ -135,14 +137,101 @@
   }
 
   .btn-prev, .btn-next, .el-pagination__sizes .el-input__inner {
-    background: #87D0FF !important;
+    background: #045FE0 !important;
     color: #000205 !important;
     border: 1px solid rgba(135, 208, 255, 1) !important;
+  }
+  // 选择数量
+  .el-select .el-input .el-select__caret {
+    color: #000;
   }
 
   button:disabled {
     background: #5887a6 !important;
     color: #000205 !important;
+  }
+
+  .el-pagination__sizes .el-input__inner {
+    height: 30px;
+    font-size: 14px !important;
+    background: #045FE0 !important;
+    color: #000 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+  .el-pagination__jump .el-input__inner {
+    background: #045FE0 !important;
+    color: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+  .el-pagination__jump {
+    color: white;
+    font-size: 14px !important;
+  }
+  .el-pagination__editor.el-input {
+    width: 30px;
+    height: 30px;
+    font-size: 14px !important;
+  }
+  .el-pagination__total {
+    height: 30px;
+    color: white;
+    font-size: 14px !important;
+  }
+}
+
+.zq-pagination {
+  margin-top: 8px;
+  .btn-prev, .btn-next {
+    width: 30px;
+    height: 30px;
+    border: none !important;
+    border-radius: 4px !important;
+    background: #045FE0 !important;
+  }
+  .el-pager {
+    .number{
+      color: #045FE0 !important;
+      border: 1px solid #045FE0 !important;
+    }
+    .btn-quicknext{
+      color: #045FE0 !important;
+      border: 1px solid #045FE0 !important;
+    }
+    .number, .more {
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #045FE0;
+      border-radius: 4px !important;
+    }
+    .number.active {
+      color: #FFF !important;
+      background:#045FE0 !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+  .el-pagination__sizes .el-input__inner {
+    height: 30px;
+    font-size: 14px !important;
+    background: #045FE0 !important;
+    color: #000 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+  .el-pagination__jump .el-input__inner {
+    background: #045FE0 !important;
+    color: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+  .el-pagination__jump {
+    font-size: 14px !important;
+  }
+  .el-pagination__editor.el-input {
+    width: 30px;
+    height: 30px;
+    font-size: 14px !important;
+  }
+  .el-pagination__total {
+    height: 30px;
+    font-size: 14px !important;
   }
 }
 
@@ -165,7 +254,7 @@
   //overflow: auto;
   color: #CDDDEA !important;
   //color: rgba(255,255,240,1) !important;
-  background: #113A65 !important;
+  background: rgba(0, 115, 255, 0.2) !important;
   outline: solid 1px #0073FF;
   border-radius: 4px;
 
@@ -176,7 +265,7 @@
   .el-table__header {
     th, tr {
       background: #06A6FF !important;
-      color: #001537 !important;
+      color: #0C1A32 !important;
       font-size: 18px;
     }
   }
@@ -213,7 +302,7 @@
 
 .sjbg-custom-table {
   color: #CDDDEA !important;
-  background: #113A65 !important;
+  background: rgba(0, 115, 255, 0.2) !important;
   border-radius: 4px;
 
   &::before {
