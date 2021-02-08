@@ -113,7 +113,7 @@ import API from '@/api'
         API.getTrendParam().then(res => {
           let arr_categories = []
           let arr_data = []
-          let tdrt = res.data.dit
+          let tdrt = res.data.drt
           let vtLen= tdrt.length
           for (let i=0; i<vtLen; i++) {
             arr_categories.push(tdrt[i]['name'])
