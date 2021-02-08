@@ -37,7 +37,7 @@
     <div class="main-content-box">
       <page-index v-if="page=='index'" @open="openPage"></page-index>
       <page-lwsk v-if="page=='lwsk'"></page-lwsk>
-      <page-wzgl v-if="page=='wzgl'"></page-wzgl>
+      <page-wzgl v-if="page=='wzgl'" :wzDetail="wzDetail"></page-wzgl>
       <page-zdjg v-if="page=='zdjg'"></page-zdjg>
       <page-jtyc v-if="page=='jtyc'"></page-jtyc>
       <page-sjzx v-if="page=='sjzx'"></page-sjzx>
@@ -62,7 +62,6 @@
   import dayjs from 'dayjs'
   import {mapActions} from 'vuex'
 
-
   export default {
     components: {
       PageIndex, PageLwsk, PageWzgl, PageZdjg, PageJtyc, PageSjzx, PageCamera, PageSystem
@@ -72,12 +71,19 @@
         page: 'index',
         isAdmin: false,
         city: "北京",
-        username: "用户名"
+        username: "用户名",
+        wzDetail:{}
       }
     },
-    mounted(){
+    created(e){
+      util.bus.$on('gowzDetail',this.gowzDetail)
+
     },
     methods: {
+      gowzDetail(wzDetail){
+        this.wzDetail = wzDetail;
+        this.page = 'wzgl';
+      },
       ...mapActions('d2admin/account', [
         'logout'
       ]),

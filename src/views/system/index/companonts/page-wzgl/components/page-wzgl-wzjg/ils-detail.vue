@@ -63,7 +63,7 @@
             </div>
           </div>
         </div>
-        <div class="line" style="border-bottom:unset;">
+        <div class="line">
           <div class="title">车辆号牌</div>
           <div style="display: flex">
             <div style="width: 50%">
@@ -80,6 +80,25 @@
             </div>
           </div>
         </div>
+        <div class="line" style="border-bottom:unset;">
+          <div class="title">个性化特征</div>
+          <div style="display: flex">
+            <div style="width: 50%">
+              <div>车窗粘贴物: <span class="value">{{data.ccztw}}</span></div>
+              <div>挂件: <span class="value">{{data.gj}}</span></div>
+              <div>行李架: <span class="value">{{data.xlj}}</span></div>
+              <div>车身张贴: <span class="value">{{data.cszt}}</span></div>
+              <div>车身刮痕: <span class="value">{{data.csgh}}</span></div>
+            </div>
+            <div style="width: 50%">
+              <div>摆件: <span class="value">{{data.bj}}</span></div>
+              <div>天窗: <span class="value">{{data.tc}}</span></div>
+              <div>倒车镜缺失: <span class="value">{{data.dcjqs}}</span></div>
+              <div>车身破损: <span class="value">{{data.csps}}</span></div>
+              <div>车身彩绘: <span class="value">{{data.csch}}</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +109,9 @@
 
   export default {
     props: ['data', 'visible'],
+    mounted(){
+      console.log('违章详情：',this.data)
+    },
     methods: {
       hide(){
         this.$emit("update:visible", false)

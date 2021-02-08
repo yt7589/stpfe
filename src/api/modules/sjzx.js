@@ -1,14 +1,14 @@
 export default ({service, request, serviceForMock, requestForMock, mock, faker, tools}) => ({
   sjzxQueryDataStatistics(params){
     return request({
-      url: '/dc/st/queryDataStatistics',
+      url: '/ms-tmdp/dc/st/queryDataStatistics',
       method: 'GET',
       params,
     })
   },
   sjzxQueryLocusReplay(params){
     return request({
-      url: '/dc/lr/queryLocusReplay',
+      url: '/ms-tmdp/dc/lr/queryLocusReplay',
       method: 'GET',
       params,
     })
@@ -50,14 +50,14 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   sjzxQueryVehicle(params){
     console.log('params:' + JSON.stringify(params) + '!')
     return request({
-      url: '/dc/cs/queryVehicle',
+      url: '/ms-tmdp/dc/cs/queryVehicle',
       method: 'GET',
       params,
     })
   },
   sjzxQueryDataReport(params){
     return request({
-      url: '/dc/rt/queryDataReport',
+      url: '/ms-tmdp/dc/rt/queryDataReport',
       method: 'GET',
       params,
     })

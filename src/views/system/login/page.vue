@@ -23,7 +23,7 @@
             <el-link class="forget-password">忘记密码?</el-link>
           </div>
           <div class="form-button">
-            <el-button class="custom-button" @click="submit" native-type="submit">安全登陆</el-button>
+            <el-button class="custom-button" @click="toLogin">安全登陆</el-button>
             <el-button class="custom-button" @click="submit">口令登陆</el-button>
           </div>
           <div class="form-register">
@@ -139,7 +139,14 @@
             username: '',
             password: ''
           },
-          rules: {},
+          rules: {
+            username: [
+              {required: true, message: '请输入您的用户名', trigger: 'blur'},
+            ],
+            password: [
+              {required: true, message: '请输入您的密码', trigger: 'blur'},
+            ],
+          },
           storePassword: false,
         },
         registerForm: {
@@ -243,7 +250,6 @@
               this.registerForm.form.appId = "202008151130"
               this.registerForm.form.sign = this.$md5("ABCDEFGHIJK" + this.registerForm.form.mobileCode).toUpperCase()
               api.AccountRegister(this.registerForm.form).then(res => {
-
                 this.registerForm.dialog.visible = true
               })
             }
@@ -254,7 +260,24 @@
           }
         })
       },
-
+      toLogin () {
+        this.$refs.loginForm.validate((valid) => {
+          if (valid) {
+            this.login(this.loginForm.form).then(res => {
+              if(res.code == 0){
+                this.login(res.data);
+                // 重定向对象不存在则返回顶层路径
+                this.$router.replace(this.$route.query.redirect || '/')
+              }else{
+                console.log('登录失败');
+              }
+            })
+          } else {
+            // 登录表单校验失败
+            this.$message.error('表单校验失败，请检查')
+          }
+        })
+      },
 
       /**
        * @description 提交表单
@@ -269,7 +292,7 @@
               password: this.loginForm.form.password
             })
               .then(() => {
-                
+
                 // 重定向对象不存在则返回顶层路径
                 this.$router.replace(this.$route.query.redirect || '/')
               })

@@ -137,8 +137,7 @@
               enabled: false
             },
             xAxis: {
-              categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',
-                '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
+              categories: [],
               labels: {
                 style: {
                   color: 'white'
@@ -193,7 +192,7 @@
             },
             series: [{
               name: '昨日',
-              data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6, 7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+              data: [],
 //              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#02C6D7',
               color: {
@@ -213,7 +212,7 @@
               }
             }, {
               name: '今日',
-              data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8, 3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
+              data: [],
 //              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#E84D07',
               color: {
@@ -269,12 +268,32 @@
           array.sort((t1, t2) => t2.count - t1.count)
           let categories = []
           let data = []
+          let tvsd = []
+          let carXData = [];
+          let tCarYData = [];
+          let yCarYData =[]
           array.forEach(item => {
             categories.push(item.name)
-            data.push(parseInt(item.count / 10000))
+            data.push(parseInt(item.count))
+            tvsd.push({
+              lat: item.lat,
+              lng: item.lng
+            })
           })
+          this.data.tvtv.tsfvs.forEach(item => {
+            tCarYData.push(parseInt(item.count))
+            carXData.push(item.name)
+          })
+          this.data.tvtv.ysfvs.forEach(item => {
+            yCarYData.push(parseInt(item.count))
+          })
+          this.data.tvsd = tvsd;
           this.cameraChart.option.xAxis.categories = categories
           this.cameraChart.option.series[0].data = data
+          this.carChart.option.xAxis.categories = carXData
+          this.carChart.option.series[0].data = tCarYData
+          this.carChart.option.series[1].data = yCarYData
+
         }
       },
       onMapReady ({BMap, map}) {

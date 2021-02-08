@@ -108,8 +108,10 @@
   import API from '@/api'
   import IlsDetail from './ils-detail.vue'
   import IlsHistory from './ils-history.vue'
+  import util from '@/libs/util'
   export default {
     components: {IlsDetail, IlsHistory},
+    props:['wzDetail'],
     data(){
       return {
         loading: false,
@@ -152,6 +154,9 @@
     mounted(){
       this.fetchData()
       this.initParam()
+      if(this.wzDetail != null){
+        this.handleDetailView(this.wzDetail);
+      }
     },
     methods: {
       initParam(){
@@ -180,10 +185,11 @@
         this.fetchData(page)
       },
       handleDetailView(row){
-        API.queryIlsDat({ilId: row.ilId}).then(res => {
-          this.ilsDetail.data = res.data
-          this.ilsDetail.visible = true
-          this.ilsHistory.visible = false
+        let that = this;
+        API.queryIlsDat({tvisJsonId: row.tvisJsonId,vehIdx: row.vehIdx}).then(res => {
+          that.ilsDetail.data = res.data
+          that.ilsDetail.visible = true
+          that.ilsHistory.visible = false
         })
       },
       handleHistoryView(row){

@@ -113,6 +113,10 @@
       getSiteList(){
         API.GetCameraSiteList().then(res => {
           this.siteList = res.data.recs
+          if(this.siteList.length > 0){
+            this.map.center.lat = this.siteList[0].lat;
+            this.map.center.lng = this.siteList[0].lng;
+          }
         })
       },
       getQueryDeviceSum() {

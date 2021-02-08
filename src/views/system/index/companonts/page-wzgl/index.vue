@@ -2,9 +2,9 @@
   <div class="page-wzgl">
     <div class="custom-menu-box">
       <span class="menu" v-for="(option,index) in pageOptions" :key="index"
-            :class="curPage===option?'is-active':''" @click="curPage=option">{{option.label}}</span>
+            :class="curPage===option?'is-active':''" @click="curPage=option">{{option.label}}----------{{wzDetail}}</span>
     </div>
-    <page-wzgl-wzjg v-show="curPage.label=='违章监管'" class="custom-main-content"></page-wzgl-wzjg>
+    <page-wzgl-wzjg v-show="curPage.label=='违章监管'" :wzDetail="wzDetail" class="custom-main-content"></page-wzgl-wzjg>
     <page-wzgl-wzfb v-show="curPage.label=='违章分布'" :visible="curPage.label=='违章分布'"
                     class="custom-main-content"></page-wzgl-wzfb>
   </div>
@@ -16,6 +16,7 @@
 
   export default {
     components: {PageWzglWzfb, PageWzglWzjg},
+    props:['wzDetail'],
     data(){
       return {
         loading: false,

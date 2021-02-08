@@ -16,7 +16,7 @@ function createService() {
     config => {
       let token = util.cookies.get('token')
       if (token) {
-        config.headers['accessToken'] = token
+        config.headers['Authorization'] = token
       }
       if (!config.params) {
         config.params = {}
@@ -34,7 +34,6 @@ function createService() {
         config.params.page = undefined
         config.params.pageSize = undefined
       }
-
       return config
     },
     error => {
@@ -62,10 +61,10 @@ function createService() {
           case 0:
             // [ 示例 ] code === 0 代表没有错误
             return dataAxios
-          // case 0:
-          //   router.push({name: 'login'})
-          //   errorCreate("登陆超时,请重新登陆", silent)
-          //   break;
+          case 9:
+            router.push({name: 'login'})
+            errorCreate("请登录", silent)
+            break;
           case 'xxx':
             // [ 示例 ] 其它和后台约定的 code
             errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`)
