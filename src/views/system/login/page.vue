@@ -129,6 +129,7 @@
   import dayjs from 'dayjs'
   import {mapActions} from 'vuex'
   import api from '@/api'
+  import sha1 from 'js-sha1'
 
   export default {
     data () {
@@ -263,6 +264,7 @@
       toLogin () {
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
+            this.loginForm.form.password = sha1(this.loginForm.form.password)
             this.login(this.loginForm.form).then(res => {
               if(res.code == 0){
                 this.login(res.data);
