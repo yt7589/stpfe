@@ -4,7 +4,8 @@
       <el-image id="img001" style="width:100%;height:80%" :src="originImage">
       </el-image>
       <ul class="item-box" id="image-box">
-        <li class="li-image" v-for="item in vehs" :key="item.wsmVfvvIdx" @click="selVeh=item">
+        <li class="li-image" v-for="item in vehs" :key="item.wsmVfvvIdx" 
+        @click="selVeh = item;toIlsDetailPage(item.vehIdx)">
           <el-image :src="item.cutImgUrl" :alt="originImage">
           </el-image>
           <div>
@@ -39,6 +40,7 @@
 
 <script>
   import dayjs from 'dayjs'
+  import util from '@/libs/util'
   export default {
     //props: ['data'],
     components: {},
@@ -48,6 +50,7 @@
         vehs: [],
         selVeh: null,
         originImage: 'http://222.128.117.234:8090/www/images/a.jpg',
+        tvisJsonId: '',
         table: {
           data: [],
           pagination: {
@@ -76,6 +79,7 @@
       this.$globalws.ws.onmessage = function(data) {
         console.log('websocket on message......:' + data.data + '!')
         let rst = JSON.parse(data.data)
+        this.pageObj.tvisJsonId = rst.tvisJsonId;
         let img001 = document.getElementById("img001")
         img001.src = rst.originImage
         console.log('img001.src: ' + img001.src + '; this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
@@ -128,6 +132,13 @@
       this.initMouseEvent()
     },
     methods: {
+      toIlsDetailPage(vehIdx){
+      let params = {
+        vehIdx: vehIdx,
+        tvisJsonId: this.tvisJsonId
+      }
+      util.bus.$emit('gowzDetail',params);
+    },
       initMouseEvent(){
         window.addEventListener('mousewheel', this.handleScroll, false)
       },
