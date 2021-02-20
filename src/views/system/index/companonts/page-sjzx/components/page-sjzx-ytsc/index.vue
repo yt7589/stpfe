@@ -39,7 +39,7 @@
               <i v-else="" class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
-          <el-form-item>
+          <el-form-item v-if="canSearch">
             <el-button class="button-search" @click="fetchData">
               搜索
               <el-image :src="require('../../image/image-search.png')"></el-image>
@@ -81,6 +81,11 @@ import { error } from 'highcharts'
     data(){
       return {
         loading: false,
+        canSearch: false,
+        cltzxl: '', // 车辆特征方向
+        psfx: '', // 拍摄方向
+        cllxfl: '', // 车辆类型分类
+        cllxzfl: '', // 车辆类型子分类
         table: {
           data: [],
           filter: {
@@ -113,12 +118,22 @@ import { error } from 'highcharts'
         console.log('handleImageSelect 1 url:' + this.table.filter.image.url + '!')
         console.log('handleImageSelect 1 file:' + JSON.stringify(this.table.filter.image.file) + '!')
 
-        API.recognizeYtscImage(file).then(res => {
-          console.log('get the response')
+        API.recognizeYtscImage(file.file).then(res => {
+          let jo = JSON.parse(res.data['jsonResult'])
+          let vehs = jo['VEH']
+          if (vehs.length < 1) {
+            alert('请选具有一辆查询车辆的图片')
+            return 
+          } else if (vehs.length > 1) {
+            alert('请选择只有一辆查询车辆的图片')
+            return 
+          }
+          this.canSearch = true
+          this.cltzxl = vehs[0]['CLTZXL']
+          this.psfx = vehs[0]['WZTZ']['PSFX']
+          this.cllxfl = vehs[0]['CXTZ']['CLLXFL']
+          this.cllxzfl = vehs[0]['CXTZ']['CLLXZFL']
         })
-
-
-
       },
       getObjectURL(file) {
         let url = null;
@@ -140,6 +155,8 @@ import { error } from 'highcharts'
         this.fetchData(page)
       },
       fetchData(){
+        console.log('this.table.filter.date=' + this.table.filter.date + '!')
+        console.log('this.table.filter.time=' + this.table.filter.time + '!')
         if(this.table.filter.image.url == null){
           this.$alert('请选择图片', '提示', {
             confirmButtonText: '确定'            
@@ -151,10 +168,18 @@ import { error } from 'highcharts'
             let pageOption = {
               page: this.table.pagination.currentPage,
               pageSize: this.table.pagination.pageSize,
-              startDate:  this.formatDate('YYYY-mm-dd', this.table.filter.date[0]),
-              endDate: this.formatDate('YYYY-mm-dd', this.table.filter.date[1]),
-              startTime: this.formatDate('HH:MM', this.table.filter.time[0]),
-              endTime: this.formatDate('HH:MM', this.table.filter.time[1])
+              cltzxl: this.cltzxl,
+              psfx: this.psfx,
+              cllxfl: this.cllxfl,
+              cllxzfl: this.cllxzfl
+            }
+            if (this.table.filter.date) {
+              pageOption.startDate = this.formatDate('YYYY-mm-dd', this.table.filter.date[0])
+              pageOption.endDate = this.formatDate('YYYY-mm-dd', this.table.filter.date[1])
+            }
+            if (this.table.filter.time) {
+              pageOption.startTime = this.formatDate('HH:MM', this.table.filter.time[0])
+              pageOption.endTime = this.formatDate('HH:MM', this.table.filter.time[1])
             }
             API.sjzxQueryVehicle(pageOption).then(res => {
               this.table.data = res.data.recs

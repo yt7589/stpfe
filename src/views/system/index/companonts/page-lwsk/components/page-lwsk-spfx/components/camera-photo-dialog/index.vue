@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     this.initData();
-    console.log("########### Yantao: camera-photo-dialog");
+    console.log("########### Yantao 001???: camera-photo-dialog");
     this.initMouseEvent();
     this.getTvisAnalysisResult();
   },
@@ -96,7 +96,7 @@ export default {
     },
     getTvisAnalysisResult() {
       let cameraId = this.$store.state.stp.video_analysis.cameraId;
-      console.log("cameraId=" + cameraId + "!");
+      console.log("getTvisAnalysisResult ???????    cameraId=" + cameraId + "!");
       let params = {
         p: "pc",
         v: "0.0.1",
@@ -106,7 +106,7 @@ export default {
       };
       let pageObj = this;
       API.getTvisAnalysisResult(params).then((res) => {
-        console.log("get the result of getTvisAnalysisResult!");
+        console.log("get the result of getTvisAnalysisResult! res:" + JSON.stringify(res) + "!");
         if (res.data != null) {
           console.log("result: " + JSON.stringify(res.data) + "!");
           pageObj.tvisJsonId = res.data.tvisJsonId;
@@ -136,7 +136,11 @@ export default {
         selector.scrollLeft = selector.scrollLeft + 200;
       }
     },
-    initData() {},
+    initData() {
+      // 置空websocket接收功能
+      this.$globalws.ws.onmessage = function(data) {
+      }
+    },
     getTimeOffset(str) {
       let sec = dayjs().diff(dayjs(str), "second");
 

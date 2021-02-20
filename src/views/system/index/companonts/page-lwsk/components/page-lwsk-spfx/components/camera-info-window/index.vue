@@ -108,13 +108,16 @@
         this.itemData = this.listData[this.index];
       },
       onRowClick(row, column, event){
+        console.log('step 0 click camera')
         this.$store.commit("stp/video_analysis/setCameraId", row.diId)
-        console.log(row.diId)
+        console.log('cameraId=' + row.diId + '!')
         if ('抓拍机' == row.category) {
+          console.log('snapshot is running...')
           this.cameraPhotoDialog.data = row
           this.cameraPhotoDialog.visible = true
           this.visible = false
         } else {
+          console.log('video is running ...')
           this.cameraVideoDialog.data = row
           this.cameraVideoDialog.visible = true
           this.visible = false
