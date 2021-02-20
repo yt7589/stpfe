@@ -49,7 +49,7 @@
       return {
         map: {
           instance: null,
-          zoom: 15,
+          zoom: 18,
           center: {
             lng: 116.48491949999993,
             lat: 39.87675224621402

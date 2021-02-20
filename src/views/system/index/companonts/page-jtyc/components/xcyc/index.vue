@@ -144,13 +144,13 @@
           startTime:this.form.date[0],
           endTime:this.form.date[1],
         }
-
         API.QueryTrafficPrognosis(frm).then((res) => {
-          this.map.center.lat = res.data.tfps[0].lat
-          this.map.center.lng = res.data.tfps[0].lng
+          if(res.data.tfps.length>0){
+            this.map.center.lat = res.data.tfps[0].lat
+            this.map.center.lng = res.data.tfps[0].lng
+          }
           this.markerPoints = res.data.tfps
-            this.markerPointsCount = res.data.tfps.length - 1
-
+          this.markerPointsCount = res.data.tfps.length - 1
         })
       },
 

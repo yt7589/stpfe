@@ -52,7 +52,7 @@
                         <el-row>
                             <el-col :span="3">
                               <img src="../../image/dt@1x.png" alt="">
-                            ]</el-col>
+                            </el-col>
                             <el-col :span="6" class="jgdt-text">  <span class="jgdt-span">监管动态</span></el-col>
                         </el-row>
                     </div>

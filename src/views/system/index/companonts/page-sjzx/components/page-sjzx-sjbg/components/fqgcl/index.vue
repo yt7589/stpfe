@@ -98,15 +98,17 @@
       data: {
         deep: true,
         handler(val) {
-          console.log('地图子组件数据:',val)
-          this.map.center.lng = val[0].lng;
-          this.map.center.lat = val[0].lat;
-          val.forEach(item => {
-            this.markerPoints.push({
-              lat : item.lat,
-              lng : item.lng
-            })
-          });
+          if(val.length>0){
+            this.map.center.lng = val[0].lng;
+            this.map.center.lat = val[0].lat;
+            val.forEach(item => {
+              this.markerPoints.push({
+                lat : item.lat,
+                lng : item.lng
+              })
+            });
+          }
+          
         }
       },
     },

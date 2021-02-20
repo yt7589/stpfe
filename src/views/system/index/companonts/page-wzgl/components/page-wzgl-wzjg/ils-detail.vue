@@ -110,7 +110,7 @@
   export default {
     props: ['data', 'visible'],
     mounted(){
-      console.log('违章详情：',this.data)
+      
     },
     methods: {
       hide(){

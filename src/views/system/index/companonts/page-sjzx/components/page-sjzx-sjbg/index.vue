@@ -104,7 +104,6 @@
     },
     methods: {
       getPdf(doms,title){
-        console.log('--------')
         util.pdf.domsToPdf(doms,'数据报告');
       },
       fetchData(){

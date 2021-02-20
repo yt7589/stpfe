@@ -1,11 +1,10 @@
 <template>
   <div class="camera-photo-dialog">
     <div class="wrapper">
-      <el-image id="img001" style="width: 100%; height: 80%" :src="originImage" @mouseenter="mouseenter" @mouseleave="mouseleave">
+      <el-image id="img001" style="width: 100%; height: 80%" fit="contain" :src="originImage" @mouseenter="mouseenter" @mouseleave="mouseleave">
       </el-image>
       <ul class="item-box" id="image-box">
         <div class="left-button" @click="goLeft"></div>
-        <div class="right-button" @click="goRight"></div>
         <li
           class="li-image"
           v-for="item in vehs"
@@ -14,16 +13,17 @@
         >
           <el-image :src="item.cutImgUrl" class="bottom-image" :alt="originImage" fit="contain"> </el-image>
           <div>
-            <div style="display: flex; justify-content: space-between">
-              <span>{{ item.hphm }}</span>
+            <div style="display: flex; justify-content: center">
+              <span class="chepai">{{ item.hphm }}</span>   
               <span style="color: #00f6ff">{{ item.crossTime }}</span>
             </div>
-            <div>
+            <div style="display: flex; justify-content: center">
               <!-- {{item.trafficViolationName}}:{{item.trackId}}:{{item.cutImgUrl.substring(item.cutImgUrl.length-10)}} -->
               {{ item.trafficViolationName }}
             </div>
           </div>
         </li>
+        <div class="right-button" @click="goRight"></div>
       </ul>
       <!--<i class="el-icon-close"></i>-->
       <div class="selected-image" v-if="table.current">
@@ -175,11 +175,11 @@ export default {
   }
 
   .item-box {
-    width: 100%;
+    width: calc(100% - 60px);
     height: 20%;
     overflow-x: scroll;
     overflow-y: hidden;
-    margin: unset;
+    margin: 0 auto;
     padding: unset;
     display: flex;
     .left-button {
@@ -189,7 +189,7 @@ export default {
       width: 37px;
       height: 45px;
       background: url(../../image/left-button.png) no-repeat;
-      top: 85%;
+      top: 88%;
     }
     .right-button {
       z-index: 8001;
@@ -198,7 +198,8 @@ export default {
       width: 37px;
       height: 45px;
       background: url(../../image/right-button.png) no-repeat;
-      top: 85%;
+      top: 88%;
+      
     }
   }
 
@@ -206,15 +207,15 @@ export default {
     width: 140px;
     // min-width: 140px;
     height: 100%;
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 4px;
     color: white;
     display: inline-block;
+    // background-color: red;
     cursor: pointer;
     .bottom-image {
       height: calc(100% - 40px);
       width: 140px;
-      // background: red;
     }
   }
 
@@ -246,6 +247,9 @@ export default {
         height: 133px;
       }
     }
+  }
+  .chepai{
+    margin-right: 10px;
   }
 }
 </style>

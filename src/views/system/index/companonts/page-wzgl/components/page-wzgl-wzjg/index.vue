@@ -155,6 +155,7 @@
       this.fetchData()
       this.initParam()
       if(this.wzDetail != null){
+        console.log('---')
         this.handleDetailView(this.wzDetail);
       }
     },

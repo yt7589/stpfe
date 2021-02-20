@@ -101,19 +101,21 @@
       data: {
         deep: true,
         handler(val) {
-          this.map.center.lng = val[0].lng;
-          this.map.center.lat = val[0].lat;
-          val.forEach((item,index) => {
-            this.markerPoints.push({
-              lat : item.lat,
-              lng : item.lng,
-              url: require('../../image/circle' + (index+1) + '.png'),
-              size: {
-                width: 48-(index * 4),
-                height: 48-(index * 4)
-              },
-            })
-          });
+          if(val.length>0){
+            this.map.center.lng = val[0].lng;
+            this.map.center.lat = val[0].lat;
+            val.forEach((item,index) => {
+              this.markerPoints.push({
+                lat : item.lat,
+                lng : item.lng,
+                url: require('../../image/circle' + (index+1) + '.png'),
+                size: {
+                  width: 48-(index * 4),
+                  height: 48-(index * 4)
+                },
+              })
+            });
+          }
         }
       },
     },
@@ -146,7 +148,7 @@
       getData(){
         API.sjzxQueryDataReport().then(res => {
           // 解析分时段拥堵趋势数据
-          this.data = res.data.raj;
+          this.data = res.data.raj
           this.data.forEach(item => {
             this.markerPoints.push({
               lat : item.lat,

@@ -143,19 +143,20 @@
       },
       getData(){
         API.QueryTrafficForecast(this.form).then((res) => {
-          console.log('数据：',res.data)
-          this.map.center.lat = res.data.tfs[0].lat
-          this.map.center.lng = res.data.tfs[0].lng
-          this.markerPoints = res.data.tfs
           this.tVehicle = res.data.tVehicle
-          
-          
+          if(res.data.tfs.length>0){
+            this.map.center.lat = res.data.tfs[0].lat
+            this.map.center.lng = res.data.tfs[0].lng
+            this.markerPoints = res.data.tfs
+          }
 
-          res.data.tfst.forEach((item)=>{
-            this.yData.push(item.name)
-            this.seriesData.push(item.count)
-            this.yData2.push(item.count)
-          })
+          if(res.data.tfst.length>0){
+            res.data.tfst.forEach((item)=>{
+              this.yData.push(item.name)
+              this.seriesData.push(item.count)
+              this.yData2.push(item.count)
+            })
+          }
         })
       },
 
