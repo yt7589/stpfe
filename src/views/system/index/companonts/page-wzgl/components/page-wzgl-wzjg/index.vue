@@ -154,8 +154,7 @@
     mounted(){
       this.fetchData()
       this.initParam()
-      if(this.wzDetail != null){
-        console.log('---')
+      if(this.wzDetail != null && this.wzDetail.vehIdx){
         this.handleDetailView(this.wzDetail);
       }
     },

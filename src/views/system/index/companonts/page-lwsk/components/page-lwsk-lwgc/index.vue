@@ -288,6 +288,11 @@
             yCarYData.push(parseInt(item.count))
           })
           this.data.tvsd = tvsd;
+          if(this.data.tvsd.length>0){
+            const {lng, lat} = this.data.tvsd[0]
+            this.map.center.lat = lat;
+            this.map.center.lng = lng;
+          }
           this.cameraChart.option.xAxis.categories = categories
           this.cameraChart.option.series[0].data = data
           this.carChart.option.xAxis.categories = carXData
