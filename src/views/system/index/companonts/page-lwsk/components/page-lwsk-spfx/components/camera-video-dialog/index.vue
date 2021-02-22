@@ -133,12 +133,12 @@
     },
     methods: {
       toIlsDetailPage(vehIdx){
-      let params = {
-        vehIdx: vehIdx,
-        tvisJsonId: this.tvisJsonId
-      }
-      util.bus.$emit('gowzDetail',params);
-    },
+        let params = {
+          vehIdx: vehIdx,
+          tvisJsonId: this.tvisJsonId
+        }
+        util.bus.$emit('gowzDetail',params);
+      },
       initMouseEvent(){
         window.addEventListener('mousewheel', this.handleScroll, false)
       },
