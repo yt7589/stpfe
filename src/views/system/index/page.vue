@@ -37,7 +37,7 @@
     <div class="main-content-box">
       <page-index v-if="page=='index'" @open="openPage"></page-index>
       <page-lwsk v-if="page=='lwsk'"></page-lwsk>
-      <page-wzgl v-if="page=='wzgl'" :wzDetail="wzDetail"></page-wzgl>
+      <page-wzgl v-if="page=='wzgl'" :wzDetail="wzDetail" @leaveWZGL="leaveWZGL"></page-wzgl>
       <page-zdjg v-if="page=='zdjg'"></page-zdjg>
       <page-jtyc v-if="page=='jtyc'"></page-jtyc>
       <page-sjzx v-if="page=='sjzx'"></page-sjzx>
@@ -83,6 +83,9 @@
       gowzDetail(wzDetail){
         this.wzDetail = wzDetail;
         this.page = 'wzgl';
+      },
+      leaveWZGL(){
+        this.wzDetail = null;
       },
       ...mapActions('d2admin/account', [
         'logout'

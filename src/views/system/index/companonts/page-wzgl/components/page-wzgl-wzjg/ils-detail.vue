@@ -112,6 +112,9 @@
     mounted(){
       
     },
+    beforeDestroy(){
+      // this.$emit()
+    },
     methods: {
       hide(){
         this.$emit("update:visible", false)
@@ -177,13 +180,13 @@
       .column-2 {
         background: #0073FF33;
         width: 30%;
-        padding: 24px;
+        padding-left: 24px;
         font-size: 14px;
         margin-left: 24px;
 
         .line {
-          padding-top: 13px;
-          padding-bottom: 13px;
+          padding-top: 5px;
+          padding-bottom: 5px;
           border-bottom: solid 1px #fff;
         }
 

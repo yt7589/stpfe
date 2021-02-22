@@ -31,6 +31,12 @@
     mounted(){
       this.curPage = this.pageOptions[0]
     },
+    beforeDestroy(){
+      // 触发清除参数方法
+      if(this.wzDetail){
+        this.$emit('leaveWZGL')
+      }
+    },
     methods: {}
   }
 </script>
