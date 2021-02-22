@@ -290,8 +290,6 @@
         this.getAreaList()
       },
       getAreaListNext(){
-        let page = this.page
-        this.page = page + 1
         this.frm.startIndex = (this.page - 1) * this.frm.amount
         this.frm.direction = 1
         this.getAreaList()

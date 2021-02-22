@@ -139,19 +139,19 @@
         loading: false,
         vehicleLocTypes: [
           {
-            value: 0,
+            value: '',
             label: '全部'
           },
           {
-            value: 1,
+            value: 0,
             label: '本地'
           },
           {
-            value: 2,
+            value: 1,
             label: '外埠'
           }
         ],
-        selVehicleLocType: 0,
+        selVehicleLocType: '',
         vehicleTypes: [],
         selVehicleType: 0,
         ilsTypes: [],
@@ -205,7 +205,6 @@
               label: recs[i].typeName
             })
           }
-          console.log('数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultVehicleType = 0
       },
@@ -226,7 +225,6 @@
               label: recs[i].typeName
             })
           }
-          console.log('违章数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultIlsTypes = 0
       },
@@ -248,14 +246,14 @@
           params.startTime = formatDate(this.queryTimes[0])
           params.endTime = formatDate(this.queryTimes[1])
         }
-        if (this.selVehicleLocType != 0) {
-          params.selVehicleLocType = this.selVehicleLocType
+        if (this.selVehicleLocType !== '') {
+            params.category = this.selVehicleLocType
         }
         if (this.selVehicleType != 0) {
-          params.selVehicleType = this.selVehicleType
+          params.vType = this.selVehicleType
         }
         if (this.selIlsType != 0) {
-          params.selIlsType = this.selIlsType
+          params.ilType = this.selIlsType
         }
         if (this.hphm != null && this.hphm != '') {
           params.hphm = this.hphm
@@ -263,7 +261,6 @@
         if (this.siteName != null && this.siteName != '') {
           params.vAddr = this.siteName
         }
-        console.log(JSON.stringify(params))
         API.getDcAdVehicles(params).then(res => {
           let data = res.data
           this.total = data.total

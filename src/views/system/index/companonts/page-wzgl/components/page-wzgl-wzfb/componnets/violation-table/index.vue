@@ -14,8 +14,8 @@
         <el-table-column prop="count" label="违章数" align="center" minWidth="40"></el-table-column>
       </el-table>
       <div class="button-box">
-        <el-button type="text" icon="el-icon-arrow-up">上一页</el-button>
-        <el-button type="text" icon="el-icon-arrow-down">下一页</el-button>
+        <el-button @click="getListPrev()" type="text" icon="el-icon-arrow-up">上一页</el-button>
+        <el-button @click="getListNext()" type="text" icon="el-icon-arrow-down">下一页</el-button>
       </div>
     </div>
   </div>
@@ -29,13 +29,19 @@
     components: {},
     data(){
       return {
+        frm:{
+          amount:10,
+          startIndex:0,
+          direction:0,
+        },
+        page:1,
         table: {
           data: [],
           pagination: {
             currentPage: 1,
             total: 0,
-            pageSize: 20
-          }
+            pageSize: 10
+          },
         },
       }
     },
@@ -43,11 +49,29 @@
       this.fetchData()
     },
     methods: {
+      getListPrev(){
+        let page = this.page
+        if (page > 1){
+          this.page = page - 1
+          this.frm.startIndex = (this.page - 1) * this.frm.amount
+        }else{
+          this.frm.startIndex = 0
+        }
+        this.frm.direction = 0
+        this.fetchData()
+      },
+      getListNext(){
+        let page = this.page
+        this.page = page + 1
+        this.frm.startIndex = (this.page - 1) * this.frm.amount
+        this.frm.direction = 1
+        this.fetchData()
+      },
       close(){
         this.$emit("close")
       },
       fetchData(){
-        API.queryIllegal().then(res => {
+        API.queryIllegal(this.frm).then(res => {
           this.table.data = res.data.recs
           this.table.pagination.total = res.data.total
         })

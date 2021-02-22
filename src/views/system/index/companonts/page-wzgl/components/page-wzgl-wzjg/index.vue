@@ -120,7 +120,13 @@
           filter: {
             username: '',
             phone: '',
-            company: ''
+            company: '',
+            date: '',
+            type: '',
+            carType: '',
+            wzlx: '',
+            cph: '',
+            location: ''
           },
           option: {
             typeOptions: [],
@@ -171,6 +177,13 @@
         API.queryIllegalVehicle({
           page: this.table.pagination.currentPage,
           pageSize: this.table.pagination.pageSize,
+          startTime: this.table.filter.date[0],
+          endTime: this.table.filter.date[1],
+          category: this.table.filter.type,
+          vType: this.table.filter.carType,
+          illType: this.table.filter.wzlx,
+          hphm: this.table.filter.cph,
+          addr: this.table.filter.location
         }).then(res => {
           this.table.data = res.data.recs
           this.table.pagination.total = res.data.total

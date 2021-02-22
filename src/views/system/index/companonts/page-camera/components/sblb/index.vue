@@ -5,9 +5,11 @@
             <div class="column-1">
                 <el-form class="search-form">
                     <el-form-item>
-                        <el-input placeholder="设备类型" v-model="frm.type">
-
-                        </el-input>
+                        <el-select
+                         style="width:100%" placeholder="设备类型"
+                         v-model="frm.type">
+                          <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-input placeholder="设备编号" v-model="frm.code">
@@ -166,6 +168,13 @@
           amount:20,
           startIndex:0,
         },
+        types:[{
+          value: 1,
+          label: '抓拍机'
+        },{
+          value: 2,
+          label: '视频监控'
+        }],
         tableData:[],
         total:0,
         dialogVisible:false,
