@@ -50,7 +50,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     formData.append("video", file)
 
     return request({
-      url: '/ms-tmdp/vehicle/api/analysis/videoupload',
+      url: 'vehicle/api/analysis/videoupload',
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -67,7 +67,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   VehicleStatistic(silent = false){
     return request({
-      url: '/ms-tmdp/vehicle/statistic',
+      url: 'vehicle/statistic',
       method: 'get',
       silent: silent
     })
@@ -75,7 +75,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   TrafficViolation(silent = false){
     return request({
-      url: '/ms-tmdp/traffic/violation',
+      url: 'traffic/violation',
       method: 'get',
       silent: silent
     })
@@ -83,20 +83,20 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   GetCameraSiteList(){
     return request({
-      url: '/ms-tmdp/tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
+      url: 'tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
       method: 'get',
     })
   },
   GetCameraList(params){
     return request({
-      url: '/ms-tmdp/tn/va/querySdInfo?p=pc&v=0.0.1',
+      url: 'tn/va/querySdInfo?p=pc&v=0.0.1',
       method: 'get',
       params
     })
   },
   GetQueryDeviceSum(params) {
     return request({
-      url: '/ms-tmdp/tn/va/queryDevice?p=pc&v=0.0.1',
+      url: 'tn/va/queryDevice?p=pc&v=0.0.1',
       method: 'get',
       params
     })
@@ -104,14 +104,14 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   querySdPic(params){
     // 设备视图详情
     return request({
-      url: '/ms-tmdp/tn/va/querySdPic',
+      url: 'tn/va/querySdPic',
       method: 'get',
       params
     })
   },
   GetTrafficViolationList(params){
     return request({
-      url: '/ms-tmdp/traffic/violation/list',
+      url: 'traffic/violation/list',
       method: 'post',
       params
     })

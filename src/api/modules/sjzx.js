@@ -1,14 +1,14 @@
 export default ({service, request, serviceForMock, requestForMock, mock, faker, tools}) => ({
   sjzxQueryDataStatistics(params){
     return request({
-      url: '/ms-tmdp/dc/st/queryDataStatistics',
+      url: 'dc/st/queryDataStatistics',
       method: 'GET',
       params,
     })
   },
   sjzxQueryLocusReplay(params){
     return request({
-      url: '/ms-tmdp/dc/lr/queryLocusReplay',
+      url: 'dc/lr/queryLocusReplay',
       method: 'GET',
       params,
     })
@@ -22,7 +22,6 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
    * @param {*} onUploadProgress 
    */
   recognizeYtscImage(file, vm = null, onUploadProgress = null){
-    console.log('step 1')
     let formData = new FormData()
     formData.append('TPLX', '1')
     formData.append('MRHPT', 'test')
@@ -33,7 +32,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     console.log('step 2')
 
     return request({
-      url: '/tmdp/recognizeTvisImage',
+      url: 'tmdp/recognizeTvisImage',
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -50,14 +49,14 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   sjzxQueryVehicle(params){
     console.log('params:' + JSON.stringify(params) + '!')
     return request({
-      url: '/ms-tmdp/dc/cs/queryVehicle',
+      url: 'dc/cs/queryVehicle',
       method: 'GET',
       params,
     })
   },
   sjzxQueryDataReport(params){
     return request({
-      url: '/ms-tmdp/dc/rt/queryDataReport',
+      url: 'dc/rt/queryDataReport',
       method: 'GET',
       params,
     })

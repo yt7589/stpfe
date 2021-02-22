@@ -15,7 +15,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   SYS_USER_LOGIN (data = {}) {
     // 模拟数据
     mock
-      .onAny('/login')
+      .onAny('login')
       .reply(config => {
         const user = find(users, tools.parse(config.data))
         return user
@@ -32,7 +32,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   AccountLogin($username, $password){
     return request({
-      url: '/ms-tmdp/vehicle/api/login/index',
+      url: 'vehicle/api/login/index',
       method: 'post',
       data: {
         appId: '202008151130',
@@ -45,7 +45,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   AccountRegister(data){
     return request({
-      url: '/ms-tmdp/vehicle/api/register',
+      url: 'vehicle/api/register',
       method: 'post',
       data: data
     })
