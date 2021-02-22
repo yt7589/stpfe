@@ -1,10 +1,12 @@
+import appConst from '../../app_global.js'
+
 export default ({service, request, serviceForMock, requestForMock, mock, faker, tools}) => ({
   VehicleRecognition(file, vm = null, onUploadProgress = null){
     let formData = new FormData()
     formData.append("image", file)
 
     return request({
-      url: '/ms-tmdp/vehicle/api/analysis/imageupload',
+      url: appConst.msTmdp + 'vehicle/api/analysis/imageupload',
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -20,27 +22,27 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   },
   UploadRecognitionError(data){
     return request({
-      url: '/ms-tmdp/vehicle/api/analysis/rectifyImgRecgRst?p=pc&v=1.0',
+      url: appConst.msTmdp + 'vehicle/api/analysis/rectifyImgRecgRst?p=pc&v=1.0',
       method: 'post',
       data,
     })
   },
   GetRecognitionList(params){
     return request({
-      url: '/ms-tmdp/zjc/dc/queryImageRecgDatas?p=pc&v=1.0',
+      url: appConst.msTmdp + 'zjc/dc/queryImageRecgDatas?p=pc&v=1.0',
       method: 'GET',
       params,
     })
   },
   UploadRtmpConfig($rtmp){
     return request({
-      url: '/ms-tmdp/vehicle/api/analysis/getrtmpconfigurl?rtmpUrl=' + $rtmp,
+      url: appConst.msTmdp + 'vehicle/api/analysis/getrtmpconfigurl?rtmpUrl=' + $rtmp,
       method: 'post',
     })
   },
   GetRtmpResult($rtmpID, silent = false){
     return request({
-      url: '/ms-tmdp/vehicle/api/analysis/getanalysisbyid?rstpId=' + $rtmpID,
+      url: appConst.msTmdp + 'vehicle/api/analysis/getanalysisbyid?rstpId=' + $rtmpID,
       method: 'post',
       silent: silent
     })
@@ -50,7 +52,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     formData.append("video", file)
 
     return request({
-      url: 'vehicle/api/analysis/videoupload',
+      url: appConst.msTmdp + 'vehicle/api/analysis/videoupload',
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -67,7 +69,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   VehicleStatistic(silent = false){
     return request({
-      url: 'vehicle/statistic',
+      url: appConst.msTmdp + 'vehicle/statistic',
       method: 'get',
       silent: silent
     })
@@ -75,7 +77,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   TrafficViolation(silent = false){
     return request({
-      url: 'traffic/violation',
+      url: appConst.msTmdp + 'traffic/violation',
       method: 'get',
       silent: silent
     })
@@ -83,20 +85,20 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   GetCameraSiteList(){
     return request({
-      url: 'tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
+      url: appConst.msTmdp + 'tn/va/queryDeviceDeploy?p=pc&v=0.0.1',
       method: 'get',
     })
   },
   GetCameraList(params){
     return request({
-      url: 'tn/va/querySdInfo?p=pc&v=0.0.1',
+      url: appConst.msTmdp + 'tn/va/querySdInfo?p=pc&v=0.0.1',
       method: 'get',
       params
     })
   },
   GetQueryDeviceSum(params) {
     return request({
-      url: 'tn/va/queryDevice?p=pc&v=0.0.1',
+      url: appConst.msTmdp + 'tn/va/queryDevice?p=pc&v=0.0.1',
       method: 'get',
       params
     })
@@ -104,14 +106,14 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   querySdPic(params){
     // 设备视图详情
     return request({
-      url: 'tn/va/querySdPic',
+      url: appConst.msTmdp + 'tn/va/querySdPic',
       method: 'get',
       params
     })
   },
   GetTrafficViolationList(params){
     return request({
-      url: 'traffic/violation/list',
+      url: appConst.msTmdp + 'traffic/violation/list',
       method: 'post',
       params
     })

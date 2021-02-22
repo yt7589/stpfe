@@ -1,5 +1,5 @@
 import {find, assign} from 'lodash'
-
+import appConst from '../../app_global.js'
 
 const users = [
   {username: 'admin', password: 'admin', uuid: 'admin-uuid', name: 'Admin'},
@@ -32,7 +32,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   AccountLogin($username, $password){
     return request({
-      url: 'vehicle/api/login/index',
+      url: appConst.msTmdp + 'vehicle/api/login/index',
       method: 'post',
       data: {
         appId: '202008151130',
@@ -45,7 +45,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
 
   AccountRegister(data){
     return request({
-      url: 'vehicle/api/register',
+      url: appConst.msTmdp + 'vehicle/api/register',
       method: 'post',
       data: data
     })

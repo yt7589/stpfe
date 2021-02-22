@@ -1,14 +1,16 @@
+import appConst from '../../app_global.js'
+
 export default ({service, request, serviceForMock, requestForMock, mock, faker, tools}) => ({
   sjzxQueryDataStatistics(params){
     return request({
-      url: 'dc/st/queryDataStatistics',
+      url: appConst.msTmdp + 'dc/st/queryDataStatistics',
       method: 'GET',
       params,
     })
   },
   sjzxQueryLocusReplay(params){
     return request({
-      url: 'dc/lr/queryLocusReplay',
+      url: appConst.msTmdp + 'dc/lr/queryLocusReplay',
       method: 'GET',
       params,
     })
@@ -32,7 +34,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     console.log('step 2')
 
     return request({
-      url: 'tmdp/recognizeTvisImage',
+      url: appConst.msTmdp + 'tmdp/recognizeTvisImage',
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -49,14 +51,14 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   sjzxQueryVehicle(params){
     console.log('params:' + JSON.stringify(params) + '!')
     return request({
-      url: 'dc/cs/queryVehicle',
+      url: appConst.msTmdp + 'dc/cs/queryVehicle',
       method: 'GET',
       params,
     })
   },
   sjzxQueryDataReport(params){
     return request({
-      url: 'dc/rt/queryDataReport',
+      url: appConst.msTmdp + 'dc/rt/queryDataReport',
       method: 'GET',
       params,
     })

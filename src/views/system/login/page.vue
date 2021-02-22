@@ -263,12 +263,9 @@
       },
       toLogin () {
         this.$refs.loginForm.validate((valid) => {
-          alert('????????')
           if (valid) {
-            alert('????????  1')
             let iDebug = 1
             if (1 == iDebug) {
-              alert('????????  2')
               this.$router.replace(this.$route.query.redirect || '/')
               return
             }

@@ -1,3 +1,5 @@
+import appConst from '../../app_global.js'
+
 export default ({service, request, serviceForMock, requestForMock, mock, faker, tools}) => ({
 
   login(params){
@@ -6,7 +8,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       'loginPwd': params['password']
     }
     return request({
-      url: 'ms-facade/facade/login?p=pc&v=0.001',
+      url: appConst.msFacade + 'facade/login?p=pc&v=0.001',
       method: 'post',
       data: data
     })
