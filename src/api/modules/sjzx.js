@@ -31,6 +31,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
     formData.append('cameraId', '-1')
     formData.append("TPXX", file)
     formData.append('TPWJ', 'base64')
+    formData.append('GCXH','GCXH')
     console.log('step 2')
 
     return request({

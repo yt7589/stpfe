@@ -49,5 +49,55 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       method: 'post',
       data: data
     })
+  },
+
+  // 用户列表
+  getUsers(params){
+    return request({
+      url: appConst.msTmdp + 'sm/getUsers?p=pc&v=0.001',
+      method: 'GET',
+      params,
+    })
+  },
+
+  //删除用户
+  delUser(data){
+    return request({
+      url: appConst.msTmdp + 'sm/delUser?p=pc&v=0.001',
+      method: 'DELETE',
+      data,
+    })
+  },
+  //添加用户
+  addUser(data){
+    return request({
+      url: appConst.msTmdp + 'sm/addUser?p=pc&v=0.001',
+      method: 'POST',
+      data,
+    })
+  },
+  //用户信息修改
+  uptUserInfo(params){
+    return request({
+      url: appConst.msTmdp + 'sm/uptUserInfo?p=pc&v=0.001',
+      method: 'PUT',
+      data:params,
+    })
+  },
+  //获取角色列表
+  getRoles(params){
+    return request({
+      url: appConst.msTmdp + 'sm/getRoles?p=pc&v=0.001',
+      method: 'GET',
+      params,
+    })
+  },
+  //获取用户信息详情
+  getUserInfo(params){
+    return request({
+      url: appConst.msTmdp + 'sm/getUserInfo?p=pc&v=0.001',
+      method: 'GET',
+      params,
+    })
   }
 })

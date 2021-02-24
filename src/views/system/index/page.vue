@@ -10,7 +10,8 @@
       <div class="piece-7"></div>
     </div>
     <div class="layout-header">
-      <el-image class="logo" :src="require('./image/image-logo.png')"></el-image>
+      <!-- <el-image class="logo" :src="require('./image/image-logo.png')"></el-image> -->
+      <el-image class="logo" :src="require('./image/dyt-logo.png')" fit="contain"></el-image>
       <div class="title">AI交通大数据平台</div>
       <div class="sub-title"><span style="color:#FFFFFF">城市:</span> <span>{{city}}</span></div>
       <div class="overview" @click="showOverviewPage">数据看板</div>
