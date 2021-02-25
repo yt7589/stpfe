@@ -296,8 +296,8 @@
           this.cameraChart.option.xAxis.categories = categories
           this.cameraChart.option.series[0].data = data
           this.carChart.option.xAxis.categories = carXData
-          this.carChart.option.series[0].data = tCarYData
-          this.carChart.option.series[1].data = yCarYData
+          this.carChart.option.series[1].data = tCarYData
+          this.carChart.option.series[0].data = yCarYData
 
         }
       },

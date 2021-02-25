@@ -1,32 +1,33 @@
 <template>
   <div class="page-system-setting" v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
     <div class="title">页面设置</div>
-    <el-form class="custom-form" ref="form" :model="form" :rules="rules" label-width="0.725rem"
+    <el-form ref="form" :model="form" :rules="rules" label-width="0.825rem"
              style="padding:2%;">
-      <el-form-item label="企业信息：" prop="corpName" style="width: 30%">
-        <el-input class="custom-input custom-input-mini" v-model="form.corpName"></el-input>
+      <el-form-item label="企业信息：" prop="qyName" style="width: 30%">
+        <el-input class="custom-input custom-input-mini" v-model="form.qyName"></el-input>
       </el-form-item>
-      <el-form-item label="企业LOGO：" prop="corpIcon">
+      <el-form-item label="企业LOGO：" prop="qyImgUrl">
         <div style="color:#FFFFFF">上传图片大小88*64像素、颜色尽量白色、青色、蓝色，png格式</div>
         <el-upload
           class="custom-upload"
-          action=""
+          action="http://192.168.2.68:9003/sm/uploadImg"
           accept="image/*"
           :on-preview="handleLogoPreview"
           :show-file-list="false"
-          :http-request="handleLogoUpload">
-          <el-image v-if="form.corpIcon" :src="form.corpIcon" style="width:100%;height:100%;"></el-image>
+          :on-success="handleSuccess"
+          :on-error="handleError">
+          <el-image v-if="form.qyImgUrl" :src="form.qyImgUrl" style="width:100%;height:100%;"></el-image>
           <el-image v-else :src="require('../../image/image-upload.png')" class="avatar-uploader-icon"></el-image>
         </el-upload>
       </el-form-item>
-      <el-form-item label="系统名称：" prop="systemName" style="width: 30%">
-        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.systemName"></el-input>
+      <el-form-item label="系统名称：" prop="sysName" style="width: 30%">
+        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.sysName"></el-input>
       </el-form-item>
-      <el-form-item label="ICP备案号：" prop="icpCode" style="width: 30%">
-        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.icpCode"></el-input>
+      <el-form-item label="ICP备案号：" prop="qyIcp" style="width: 30%">
+        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.qyIcp"></el-input>
       </el-form-item>
-      <el-form-item label="所有权：" prop="ownerName" style="width: 30%">
-        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.ownerName"></el-input>
+      <el-form-item label="所有权：" prop="ownership" style="width: 30%">
+        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.ownership"></el-input>
       </el-form-item>
       <el-form style="text-align: center;width: 30%;">
         <!--<el-button class="custom-button custom-button-cancel custom-button-mini" style="width:0.8rem">&nbsp;&nbsp;取消&nbsp;&nbsp;</el-button>-->
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-  import api from '@/api'
+  import API from '@/api'
   import util from '@/libs/util'
   import {mapState, mapActions} from 'vuex'
 
@@ -45,68 +46,68 @@
     components: {},
     data(){
       return {
-        loading: true,
+        loading: false,
         form: {
-          logo: null,
+          qyImgUrl:'',
+          // 企业名称
+          qyName:'',
+          // 系统名称
+          sysName:'',
+          // icp备案号
+          qyIcp: '',
+          // 系统所有权
+          ownership: '',
         },
         rules: {
-          corpName: [
+          qyName: [
             {required: true, message: '请输入企业信息', trigger: 'blur'},
           ],
-          corpIcon: [
+          qyImgUrl: [
             {required: true, message: '请上传LOGO', trigger: 'blur'},
           ],
-          systemName: [
+          sysName: [
             {required: true, message: '请输入系统名称', trigger: 'blur'},
           ],
         }
       }
     },
     computed: {
-      ...mapState('d2admin/user', [
+      ...mapState('d2admin/system', [
         'info'
       ])
     },
     mounted(){
-      console.log('mmmmmmmmmmm')
-      // this.queryCompanyInfo()
+      // 浅拷贝
+      this.form.qyImgUrl = this.info.qyImgUrl;
+      this.form.qyName = this.info.qyName;
+      this.form.sysName = this.info.sysName;
+      this.form.qyIcp = this.info.qyIcp;
+      this.form.ownership = this.info.ownership;
     },
     methods: {
-      ...mapActions('d2admin/user', [
+      // 文件上传失败时的钩子
+      handleError(err, file, fileList) {
+        this.$message.warning('上传失败');
+      },
+      handleSuccess(res, file) {
+        this.form.qyImgUrl = res.data
+      },
+      ...mapActions('d2admin/system', [
         'set'
       ]),
-      queryCompanyInfo(){
-        console.log('----------')
-        this.loading = true
-        api.queryCompanyDetail().then(res => {
-          this.form = res.data
-        }).finally(() => {
-          this.loading = false
-        })
-      },
       handleConfirm(){
-        console.log('----------')
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            this.loading = true
-            api.modifyCompany(this.form).then(res => {
-              this.$notify({position: 'bottom-right',message: '保存成功', type: 'success'});
-
-              this.info.company = res.data
-              this.set(this.info)
-            }).finally(() => {
-              this.loading = false
-            })
+        API.uptSysInfo(this.form).then(res => {
+          if(1 === res.data.affectedRows){
+            this.$message.success('操作成功');
+            this.set(this.form)
+          }else{
+            this.$message.warning('操作失败');
           }
         })
       },
       handleLogoPreview(){
 
-      },
-      handleLogoUpload(file){
-        this.form.corpIcon = util.getObjectURL(file.file)
-        this.form.newCorpIcon = file.file
-      },
+      }
     }
   }
 </script>
@@ -115,6 +116,10 @@
   .page-system-setting {
     background: rgba(4, 95, 224, 0.3);
     border-radius: 4px;
+    .el-form-item__label{
+        font-weight: 400;
+        color: #FFFFFF;
+    }
 
     .title {
       font-size: 18px;

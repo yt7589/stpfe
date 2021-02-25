@@ -121,13 +121,13 @@
         <div class="text-2">我们客服会尽快联系您，请保持电话畅通<br>如有急需，请拨打客服热线<span style="color:#00F6FF;">133 6603 7936</span></div>
       </el-dialog>
     </div>
-    <div class="copyright">XXXX科技有限公司 Copyright 2019 | 沪IPC备XXXXXXXX号</div>
+    <div class="copyright">{{info.qyName}} Copyright 2019 | {{info.qyIcp}}</div>
   </div>
 </template>
 
 <script>
   import dayjs from 'dayjs'
-  import {mapActions} from 'vuex'
+  import {mapState,mapActions} from 'vuex'
   import api from '@/api'
   import sha1 from 'js-sha1'
 
@@ -196,6 +196,11 @@
           }
         },
       }
+    },
+    computed: {
+      ...mapState('d2admin/system', [
+        'info'
+      ])
     },
     mounted () {
 

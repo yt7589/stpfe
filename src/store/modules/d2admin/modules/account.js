@@ -69,6 +69,8 @@ export default {
      * @param {Object} context
      */
     async load ({dispatch}) {
+      // 加载系统信息
+      await dispatch('d2admin/system/load', null, {root: true})
       // 加载用户名
       await dispatch('d2admin/user/load', null, {root: true})
       // 加载主题

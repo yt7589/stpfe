@@ -43,6 +43,8 @@ Vue.use(HighchartsVue)
 // PingFang 字体
 import './assets/fonts/font.css'
 
+Vue.prototype.$uploadUrl = process.env.VUE_APP_API + 'sm/uploadImg'
+
 // 百度地图
 import BaiduMap from 'vue-baidu-map-v3'
 Vue.use(BaiduMap, {
