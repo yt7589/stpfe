@@ -62,15 +62,14 @@
             </div>
         </div>
         <el-dialog
-
                 :title="dialogTitle"
                 :visible.sync="dialogVisible"
         >
-            <el-form ref="dialogForm" :model="dialogData"  >
-                <el-form-item label="节点名称">
+            <el-form ref="dialogForm" :model="dialogData"  :rules="rules">
+                <el-form-item label="节点名称" prop="nodeName" label-width="120px">
                     <el-input v-model="dialogData.nodeName" />
                 </el-form-item>
-                <el-form-item label="节点位置">
+                <el-form-item label="节点位置" prop="nodeAddr" label-width="120px">
                     <el-select v-model="dialogData.nodeAddr" placeholder="请选择">
                         <el-option
                                 v-for="item in nodeAddrOptions"
@@ -80,7 +79,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="经纬度">
+                <el-form-item label="经纬度" prop="lng" label-width="120px">
                     <el-input  :disabled="true" value="去选择" @click.native="selectMap"/>
                 </el-form-item>
             </el-form>
@@ -164,8 +163,21 @@
         dialogVisible:false,
         mapVisible:false,
         dialogData:{
-          areaName:"",
-          parentName:"",
+          nodeName:"",
+          nodeAddr:"",
+          lng: '',
+          lat: '',
+        },
+        rules:{
+          nodeName: [
+              {required: true, message: '请输入节点名称', trigger: 'blur'},
+          ],
+          nodeAddr: [
+              {required: true, message: '请选择节点位置', trigger: 'blur'},
+          ],
+          lng: [
+              {required: true, message: '请选择经纬度', trigger: 'blur'},
+          ]
         },
         nodeAddrOptions:[
           {
@@ -240,33 +252,38 @@
         this.dialogVisible = true
       },
       handleEdit(row){
-        this.dialogData = row
+        this.dialogData = JSON.parse(JSON.stringify(row))
         this.map.center.lat = row.lat
         this.map.center.lng = row.lng
         this.locData.longitude= row.lng
         this.locData.latitude= row.lat
         this.dialogTitle = '修改';
+        this.saveType = 'update'
         this.dialogVisible = true
       },
 
       save(){
         if(this.saveType ==='add' ){
-          //新增
-          API.AddNode(this.dialogData).then((res)=>{
-            this.getList()
-            this.$message.success('操作成功');
-            this.dialogVisible = false
-          })
-
+          this.$refs.dialogForm.validate((valid) => {
+            if (valid) {
+              //新增
+              API.AddNode(this.dialogData).then((res)=>{
+                this.getList()
+                this.$message.success('操作成功');
+                this.dialogVisible = false
+              })
+          }})
         }else{
-          //修改
-          API.UpdateNode(this.dialogData).then((res)=>{
-            this.getList()
-            this.$message.success('操作成功');
-            this.dialogVisible = false
-          })
+          this.$refs.dialogForm.validate((valid) => {
+            if (valid) {
+              //修改
+              API.UpdateNode(this.dialogData).then((res)=>{
+                this.getList()
+                this.$message.success('操作成功');
+                this.dialogVisible = false
+              })
+          }})
         }
-
       },
       selectMap(){
         this.mapVisible = true
@@ -437,7 +454,7 @@
             height: 56px;
         }
         .el-dialog{
-            width:366px;
+            width:400px;
 
             background: #001537;
             border-radius: 4px;

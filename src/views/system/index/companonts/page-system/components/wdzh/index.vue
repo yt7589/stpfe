@@ -31,26 +31,20 @@
                     <div class="title">修改密码</div>
                 </div>
                 <div class="up-form">
-                    <el-form class="search-form">
-                        <el-form-item label="原始密码" label-width="90px">
-                            <el-input  v-model="frm.pwd">
+                    <el-form class="search-form"  ref="pwdForm" :model="frm" :rules="rules">
+                        <!-- <el-form-item label="原始密码" label-width="90px">
+                            <el-input  v-model="frm.pwd" show-password>
                             </el-input>
+                        </el-form-item> -->
+                        <el-form-item label="新密码" prop="pwd"  label-width="130px">
+                            <el-input  v-model="frm.pwd" show-password></el-input>
                         </el-form-item>
-                        <el-form-item label="新密码"  label-width="90px">
-                            <el-input  v-model="frm.pwd">
-                            </el-input>
+                        <el-form-item label="再输一次" prop="pwd2" label-width="130px">
+                            <el-input  v-model="frm.pwd2" show-password></el-input>
                         </el-form-item>
-                        <el-form-item label="再输一次"  label-width="90px">
-                            <el-input  v-model="frm.pwd">
-                            </el-input>
-                        </el-form-item>
-
                         <el-form-item>
-                            <el-button class="button-search">
-                                确定
-                            </el-button>
+                            <el-button class="button-search" @click="updatePwd">确定</el-button>
                         </el-form-item>
-
                     </el-form>
                 </div>
             </div>
@@ -60,6 +54,7 @@
 
 <script>
   import HeaderCrumb from '@components/custom/header-crumb'
+  import API from '@/api'
   export default {
     name: 'system-wdzh',
     props:{
@@ -78,13 +73,46 @@
       HeaderCrumb,
     },
     data(){
+        const validateNewPwd2 = (rule, value, callback) => {
+            if (value == undefined || value === '') {
+                callback(new Error('请再次输入密码'));
+            } else if (value !== this.frm.newPwd) {
+                callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        }
       return {
         frm:{
           pwd:'',
-        }
+          pwd2:''
+        },
+        rules: {
+            pwd: [
+                {required: true, message: '请输入新密码', trigger: 'blur'}
+            ],
+            pwd2: [
+                {required: true,validator: validateNewPwd2, trigger: 'blur'}
+            ]
+        },
       }
 
     },
+    methods:{
+        updatePwd(){
+            this.$refs.pwdForm.validate((valid) => {
+            if (valid) {
+                this.frm.pwd = this.frm.pwd2;
+                API.uptUserInfo(this.frm).then(res => {
+                    if(1 === res.data.affectedRows){
+                        this.$message.success("操作成功");
+                        this.frm.pwd = null;
+                        this.frm.pwd2 = null;
+                    }
+                })
+            }})
+        }
+    }
   }
 </script>
 
@@ -174,7 +202,7 @@
             left: 0px;
             right: 0px;
             .el-form-item {
-                margin-bottom: 8px;
+                margin-bottom: 18px;
             }
             .el-form-item__label{
                 font-size: 14px;
@@ -194,8 +222,8 @@
             }
 
             .button-search {
-                width: 290px;
-                margin-left: 70px;
+                width: 260px;
+                margin-left: 100px;
 
                 background: #045FE0;
                 border-radius: 4px;

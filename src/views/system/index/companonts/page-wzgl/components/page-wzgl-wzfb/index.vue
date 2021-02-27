@@ -70,7 +70,8 @@
           filter: {
             username: '',
             phone: '',
-            company: ''
+            company: '',
+            time: ''
           },
           option: {
             areaOptions: [{
@@ -121,7 +122,11 @@
         this.map.instance.setMapStyleV2(mapStyle)
       },
       fetchData(){
-        API.queryIllegalDistribution().then(res => {
+        API.queryIllegalDistribution({
+          startTime: this.table.filter.time[0],
+          endTime: this.table.filter.time[1],
+          category: this.table.filter.type
+        }).then(res => {
           this.illData = res.data
         })
         API.querySiteIllegal().then(res => {

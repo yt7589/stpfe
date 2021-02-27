@@ -69,6 +69,8 @@ export default {
      * @param {Object} context
      */
     async load ({dispatch}) {
+      // 加载系统信息
+      await dispatch('d2admin/system/load', null, {root: true})
       // 加载用户名
       await dispatch('d2admin/user/load', null, {root: true})
       // 加载主题
@@ -86,8 +88,9 @@ export default {
 
       // 判断登录状态
       let token = util.cookies.get("token")
+      console.log('路由跳转-------暂不跳转到登录页---------------')
       if (!token) {
-        router.push({name: 'login'})
+        // router.push({name: 'login'})
       }
     }
   }

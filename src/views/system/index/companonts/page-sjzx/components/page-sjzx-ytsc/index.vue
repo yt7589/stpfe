@@ -118,6 +118,8 @@ import { error } from 'highcharts'
         console.log('handleImageSelect 1 url:' + this.table.filter.image.url + '!')
         console.log('handleImageSelect 1 file:' + JSON.stringify(this.table.filter.image.file) + '!')
 
+
+        const that = this;
         API.recognizeYtscImage(file.file).then(res => {
           let jo = JSON.parse(res.data['jsonResult'])
           let vehs = jo['VEH']
@@ -128,11 +130,11 @@ import { error } from 'highcharts'
             alert('请选择只有一辆查询车辆的图片')
             return 
           }
-          this.canSearch = true
-          this.cltzxl = vehs[0]['CLTZXL']
-          this.psfx = vehs[0]['WZTZ']['PSFX']
-          this.cllxfl = vehs[0]['CXTZ']['CLLXFL']
-          this.cllxzfl = vehs[0]['CXTZ']['CLLXZFL']
+          that.canSearch = true
+          that.cltzxl = vehs[0]['CLTZXL']
+          that.psfx = vehs[0]['WZTZ']['PSFX']
+          that.cllxfl = vehs[0]['CXTZ']['CLLXFL']
+          that.cllxzfl = vehs[0]['CXTZ']['CLLXZFL']
         })
       },
       getObjectURL(file) {

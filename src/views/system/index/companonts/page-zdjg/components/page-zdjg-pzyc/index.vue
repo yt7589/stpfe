@@ -180,15 +180,17 @@
       },
       getData(){
         API.QueryAbnormalLicensePlate().then((res)=>{
-
           this.wpCount =res.data.wpCount
           this.tpCount =res.data.tpCount
           this.jpCount =res.data.jpCount
           this.hpzdCount =res.data.hpzdCount
 
-          this.map.center.lat = res.data.site[0].lat
-          this.map.center.lng = res.data.site[0].lng
-          this.markerPoints = res.data.site
+          if(res.data.site.length>0){
+            this.map.center.lat = res.data.site[0].lat
+            this.map.center.lng = res.data.site[0].lng
+            this.markerPoints = res.data.site
+          }
+          
           res.data.time.forEach((item)=>{
             this.fsdtjYData.push(item.name)
             this.fsdtjSeriesData.push(item.count)
@@ -197,13 +199,12 @@
             this.fqytjYData.push(item.name)
             this.fqytjSeriesData.push(item.count)
           })
-          this.dtData = res.data.lalp.slice(0,3)
-          this.src = res.data.lalp[0].imageUrl
-
+          if(res.data.lalp.length>0){
+            this.dtData = res.data.lalp.slice(0,3)
+            this.src = res.data.lalp[0].imageUrl
+          }
         })
       }
-
-
     }
   }
 </script>

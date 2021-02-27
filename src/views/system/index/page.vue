@@ -10,9 +10,9 @@
       <div class="piece-7"></div>
     </div>
     <div class="layout-header">
-      <el-image class="logo" :src="require('./image/image-logo.png')"></el-image>
-      <div class="title">AI交通大数据平台</div>
-      <div class="sub-title"><span style="color:#FFFFFF">城市:</span> <span>{{city}}</span></div>
+      <el-image class="logo" :src="info.qyImgUrl" fit="contain"></el-image>
+      <div class="title">{{info.sysName}}</div>
+      <div class="sub-title"><span style="color:#FFFFFF">城市:</span> <span>{{info.city}}</span></div>
       <div class="overview" @click="showOverviewPage">数据看板</div>
       <div class="header-box">
         <span class="header-title" :class="page=='index'?'is-active':''" @click="page='index'">首页</span>
@@ -60,7 +60,7 @@
   import util from '@/libs/util'
 
   import dayjs from 'dayjs'
-  import {mapActions} from 'vuex'
+  import {mapState,mapActions} from 'vuex'
 
   export default {
     components: {
@@ -70,14 +70,19 @@
       return {
         page: 'index',
         isAdmin: false,
-        city: "北京",
-        username: "用户名",
+        username: "admin9",
         wzDetail:{}
       }
     },
+    computed: {
+      ...mapState('d2admin/system', [
+        'info'
+      ])
+    },
     created(e){
       util.bus.$on('gowzDetail',this.gowzDetail)
-
+    },
+    mounted(){
     },
     methods: {
       gowzDetail(wzDetail){

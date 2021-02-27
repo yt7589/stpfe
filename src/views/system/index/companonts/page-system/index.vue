@@ -7,17 +7,20 @@
         </div>
         <page-zhlb  :first-item="firstItem" :second-item="curPage.label" v-if="curPage.label=='账号列表'" class="custom-main-content"></page-zhlb>
         <page-wdzh  :first-item="firstItem" :second-item="curPage.label" v-if="curPage.label=='我的账号'" class="custom-main-content"></page-wdzh>
+        <page-setting  :first-item="firstItem" :second-item="curPage.label" v-if="curPage.label=='页面设置'" class="custom-main-content"></page-setting>
     </div>
 </template>
 
 <script>
     import PageZhlb from './components/zhlb'
     import PageWdzh from './components/wdzh'
+    import PageSetting from './components/setting'
   export default {
     name: 'page-system',
     components:{
       PageZhlb,
-      PageWdzh
+      PageWdzh,
+      PageSetting
     },
     data(){
       return {
@@ -26,6 +29,7 @@
         pageOptions: [
           {label: '账号列表'},
           {label: '我的账号'},
+          {label: '页面设置'}
         ],
       }
     },

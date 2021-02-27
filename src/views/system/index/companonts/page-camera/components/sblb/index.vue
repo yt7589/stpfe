@@ -5,9 +5,11 @@
             <div class="column-1">
                 <el-form class="search-form">
                     <el-form-item>
-                        <el-input placeholder="设备类型" v-model="frm.type">
-
-                        </el-input>
+                        <el-select
+                         style="width:100%" placeholder="设备类型"
+                         v-model="frm.type">
+                          <el-option v-for="item in deviceTypeOptions" :key="item.dtId" :label="item.dtName" :value="item.dtId"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-input placeholder="设备编号" v-model="frm.code">
@@ -40,7 +42,7 @@
                             <el-table-column align="center" prop="deviceDirection" label="朝向" minWidth="60"></el-table-column>
                             <el-table-column align="center" prop="vehicleDirection" label="车辆方向" minWidth="60"></el-table-column>
                             <el-table-column align="center" prop="videoUrl" label="视频流地址" minWidth="100"></el-table-column>
-                            <el-table-column align="center" prop="" label="操作" minWidth="40">
+                            <el-table-column align="center" label="操作" minWidth="40">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini" @click="handleEdit(scope.row)">修改</el-button>
                                     <el-button type="text" size="mini" @click="delConfirm(scope.row)">删除</el-button>
@@ -55,9 +57,9 @@
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
                                 layout="total,prev, pager, next,sizes,jumper"
-                                :page.sync="frm.startIndex + 1"
+                                :page.sync="frm.page"
                                 :page-sizes="[20, 50, 100, 200]"
-                                :page-size="frm.amount"
+                                :page-size="frm.pageSize"
                                 :total="total">
                         </el-pagination>
                     </el-footer>
@@ -67,13 +69,14 @@
         <el-dialog
                 :title="dialogTitle"
                 :visible.sync="dialogVisible"
+                :before-close="handleClose"
         >
-            <el-form ref="dialogForm" :model="dialogData" >
-                <el-form-item label="设备编号">
-                    <el-input v-model="dialogData.deviceNo"name="area" />
+            <el-form ref="dialogForm" :model="dialogData" :rules="rules">
+                <el-form-item label="设备编号" prop="deviceNo" label-width="120px">
+                    <el-input v-model="dialogData.deviceNo"/>
                 </el-form-item>
-                <el-form-item label="设备类型">
-                    <el-select v-model="dialogData.deviceType" placeholder="请选择">
+                <el-form-item label="设备类型" prop="cameraTypeId" label-width="120px">
+                    <el-select v-model="dialogData.cameraTypeId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceTypeOptions"
                                 :key="item.dtId"
@@ -82,8 +85,8 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备节点">
-                    <el-select v-model="dialogData.deviceNode" placeholder="请选择">
+                <el-form-item label="设备节点" prop="siteId" label-width="120px">
+                    <el-select v-model="dialogData.siteId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceNodeOptions"
                                 :key="item.deviceNodeId"
@@ -92,8 +95,8 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备朝向">
-                    <el-select v-model="dialogData.deviceDirection" placeholder="请选择">
+                <el-form-item label="设备朝向" prop="directionId" label-width="120px">
+                    <el-select v-model="dialogData.directionId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceDirectionOptions"
                                 :key="item.value"
@@ -102,8 +105,8 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="车辆方向">
-                    <el-select v-model="dialogData.vehicleDirection" placeholder="请选择">
+                <el-form-item label="车辆方向" prop="scTypeId" label-width="120px">
+                    <el-select v-model="dialogData.scTypeId" placeholder="请选择">
                         <el-option
                                 v-for="item in vehicleDirectionOptions"
                                 :key="item.value"
@@ -112,12 +115,12 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="数据地址">
-                    <el-input v-model="dialogData.dtUrl"  />
+                <el-form-item label="数据地址" prop="videoUrl" label-width="120px">
+                    <el-input v-model="dialogData.videoUrl"  />
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
@@ -125,7 +128,7 @@
             class="confirm"
             title="提示"
             :visible.sync="dialogVisibleConfirm"
-            width="256px"
+            width="300px"
             height = "200px"
         >
             <div>确定要删除吗？</div>
@@ -163,19 +166,39 @@
         frm:{
           code: '',
           type: '',
-          amount:20,
-          startIndex:0,
+          page: 1,
+          pageSize: 20
         },
         tableData:[],
         total:0,
         dialogVisible:false,
         dialogData:{
+          deviceId: '',
           deviceNo:"",
           deviceType:"",
-          deviceNode:"",
+          siteId: '',
           deviceDirection:"",
-          vehicleDirection:"",
-          dtUrl:"",
+          directionId: '',
+          scTypeId:"",
+          videoUrl:"",
+          cameraTypeId: ''
+        },
+        rules:{
+          deviceNo: [
+              {required: true, message: '请输入设备编号', trigger: 'blur'},
+          ],
+          cameraTypeId: [
+              {required: true, message: '请选择设备类型', trigger: 'blur'},
+          ],
+          siteId: [
+              {required: true, message: '请选择设备节点', trigger: 'blur'},
+          ],
+          directionId: [
+              {required: true, message: '请选择设备朝向', trigger: 'blur'},
+          ],
+          scTypeId: [
+              {required: true, message: '请选择车辆方向', trigger: 'blur'},
+          ]
         },
         saveType:'',
         dialogVisibleConfirm:false,
@@ -186,45 +209,45 @@
         deviceNodeOptions:[],
         vehicleDirectionOptions:[
           {
-            value: '车头',
+            value: 1,
             label: '车头'
           },
           {
-            value: '车尾',
+            value: 2,
             label: '车尾'
           },
         ],
         deviceDirectionOptions: [
           {
-              value: '东',
+              value: 1,
               label: '东'
           },
           {
-            value: '西',
+            value: 2,
             label: '西'
           },
           {
-            value: '南',
+            value: 3,
             label: '南'
           },
           {
-            value: '北',
+            value: 4,
             label: '北'
           },
           {
-            value: '东南',
+            value: 5,
             label: '东南'
           },
           {
-            value: '西南',
+            value: 6,
             label: '西南'
           },
           {
-            value: '东北',
+            value: 7,
             label: '东北'
           },
           {
-            value: '西北',
+            value: 8,
             label: '西北'
           },
         ],
@@ -237,13 +260,17 @@
       this.getDeviceNode()
     },
     methods: {
+      handleClose(){
+        this.dialogVisible = false;
+        this.$refs.dialogForm.resetFields();
+      },
       handleSizeChange(size){
-        this.frm.startIndex = 0
-        this.frm.amount = size
+        this.frm.pageSize = size
+        this.frm.page = 1
         this.getList()
       },
       handleCurrentChange(page){
-        this.frm.startIndex = page - 1
+        this.frm.page = page
         this.getList()
       },
       add(){
@@ -253,24 +280,24 @@
       },
       initDialog(){
         this.dialogTitle = '添加';
-        this.saveType = ''
         this.dialogData = {
           deviceNo:"",
           deviceType:"",
           deviceNode:"",
           deviceDirection:"",
           vehicleDirection:"",
-          dtUrl:"",
+          videoUrl:"",
 
         }
       },
       handleEdit(row){
-        this.dialogData = row
+        this.dialogData = JSON.parse(JSON.stringify(row))
         this.dialogTitle = '修改';
+        this.saveType = 'update'
         this.dialogVisible = true
       },
       delConfirm(val){
-        this.delId = val.deviceNo
+        this.delId = val.deviceId
         this.dialogVisibleConfirm = true
       },
       del(){
@@ -305,19 +332,25 @@
       },
       save(){
         if(this.saveType ==='add' ){
-          //新增
-          API.AddDevice(this.dialogData).then((res)=>{
-            this.getList()
-            this.$message.success('操作成功');
-            this.dialogVisible = false
-          })
+          this.$refs.dialogForm.validate((valid) => {
+            if (valid) {
+              //新增
+              API.AddDevice(this.dialogData).then((res)=>{
+                this.getList()
+                this.$message.success('操作成功');
+                this.dialogVisible = false
+              })
+          }})
         }else{
-          //修改
-          API.updateDeviceInfo(this.dialogData).then((res)=>{
-            this.getList()
-            this.$message.success('操作成功');
-            this.dialogVisible = false
-          })
+          this.$refs.dialogForm.validate((valid) => {
+            if (valid) {
+              //修改
+              API.updateDeviceInfo(this.dialogData).then((res)=>{
+                this.getList()
+                this.$message.success('操作成功');
+                this.dialogVisible = false
+              })
+          }})
         }
 
       },
@@ -446,7 +479,7 @@
             height: 56px;
         }
         .el-dialog{
-            width:366px;
+            width:400px;
 
             background: #001537;
             border-radius: 4px;

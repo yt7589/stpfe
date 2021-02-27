@@ -90,31 +90,39 @@
         <div class="card-container" style="display: flex;justify-content: space-between;">
           <div class="card card-blue">
             <div class="card-value">
-              <el-image :src="require('../../image/image-recognize.png')"></el-image>
               <span>{{loadIlsTotal['total_recognition']}}</span>
             </div>
-            <div class="card-title">累计识别量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-recognize.png')"></el-image>
+              累计识别量
+            </div>
           </div>
           <div class="card card-green">
             <div class="card-value">
-              <el-image :src="require('../../image/image-violation.png')"></el-image>
               <span>{{loadIlsTotal['total_violation']}}</span>
             </div>
-            <div class="card-title">累计违章量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-violation.png')"></el-image>
+              累计违章量
+            </div>
           </div>
           <div class="card card-yellow">
             <div class="card-value">
-              <el-image :src="require('../../image/image-local-car.png')"></el-image>
               <span>{{loadIlsTotal['total_violation_city']}}</span>
             </div>
-            <div class="card-title">累计本市违章量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-local-car.png')"></el-image>
+              累计本市违章量
+            </div>
           </div>
           <div class="card card-red">
             <div class="card-value">
-              <el-image :src="require('../../image/image-outland-car.png')"></el-image>
               <span>{{loadIlsTotal['total_violation_town']}}</span>
             </div>
-            <div class="card-title">累计外埠违章量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-outland-car.png')"></el-image>
+              累计外埠违章量
+            </div>
           </div>
         </div>
         <chart-violation class="chart-violation"></chart-violation>
@@ -139,19 +147,19 @@
         loading: false,
         vehicleLocTypes: [
           {
-            value: 0,
+            value: '',
             label: '全部'
           },
           {
-            value: 1,
+            value: 0,
             label: '本地'
           },
           {
-            value: 2,
+            value: 1,
             label: '外埠'
           }
         ],
-        selVehicleLocType: 0,
+        selVehicleLocType: '',
         vehicleTypes: [],
         selVehicleType: 0,
         ilsTypes: [],
@@ -205,7 +213,6 @@
               label: recs[i].typeName
             })
           }
-          console.log('数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultVehicleType = 0
       },
@@ -226,7 +233,6 @@
               label: recs[i].typeName
             })
           }
-          console.log('违章数据：' + JSON.stringify(recs) + '!')
         })
         this.defaultIlsTypes = 0
       },
@@ -248,14 +254,14 @@
           params.startTime = formatDate(this.queryTimes[0])
           params.endTime = formatDate(this.queryTimes[1])
         }
-        if (this.selVehicleLocType != 0) {
-          params.selVehicleLocType = this.selVehicleLocType
+        if (this.selVehicleLocType !== '') {
+            params.category = this.selVehicleLocType
         }
         if (this.selVehicleType != 0) {
-          params.selVehicleType = this.selVehicleType
+          params.vType = this.selVehicleType
         }
         if (this.selIlsType != 0) {
-          params.selIlsType = this.selIlsType
+          params.ilType = this.selIlsType
         }
         if (this.hphm != null && this.hphm != '') {
           params.hphm = this.hphm
@@ -263,7 +269,6 @@
         if (this.siteName != null && this.siteName != '') {
           params.vAddr = this.siteName
         }
-        console.log(JSON.stringify(params))
         API.getDcAdVehicles(params).then(res => {
           let data = res.data
           this.total = data.total
@@ -444,23 +449,25 @@
           .card-title {
             background: #FFFFFF;
             padding: 16px 0px 16px 0px;
-
             text-align: center;
             font-size: 18px;
+            .el-image {
+              width: 24px;
+              height: 24px;
+              // margin: 20px;
+              padding-right: 10px;
+              vertical-align: middle;
+            }
           }
 
           .card-value {
             height: 84px;
             color: white;
             font-size: 28px;
-            .el-image {
-              width: 48px;
-              height: 48px;
-
-              margin: 20px;
-              padding-right: 10px;
-              vertical-align: middle;
-            }
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
 
         }

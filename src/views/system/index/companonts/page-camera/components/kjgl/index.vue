@@ -145,8 +145,8 @@
       handleAdd(row){
         this.dialogData = {
           areaName:'',
-          parentCode:row.parentCode,
-          parentName:row.parentName,
+          parentCode:row.areaId,
+          parentName:row.areaName,
         }
         this.dialogTitle = '添加空间';
         this.dialogVisible = true
@@ -180,7 +180,11 @@
           })
         }else{
           //新增
-          API.AddArea(this.dialogData).then((res)=>{
+          let params = {
+            parentId: this.dialogData.parentCode,
+            areaName: this.dialogData.areaName
+          }
+          API.AddArea(params).then((res)=>{
             this.getList()
             this.$message.success('操作成功');
             this.dialogVisible = false

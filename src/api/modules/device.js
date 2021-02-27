@@ -73,7 +73,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   //添加下一级空间
   AddArea(data){
     return request({
-      url: appConst.msTmdp + 'dm/sm/addArea?p=pc&v=0.001',
+      url: appConst.msTmdp + 'dm/sm/addArea2Space?p=pc&v=0.001',
       method: 'POST',
       data,
     })

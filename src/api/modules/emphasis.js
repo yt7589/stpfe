@@ -9,7 +9,13 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       method: 'GET',
     })
   },
-
+  queryAreas(params){
+    return request({
+      url: appConst.msTmdp + 'ks/as/queryAreas?p=pc&v=0.001',
+      method: 'GET',
+      params,
+    })
+  },
   //区域监管: 地区列表
   GetKsAsQueryKeyAreas(params){
     return request({
