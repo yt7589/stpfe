@@ -25,7 +25,7 @@
                                     <el-input v-model="form.hphm"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button class="btn"  @click="getData">回收</el-button>
+                                    <el-button class="btn"  @click="getData">回放</el-button>
                                 </el-form-item>
                             </el-form>
                         </div>

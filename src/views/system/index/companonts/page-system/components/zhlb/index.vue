@@ -23,7 +23,7 @@
                         </el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="button-export" @click="addForm.addVisible = true">
+                        <el-button class="button-export" @click="handleAddForm">
                             添加
                             <el-image :src="require('../../image/image-add.png')"></el-image>
                         </el-button>
@@ -133,6 +133,7 @@
 <script>
   import HeaderCrumb from '@components/custom/header-crumb'
   import API from '@/api'
+  import sha1 from 'js-sha1'
   export default {
     name: 'system-zhlb',
     props:{
@@ -156,6 +157,15 @@
                 callback(new Error('请再次输入密码'));
             } else if (value !== this.pwdForm.form.newPwd) {
                 callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        }
+        const validLoginName = (rule, value, callback) => {
+            if (value == undefined || value === '') {
+                callback(new Error('请输入用户名'));
+            } else if (value.length > 3) {
+                callback(new Error('最多可输入三个字符'));
             } else {
                 callback();
             }
@@ -186,11 +196,12 @@
                     userName:"",
                     phone:"",
                     pwd:"",
-                    roleId:""
+                    roleId:"",
+                    userId: ''
                 },
                 rules: {
                     loginName: [
-                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        {required: true,validator: validLoginName, trigger: 'blur'},
                     ],
                     userName: [
                         {required: true, message: '请输入姓名', trigger: 'blur'},
@@ -199,7 +210,7 @@
                         {required: true, message: '请输入手机号', trigger: 'blur'},
                     ],
                     pwd: [
-                        {required: true, message: '请输入您的手机号', trigger: 'blur'},
+                        {required: true, message: '请输入密码', trigger: 'blur'},
                     ],
                     roleId: [
                         {required: true, message: '请选择角色', trigger: 'blur'},
@@ -237,10 +248,18 @@
         this.getRoles();
     },
     methods: {
+        handleAddForm(){
+            this.addForm.addVisible = true;
+            this.addForm.form.loginName='';
+            this.addForm.form.userName='';
+            this.addForm.form.phone='';
+            this.addForm.form.roleId='';
+            this.addForm.form.userId='';
+        },
         handleClose(){
             this.addForm.addVisible = false;
             this.addForm.updateVisible = false;
-            this.$refs.addForm.resetFields();  
+            this.$refs.addForm.resetFields();
         },
         fetchData(){
             API.getUsers(this.param).then(res => {
@@ -268,9 +287,10 @@
         addUser(){
             this.$refs.addForm.validate((valid) => {
             if (valid) {
+                this.addForm.form.pwd = sha1(this.addForm.form.pwd);
                 API.addUser(this.addForm.form).then(res => {
                     if(1 === res.data.affectedRows){
-                        this.addForm.form = {};
+                        this.initFormData();
                         this.addForm.addVisible = false
                         this.$message.success("操作成功");
                         this.fetchData();
@@ -280,14 +300,22 @@
         },
         handleUpdateInfo(data){
             this.addForm.updateVisible=true;
-            this.addForm.form=data;
+            this.addForm.form = JSON.parse(JSON.stringify(data));
+        },
+        initFormData(){
+            this.addForm.form.loginName='';
+            this.addForm.form.userName='';
+            this.addForm.form.phone='';
+            this.addForm.form.roleId='';
+            this.addForm.form.userId='';
+            // this.addForm.form.pwd = '';
         },
         uptUserInfo(){
             this.$refs.addForm.validate((valid) => {
             if (valid) {
                 API.uptUserInfo(this.addForm.form).then(res => {
                     if(1 === res.data.affectedRows){
-                        this.addForm.form = {};
+                        this.initFormData();
                         this.addForm.updateVisible = false
                         this.$message.success("操作成功");
                         this.fetchData();
@@ -316,7 +344,9 @@
         updatePwd(){
             this.$refs.pwdForm.validate((valid) => {
             if (valid) {
-                this.pwdForm.form.pwd = this.pwdForm.form.newPwd;
+                this.pwdForm.form.pwd = sha1(this.pwdForm.form.newPwd);
+                this.pwdForm.form.newPwd = null;
+                this.pwdForm.form.newPwd2 = null;
                 API.uptUserInfo(this.pwdForm.form).then(res => {
                     if(1 === res.data.affectedRows){
                         this.pwdForm.updatePwdVisible = false

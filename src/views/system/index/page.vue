@@ -12,7 +12,7 @@
     <div class="layout-header">
       <el-image class="logo" :src="info.qyImgUrl" fit="contain"></el-image>
       <div class="title">{{info.sysName}}</div>
-      <div class="sub-title"><span style="color:#FFFFFF">城市:</span> <span>{{city}}</span></div>
+      <div class="sub-title"><span style="color:#FFFFFF">城市:</span> <span>{{info.city}}</span></div>
       <div class="overview" @click="showOverviewPage">数据看板</div>
       <div class="header-box">
         <span class="header-title" :class="page=='index'?'is-active':''" @click="page='index'">首页</span>
@@ -70,8 +70,7 @@
       return {
         page: 'index',
         isAdmin: false,
-        city: "北京",
-        username: "用户名",
+        username: "admin9",
         wzDetail:{}
       }
     },

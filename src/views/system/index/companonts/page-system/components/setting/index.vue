@@ -6,6 +6,9 @@
       <el-form-item label="企业信息：" prop="qyName" style="width: 30%">
         <el-input class="custom-input custom-input-mini" v-model="form.qyName"></el-input>
       </el-form-item>
+      <el-form-item label="城市：" prop="city" style="width: 30%">
+        <el-input class="custom-input custom-input-mini" :maxlength="50" v-model="form.city"></el-input>
+      </el-form-item>
       <el-form-item label="企业LOGO：" prop="qyImgUrl">
         <div style="color:#FFFFFF">上传图片大小88*64像素、颜色尽量白色、青色、蓝色，png格式</div>
         <el-upload
@@ -57,6 +60,7 @@
           qyIcp: '',
           // 系统所有权
           ownership: '',
+          city: ''
         },
         rules: {
           qyName: [
@@ -68,6 +72,9 @@
           sysName: [
             {required: true, message: '请输入系统名称', trigger: 'blur'},
           ],
+          city: [
+            {required: true, message: '请输入城市名称', trigger: 'blur'},
+          ],
         }
       }
     },
@@ -77,12 +84,8 @@
       ])
     },
     mounted(){
-      // 浅拷贝
-      this.form.qyImgUrl = this.info.qyImgUrl;
-      this.form.qyName = this.info.qyName;
-      this.form.sysName = this.info.sysName;
-      this.form.qyIcp = this.info.qyIcp;
-      this.form.ownership = this.info.ownership;
+      // 深拷贝
+      this.form = JSON.parse(JSON.stringify(this.info))
     },
     methods: {
       // 文件上传失败时的钩子

@@ -71,11 +71,11 @@
                 :visible.sync="dialogVisible"
                 :before-close="handleClose"
         >
-            <el-form ref="dialogForm" :model="dialogData" >
-                <el-form-item label="设备编号" prop="deviceNo">
+            <el-form ref="dialogForm" :model="dialogData" :rules="rules">
+                <el-form-item label="设备编号" prop="deviceNo" label-width="120px">
                     <el-input v-model="dialogData.deviceNo"/>
                 </el-form-item>
-                <el-form-item label="设备类型" prop="cameraTypeId">
+                <el-form-item label="设备类型" prop="cameraTypeId" label-width="120px">
                     <el-select v-model="dialogData.cameraTypeId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceTypeOptions"
@@ -85,7 +85,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备节点" prop="siteId">
+                <el-form-item label="设备节点" prop="siteId" label-width="120px">
                     <el-select v-model="dialogData.siteId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceNodeOptions"
@@ -95,7 +95,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备朝向" prop="directionId">
+                <el-form-item label="设备朝向" prop="directionId" label-width="120px">
                     <el-select v-model="dialogData.directionId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceDirectionOptions"
@@ -105,7 +105,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="车辆方向" prop="scTypeId">
+                <el-form-item label="车辆方向" prop="scTypeId" label-width="120px">
                     <el-select v-model="dialogData.scTypeId" placeholder="请选择">
                         <el-option
                                 v-for="item in vehicleDirectionOptions"
@@ -115,7 +115,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="数据地址" prop="videoUrl">
+                <el-form-item label="数据地址" prop="videoUrl" label-width="120px">
                     <el-input v-model="dialogData.videoUrl"  />
                 </el-form-item>
             </el-form>
@@ -181,6 +181,24 @@
           directionId: '',
           scTypeId:"",
           videoUrl:"",
+          cameraTypeId: ''
+        },
+        rules:{
+          deviceNo: [
+              {required: true, message: '请输入设备编号', trigger: 'blur'},
+          ],
+          cameraTypeId: [
+              {required: true, message: '请选择设备类型', trigger: 'blur'},
+          ],
+          siteId: [
+              {required: true, message: '请选择设备节点', trigger: 'blur'},
+          ],
+          directionId: [
+              {required: true, message: '请选择设备朝向', trigger: 'blur'},
+          ],
+          scTypeId: [
+              {required: true, message: '请选择车辆方向', trigger: 'blur'},
+          ]
         },
         saveType:'',
         dialogVisibleConfirm:false,
@@ -273,7 +291,7 @@
         }
       },
       handleEdit(row){
-        this.dialogData = row
+        this.dialogData = JSON.parse(JSON.stringify(row))
         this.dialogTitle = '修改';
         this.saveType = 'update'
         this.dialogVisible = true
@@ -314,19 +332,25 @@
       },
       save(){
         if(this.saveType ==='add' ){
-          //新增
-          API.AddDevice(this.dialogData).then((res)=>{
-            this.getList()
-            this.$message.success('操作成功');
-            this.dialogVisible = false
-          })
+          this.$refs.dialogForm.validate((valid) => {
+            if (valid) {
+              //新增
+              API.AddDevice(this.dialogData).then((res)=>{
+                this.getList()
+                this.$message.success('操作成功');
+                this.dialogVisible = false
+              })
+          }})
         }else{
-          //修改
-          API.updateDeviceInfo(this.dialogData).then((res)=>{
-            this.getList()
-            this.$message.success('操作成功');
-            this.dialogVisible = false
-          })
+          this.$refs.dialogForm.validate((valid) => {
+            if (valid) {
+              //修改
+              API.updateDeviceInfo(this.dialogData).then((res)=>{
+                this.getList()
+                this.$message.success('操作成功');
+                this.dialogVisible = false
+              })
+          }})
         }
 
       },
@@ -455,7 +479,7 @@
             height: 56px;
         }
         .el-dialog{
-            width:366px;
+            width:400px;
 
             background: #001537;
             border-radius: 4px;

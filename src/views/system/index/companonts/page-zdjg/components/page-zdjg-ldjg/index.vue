@@ -92,7 +92,7 @@
                 title="添加路段"
                 :visible.sync="dialogVisible"
                 class="qygj-add-area"
-        >
+                :before-close="handleClose">
             <el-form ref="dialogForm" :inline="true" :model="dialogData" label-width="70">
                 <el-form-item label="路段名称">
                     <el-select
@@ -115,7 +115,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
@@ -205,6 +205,10 @@
     },
 
     methods:{
+      handleClose(){
+        this.dialogVisible = false;
+        this.dialogData.rssId = []
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
@@ -233,6 +237,7 @@
       handleAdd(){
         this.dialogData.rssId = []
         this.dialogVisible = true
+        this.remoteMethod();
       },
       save(){
         if (this.dialogData.rssId.length === 0){
@@ -243,6 +248,7 @@
           this.getList()
           this.$message.success('操作成功');
           this.dialogVisible = false
+          this.dialogData.rssId = []
         })
       },
       handleEdit(val){
@@ -268,7 +274,7 @@
       },
       getList(){
         this.loading = true
-        API.QueryKsRsSupervision(this.frm).then((res) => {
+        API.QueryKeyRsSupervision(this.frm).then((res) => {
           this.tableData = res.data.recs
           this.loading = false
         })
@@ -291,11 +297,12 @@
       },
 
       remoteMethod(query) {
+        this.options = []
         let frm = {
           direction:0,
           rssName:query,
         }
-        API.QueryKeyRsSupervision(frm).then((res) => {
+        API.QueryKsRsSupervision(frm).then((res) => {
           res.data.recs.forEach((item)=>{
             let tmp = {
               value:'',
@@ -316,7 +323,6 @@
         this.sendSubscribeMsg('ksRssLsvs',2)
 
         that.$globalws.ws.onmessage =  (res)=> {
-          console.log('------------',res)
           let data = JSON.parse(res.data)
           if (data.length > 0 ){
             if(data[0].occurTime){

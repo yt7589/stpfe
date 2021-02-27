@@ -92,7 +92,7 @@
                 title="添加地区"
                 :visible.sync="dialogVisible"
                 class="qygj-add-area"
-                >
+                :before-close="handleClose">
             <el-form ref="dialogForm" :inline="true" :model="dialogData" label-width="70">
                 <el-form-item label="地区名称">
                     <el-select
@@ -118,7 +118,7 @@
                 <!--</el-form-item>-->
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="saveAddArea">确 定</el-button>
             </span>
         </el-dialog>
@@ -210,6 +210,10 @@
       //this.sendUnsubscribe('ksAsLsvs',1)
     },
     methods:{
+      handleClose(){
+        this.dialogVisible = false;
+        this.dialogData.area = []
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
@@ -236,8 +240,8 @@
         this.$forceUpdate()
       },
       addArea(){
-        this.dialogData.area = []
         this.dialogVisible = true
+        this.remoteMethod();
       },
       saveAddArea(){
         if (this.dialogData.area.length === 0){
@@ -248,6 +252,7 @@
           this.getAreaList()
           this.$message.success('操作成功');
           this.dialogVisible = false
+          this.dialogData.area = []
         })
       },
       editArea(val){
@@ -295,12 +300,13 @@
         this.getAreaList()
       },
 
-      remoteMethod(query) {
+      remoteMethod(parms) {
+        this.options = []
         let frm = {
-          direction:0,
-          areaName:query,
+          // direction:0,
+          areaName:parms,
         }
-        API.GetKsAsQueryKeyAreas(frm).then((res) => {
+        API.queryAreas(frm).then((res) => {
           res.data.recs.forEach((item)=>{
             let tmp = {
               value:'',

@@ -11,7 +11,7 @@
           <div><span class="title">地点: </span>{{data.ilsAddr}}</div>
           <div><span class="title">车辆类型: </span>{{data.category}}</div>
           <div><span class="title">车牌号码: </span>{{data.hphm}}</div>
-          <div><span class="title">违章类型: </span>{{data.ilsType}}</div>
+          <!-- <div><span class="title">违章类型: </span>{{data.ilsType}}</div> -->
         </div>
         <el-button class="search-button">搜索相似车辆
           <el-image :src="require('../../image/image-search.png')"></el-image>

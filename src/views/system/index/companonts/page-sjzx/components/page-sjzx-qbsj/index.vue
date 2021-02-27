@@ -90,31 +90,39 @@
         <div class="card-container" style="display: flex;justify-content: space-between;">
           <div class="card card-blue">
             <div class="card-value">
-              <el-image :src="require('../../image/image-recognize.png')"></el-image>
               <span>{{loadIlsTotal['total_recognition']}}</span>
             </div>
-            <div class="card-title">累计识别量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-recognize.png')"></el-image>
+              累计识别量
+            </div>
           </div>
           <div class="card card-green">
             <div class="card-value">
-              <el-image :src="require('../../image/image-violation.png')"></el-image>
               <span>{{loadIlsTotal['total_violation']}}</span>
             </div>
-            <div class="card-title">累计违章量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-violation.png')"></el-image>
+              累计违章量
+            </div>
           </div>
           <div class="card card-yellow">
             <div class="card-value">
-              <el-image :src="require('../../image/image-local-car.png')"></el-image>
               <span>{{loadIlsTotal['total_violation_city']}}</span>
             </div>
-            <div class="card-title">累计本市违章量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-local-car.png')"></el-image>
+              累计本市违章量
+            </div>
           </div>
           <div class="card card-red">
             <div class="card-value">
-              <el-image :src="require('../../image/image-outland-car.png')"></el-image>
               <span>{{loadIlsTotal['total_violation_town']}}</span>
             </div>
-            <div class="card-title">累计外埠违章量</div>
+            <div class="card-title">
+              <el-image :src="require('../../image/image-outland-car.png')"></el-image>
+              累计外埠违章量
+            </div>
           </div>
         </div>
         <chart-violation class="chart-violation"></chart-violation>
@@ -441,23 +449,25 @@
           .card-title {
             background: #FFFFFF;
             padding: 16px 0px 16px 0px;
-
             text-align: center;
             font-size: 18px;
+            .el-image {
+              width: 24px;
+              height: 24px;
+              // margin: 20px;
+              padding-right: 10px;
+              vertical-align: middle;
+            }
           }
 
           .card-value {
             height: 84px;
             color: white;
             font-size: 28px;
-            .el-image {
-              width: 48px;
-              height: 48px;
-
-              margin: 20px;
-              padding-right: 10px;
-              vertical-align: middle;
-            }
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
 
         }
