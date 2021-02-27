@@ -72,7 +72,7 @@
         'type': 'wmtRrSpfx',
         'topic': 'ksRrSpfx',
         'cameraId': this.$store.state.stp.video_analysis.cameraId,
-        'streamId': 0
+        'streamId': this.$store.state.stp.video_analysis.streamId
       }
       this.$globalws.ws.pageObj = this
       this.$globalws.ws.send(JSON.stringify(msg))

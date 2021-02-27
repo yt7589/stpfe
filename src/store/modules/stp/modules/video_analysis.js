@@ -15,6 +15,9 @@ export default {
   mutations: {
       setCameraId(state, cameraId) {
           state.cameraId = cameraId
+      },
+      setStreamId(state, streamId) {
+          state.streamId = streamId
       }
   }
 }

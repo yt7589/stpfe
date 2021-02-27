@@ -101,7 +101,7 @@ import { error } from 'highcharts'
           pagination: {
             currentPage: 1,
             total: 0,
-            pageSize: 21
+            pageSize: 4
           }
         },
       }
