@@ -56,7 +56,7 @@
                             <el-col :span="6" class="jgdt-text">  <span class="jgdt-span">监管动态</span></el-col>
                         </el-row>
                     </div>
-                    <div class="dt-list ">
+                    <!-- <div class="dt-list ">
                         <el-row :gutter="2">
                             <el-col :span="12">
                                 <el-input placeholder="请输入地区名称" class="search-input"></el-input>
@@ -65,7 +65,7 @@
                                 <el-button class="bt"><span>搜索</span></el-button>
                             </el-col>
                         </el-row>
-                    </div>
+                    </div> -->
                     <div class="dt-list">
                         <el-row  v-for="(item,key) in dtData" :key="key">
                             <el-col class="dt-row" :span="24">

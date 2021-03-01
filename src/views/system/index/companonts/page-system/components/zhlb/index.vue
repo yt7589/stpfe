@@ -161,9 +161,9 @@
                 callback();
             }
         }
-        const validLoginName = (rule, value, callback) => {
+        const validUserName = (rule, value, callback) => {
             if (value == undefined || value === '') {
-                callback(new Error('请输入用户名'));
+                callback(new Error('请输入姓名'));
             } else if (value.length > 3) {
                 callback(new Error('最多可输入三个字符'));
             } else {
@@ -201,10 +201,10 @@
                 },
                 rules: {
                     loginName: [
-                        {required: true,validator: validLoginName, trigger: 'blur'},
+                        {required: true,message: '请输入用户名', trigger: 'blur'},
                     ],
                     userName: [
-                        {required: true, message: '请输入姓名', trigger: 'blur'},
+                        {required: true,validator: validUserName , trigger: 'blur'},
                     ],
                     phone: [
                         {required: true, message: '请输入手机号', trigger: 'blur'},

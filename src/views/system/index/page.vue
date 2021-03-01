@@ -70,7 +70,7 @@
       return {
         page: 'index',
         isAdmin: false,
-        username: "admin9",
+        username: '',
         wzDetail:{}
       }
     },
@@ -80,6 +80,7 @@
       ])
     },
     created(e){
+      this.username = util.cookies.get('userName'),
       util.bus.$on('gowzDetail',this.gowzDetail)
     },
     mounted(){
