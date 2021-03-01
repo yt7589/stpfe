@@ -88,9 +88,8 @@ export default {
 
       // 判断登录状态
       let token = util.cookies.get("token")
-      console.log('路由跳转-------暂不跳转到登录页---------------')
       if (!token) {
-        // router.push({name: 'login'})
+        router.push({name: 'login'})
       }
     }
   }

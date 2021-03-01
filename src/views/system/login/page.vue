@@ -269,11 +269,6 @@
       toLogin () {
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
-            let iDebug = 1
-            if (1 == iDebug) {
-              this.$router.replace(this.$route.query.redirect || '/')
-              return
-            }
             this.loginForm.form.password = sha1(this.loginForm.form.password)
             this.login(this.loginForm.form).then(res => {
               if(res.code == 0){
