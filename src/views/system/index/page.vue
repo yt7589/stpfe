@@ -40,7 +40,7 @@
       <page-wzgl v-if="page=='wzgl'" :wzDetail="wzDetail" @leaveWZGL="leaveWZGL"></page-wzgl>
       <page-zdjg v-if="page=='zdjg'"></page-zdjg>
       <page-jtyc v-if="page=='jtyc'"></page-jtyc>
-      <page-sjzx v-if="page=='sjzx'"></page-sjzx>
+      <page-sjzx v-if="page=='sjzx'" :searchVeh="searchVeh" @leaveSJZX="leaveSJZX"></page-sjzx>
       <page-camera v-if="page=='camera'"></page-camera>
       <page-system v-if="page=='system'"></page-system>
     </div>
@@ -71,7 +71,8 @@
         page: 'index',
         isAdmin: false,
         username: '',
-        wzDetail:{}
+        wzDetail:{},
+        searchVeh: {}
       }
     },
     computed: {
@@ -82,16 +83,24 @@
     created(e){
       this.username = util.cookies.get('userName'),
       util.bus.$on('gowzDetail',this.gowzDetail)
+      util.bus.$on('goSearchVeh',this.goSearchVeh)
     },
     mounted(){
     },
     methods: {
+      goSearchVeh(veh){
+        this.searchVeh = veh;
+        this.page = 'sjzx'
+      },
       gowzDetail(wzDetail){
         this.wzDetail = wzDetail;
         this.page = 'wzgl';
       },
       leaveWZGL(){
         this.wzDetail = null;
+      },
+      leaveSJZX(){
+        this.searchVeh = null;
       },
       ...mapActions('d2admin/account', [
         'logout'

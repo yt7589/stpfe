@@ -75,8 +75,9 @@
   import API from '@/api'
   import ImageCard from './image-card.vue'
 import { error } from 'highcharts'
+import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
   export default {
-    props: ['visible'],
+    props: ['visible','searchVeh'],
     components: {ImageCard},
     data(){
       return {
@@ -107,6 +108,17 @@ import { error } from 'highcharts'
       }
     },
     mounted(){
+      if(this.searchVeh != null && this.searchVeh.imgUrl != null){
+        this.table.filter.image.url = this.searchVeh.imgUrl;
+        this.cltzxl = this.searchVeh.cltzxl;
+        this.canSearch = true;
+      }
+    },
+    beforeDestroy(){
+      // 触发清除参数方法
+      if(this.searchVeh){
+        this.$emit('leaveSJZX')
+      }
     },
     methods: {
       handleImagePreview(file){
@@ -122,6 +134,10 @@ import { error } from 'highcharts'
         const that = this;
         API.recognizeYtscImage(file.file).then(res => {
           let jo = JSON.parse(res.data['jsonResult'])
+          if(jo.VEH == undefined){
+            alert('请选具有一辆查询车辆的图片')
+            return
+          }
           let vehs = jo['VEH']
           if (vehs.length < 1) {
             alert('请选具有一辆查询车辆的图片')

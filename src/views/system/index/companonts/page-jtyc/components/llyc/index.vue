@@ -52,8 +52,6 @@
                                     :scroll-wheel-zoom="true">
                             <div v-for="(item,index) in markerPoints" :key="index">
                                 <bm-marker :icon="bmMarkerStyle"  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
-
-
                                 </bm-marker>
                             </div>
                         </baidu-map>
@@ -149,7 +147,9 @@
             this.map.center.lng = res.data.tfs[0].lng
             this.markerPoints = res.data.tfs
           }
-
+          this.yData  = [];
+          this.yData2 = [];
+          this.seriesData = [];
           if(res.data.tfst.length>0){
             res.data.tfst.forEach((item)=>{
               this.yData.push(item.name)
@@ -159,12 +159,7 @@
           }
         })
       },
-
-
-
     }
-
-
   }
 </script>
 

@@ -13,7 +13,7 @@
           <div><span class="title">车牌号码: </span>{{data.hphm}}</div>
           <!-- <div><span class="title">违章类型: </span>{{data.ilsType}}</div> -->
         </div>
-        <el-button class="search-button">搜索相似车辆
+        <el-button class="search-button" @click="searchVeh(data)">搜索相似车辆
           <el-image :src="require('../../image/image-search.png')"></el-image>
         </el-button>
       </div>
@@ -106,6 +106,7 @@
 
 <script>
   import API from '@/api'
+  import util from '@/libs/util'
 
   export default {
     props: ['data', 'visible'],
@@ -116,6 +117,13 @@
       // this.$emit()
     },
     methods: {
+      searchVeh(data){
+        let params = {
+          imgUrl: data.imageUrl,
+          cltzxl: data.cltzxl,
+        }
+        util.bus.$emit('goSearchVeh',params);
+      },
       hide(){
         this.$emit("update:visible", false)
       }

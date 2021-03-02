@@ -66,13 +66,13 @@
                 <el-table-column align="center" prop="category" label="类别" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="types" label="车辆类型" minWidth="60"></el-table-column>
                 <el-table-column align="center" prop="ilTypes" label="违章类型" minWidth="60"></el-table-column>
-                <el-table-column align="center" prop="" label="详情" minWidth="60">
+                <!-- <el-table-column align="center" prop="" label="详情" minWidth="60">
                   <template slot-scope="scope">
                     <el-image :src="scope.row.imageUrl">
                       <div slot="error"></div>
                     </el-image>
                   </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column align="center" prop="" label="操作" minWidth="60">
                   <template slot-scope="scope">
                     <el-button size="small" type="text" @click="handleDetailView(scope.row)">查看详情</el-button>
