@@ -91,7 +91,7 @@
     methods: {
       fetchData(page = 1){
         API.queryIlsVehicleHistory({
-          hphm: this.data.hphm,
+          hphm: this.data.hmhp,
           page: this.table.pagination.currentPage,
           pageSize: this.table.pagination.pageSize,
         }).then(res => {

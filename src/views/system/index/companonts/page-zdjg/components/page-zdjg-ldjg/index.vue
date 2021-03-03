@@ -112,7 +112,6 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>
@@ -235,7 +234,6 @@
         this.$forceUpdate()
       },
       handleAdd(){
-        this.dialogData.rssId = []
         this.dialogVisible = true
         this.remoteMethod();
       },

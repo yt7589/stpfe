@@ -84,10 +84,18 @@
       this.username = util.cookies.get('userName'),
       util.bus.$on('gowzDetail',this.gowzDetail)
       util.bus.$on('goSearchVeh',this.goSearchVeh)
+      util.bus.$on('goSJZXPage',this.goSJZXPage)
+      util.bus.$on('goWZGLPage',this.goWZGLPage)
     },
     mounted(){
     },
     methods: {
+      goWZGLPage(){
+        this.page = 'wzgl'
+      },
+      goSJZXPage(){
+        this.page = 'sjzx'
+      },
       goSearchVeh(veh){
         this.searchVeh = veh;
         this.page = 'sjzx'

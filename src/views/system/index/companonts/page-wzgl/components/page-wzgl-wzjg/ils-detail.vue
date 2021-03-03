@@ -42,7 +42,7 @@
             <div style="width: 50%">
               <div>主驾驶打电话: <span class="value">{{data.md_isPhone > 0 ? '是' : '否'}}</span></div>
               <div>主驾驶不系安全带: <span class="value">{{data.md_isSafetyBelt > 0 ? '是' : '否'}}</span></div>
-              <div>主驾驶打开遮阳板: <span class="value">{{data.md_isSunVisor > 0 ? '是' : '否'}}</span></div>
+              <div>主驾驶放下遮阳板: <span class="value">{{data.md_isSunVisor > 0 ? '是' : '否'}}</span></div>
               <div>副驾驶放下遮阳板: <span class="value">{{data.ct_isSunVisor > 0 ? '是' : '否'}}</span></div>
             </div>
           </div>

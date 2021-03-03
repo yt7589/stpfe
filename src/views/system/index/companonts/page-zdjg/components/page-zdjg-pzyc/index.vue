@@ -57,7 +57,7 @@
                                 <div class="head-title">
                                     <div class="icon"></div>
                                     <div class="content">过车记录</div>
-                                    <div class="more">更多>></div>
+                                    <div class="more" @click="goWZGLPage">更多>></div>
                                 </div>
                             </el-row>
                         </div>
@@ -95,6 +95,7 @@
   import Fsdtj from './components/fsdtj'
   import Fqytj from './components/fqytj'
   import API from '@/api'
+  import util from '@/libs/util'
   export default {
     name: 'page-zdjg-pzyc',
     props:{
@@ -154,6 +155,9 @@
       this.getData()
     },
     methods:{
+    goWZGLPage(){
+        util.bus.$emit('goWZGLPage')
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()

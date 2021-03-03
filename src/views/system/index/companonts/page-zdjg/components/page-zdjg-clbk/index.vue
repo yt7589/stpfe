@@ -57,7 +57,7 @@
                                 <div class="jgdt-span">布控动态</div>
                               </div>
                               </el-col>
-                            <el-col :span="5" class="col-more"><span class="clbk-more">更多>></span></el-col>
+                            <el-col :span="5" class="col-more"><span @click="goSJZXPage" class="clbk-more">更多>></span></el-col>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -88,7 +88,7 @@
                                 <div class="jgdt-span">报警动态</div>
                               </div>
                               </el-col>
-                            <el-col :span="5" class="col-more"><span class="clbk-more">更多>></span></el-col>
+                            <el-col :span="5" class="col-more"><span @click="goWZGLPage" class="clbk-more">更多>></span></el-col>
                         </el-row>
                     </div>
                     <div class="dt-list">
@@ -149,6 +149,7 @@
   import mapStyle from '@/assets/baiduMapStyle'
   import HeaderCrumb from '../common/header-crumb'
   import API from '@/api'
+  import util from '@/libs/util'
   export default {
     name: 'page-zdjg-clbk',
     props:{
@@ -215,6 +216,12 @@
       this.getAlarmList()
     },
     methods:{
+      goWZGLPage(){
+        util.bus.$emit('goWZGLPage')
+      },
+      goSJZXPage(){
+        util.bus.$emit('goSJZXPage')
+      },
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
