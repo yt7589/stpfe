@@ -47,7 +47,7 @@
     data(){
       return {
         // videourl: 'rtsp://192.168.2.68:8554/v7.mkv',
-        videourl: 'rtmp://192.168.2.68:1935/stream/0',
+        videourl: 'rtmp://222.128.117.234:1935/stream/0',
 
         data: [],
         vehs: [],
