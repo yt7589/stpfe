@@ -1,134 +1,138 @@
 <template>
-  <div class="page-sjz-qbsj">
-    <div class="header-crumb">
-      <span>数据中心>全部数据</span>
-    </div>
-    <div class="body">
-      <div class="column-left">
-        <div class="wrapper">
-          <el-form class="search-form">
-            <div style="display: flex;justify-content: space-between;">
-              <el-date-picker
-                v-model="queryTimes" format="yyyy-MM-dd" 
-                class="custom-date-editor"
-                style="width:35%"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-              </el-date-picker>
+  <div>
+    <div class="page-sjz-qbsj" v-if="!ilsDetail.visible">
+      <div class="header-crumb">
+        <span>数据中心>全部数据</span>
+      </div>
+      <div class="body">
+        <div class="column-left">
+          <div class="wrapper">
+            <el-form class="search-form">
+              <div style="display: flex;justify-content: space-between;">
+                <el-date-picker
+                  v-model="queryTimes" format="yyyy-MM-dd" 
+                  class="custom-date-editor"
+                  style="width:35%"
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
 
-              <el-select class="custom-input custom-input-mini"
-                         style="width:14%" placeholder="类型"
-                         v-model="selVehicleLocType">
-                <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+                <el-select class="custom-input custom-input-mini"
+                          style="width:14%" placeholder="类型"
+                          v-model="selVehicleLocType">
+                  <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
 
-              <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="车辆类型" v-model="selVehicleType">
-                <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
+                <el-select class="custom-input custom-input-mini"
+                          style="width:24%" placeholder="车辆类型" v-model="selVehicleType">
+                  <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
 
-              <el-select class="custom-input custom-input-mini"
-                         style="width:24%" placeholder="违章类型" v-model="selIlsType">
-                <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>
-            </div>
-            <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
-              <el-input placeholder="请输入车牌号" v-model="hphm"
-                        class="custom-input custom-input-mini" style="width:15%"></el-input>
-              <el-input placeholder="请输入地点" v-model="siteName"
-                        class="custom-input custom-input-mini" style="width:15%">>
-              </el-input>
+                <el-select class="custom-input custom-input-mini"
+                          style="width:24%" placeholder="违章类型" v-model="selIlsType">
+                  <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </div>
+              <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
+                <el-input placeholder="请输入车牌号" v-model="hphm"
+                          class="custom-input custom-input-mini" style="width:15%"></el-input>
+                <el-input placeholder="请输入地点" v-model="siteName"
+                          class="custom-input custom-input-mini" style="width:15%">>
+                </el-input>
 
-              <div style="width:68%;display: inline-block;text-align: right">
-                <el-button class="button-search" @click="queryVehiclesHandler">
-                  搜索
-                  <el-image :src="require('../../image/image-search.png')"></el-image>
-                </el-button>
-                <el-button class="button-export">
-                  导出
-                  <el-image :src="require('../../image/image-export.png')"></el-image>
-                </el-button>
+                <div style="width:68%;display: inline-block;text-align: right">
+                  <el-button class="button-search" @click="queryVehiclesHandler">
+                    搜索
+                    <el-image :src="require('../../image/image-search.png')"></el-image>
+                  </el-button>
+                  <el-button class="button-export">
+                    导出
+                    <el-image :src="require('../../image/image-export.png')"></el-image>
+                  </el-button>
+                </div>
+              </div>
+            </el-form>
+
+            <el-container class="table-container">
+              <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
+                <el-table class="custom-table wzgl-table" :data="vehicles" height="100%">
+                  <el-table-column align="center" prop="dcTime" label="时间" minWidth="90"></el-table-column>
+                  <el-table-column align="center" prop="dcAddr" label="地点" minWidth="90"></el-table-column>
+                  <el-table-column align="center" prop="hphm" label="车牌号" minWidth="50"></el-table-column>
+                  <el-table-column align="center" prop="category" label="类别" minWidth="40"></el-table-column>
+                  <el-table-column align="center" prop="isIl" label="违章" minWidth="40"></el-table-column>
+                  <el-table-column align="center" prop="ilType" label="违章类型" minWidth="50"></el-table-column>
+                  <el-table-column align="center" prop="" label="详情" minWidth="60">
+                    <template slot-scope="scope">
+                      <!-- <span :id="scope.row.dcId" @click="selectVehicle(scope.row)">查看详情</span> -->
+                      <el-button size="small" type="text" @click="selectVehicle(scope.row)">查看详情</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-main>
+              <el-footer>
+                <el-pagination
+                  background
+                  class="custom-pagination zq-pagination"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-sizes="[20, 50, 100, 200]"
+                  :page-size="pageSize"
+                  layout="total,prev, pager, next,sizes,jumper"
+                  :total="total">
+                </el-pagination>
+              </el-footer>
+            </el-container>
+          </div>
+        </div>
+        <div class="column-right">
+          <div class="card-container" style="display: flex;justify-content: space-between;">
+            <div class="card card-blue">
+              <div class="card-value">
+                <span>{{loadIlsTotal['total_recognition']}}</span>
+              </div>
+              <div class="card-title">
+                <el-image :src="require('../../image/image-recognize.png')"></el-image>
+                累计识别量
               </div>
             </div>
-          </el-form>
-
-          <el-container class="table-container">
-            <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
-              <el-table class="custom-table wzgl-table" :data="vehicles" height="100%">
-                <el-table-column align="center" prop="dcTime" label="时间" minWidth="90"></el-table-column>
-                <el-table-column align="center" prop="dcAddr" label="地点" minWidth="90"></el-table-column>
-                <el-table-column align="center" prop="hphm" label="车牌号" minWidth="50"></el-table-column>
-                <el-table-column align="center" prop="category" label="类别" minWidth="40"></el-table-column>
-                <el-table-column align="center" prop="isIl" label="违章" minWidth="40"></el-table-column>
-                <el-table-column align="center" prop="ilType" label="违章类型" minWidth="50"></el-table-column>
-                <el-table-column align="center" prop="" label="详情" minWidth="60">
-                  <template slot-scope="scope">
-                    <span :id="scope.row.dcId" @click="selectVehicle(scope.row.dcId)">...</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-main>
-            <el-footer>
-              <el-pagination
-                background
-                class="custom-pagination zq-pagination"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page.sync="currentPage"
-                :page-sizes="[20, 50, 100, 200]"
-                :page-size="pageSize"
-                layout="total,prev, pager, next,sizes,jumper"
-                :total="total">
-              </el-pagination>
-            </el-footer>
-          </el-container>
+            <div class="card card-green">
+              <div class="card-value">
+                <span>{{loadIlsTotal['total_violation']}}</span>
+              </div>
+              <div class="card-title">
+                <el-image :src="require('../../image/image-violation.png')"></el-image>
+                累计违章量
+              </div>
+            </div>
+            <div class="card card-yellow">
+              <div class="card-value">
+                <span>{{loadIlsTotal['total_violation_city']}}</span>
+              </div>
+              <div class="card-title">
+                <el-image :src="require('../../image/image-local-car.png')"></el-image>
+                累计本市违章量
+              </div>
+            </div>
+            <div class="card card-red">
+              <div class="card-value">
+                <span>{{loadIlsTotal['total_violation_town']}}</span>
+              </div>
+              <div class="card-title">
+                <el-image :src="require('../../image/image-outland-car.png')"></el-image>
+                累计外埠违章量
+              </div>
+            </div>
+          </div>
+          <chart-violation class="chart-violation"></chart-violation>
+          <chart-recognize class="chart-recognize"></chart-recognize>
         </div>
-      </div>
-      <div class="column-right">
-        <div class="card-container" style="display: flex;justify-content: space-between;">
-          <div class="card card-blue">
-            <div class="card-value">
-              <span>{{loadIlsTotal['total_recognition']}}</span>
-            </div>
-            <div class="card-title">
-              <el-image :src="require('../../image/image-recognize.png')"></el-image>
-              累计识别量
-            </div>
-          </div>
-          <div class="card card-green">
-            <div class="card-value">
-              <span>{{loadIlsTotal['total_violation']}}</span>
-            </div>
-            <div class="card-title">
-              <el-image :src="require('../../image/image-violation.png')"></el-image>
-              累计违章量
-            </div>
-          </div>
-          <div class="card card-yellow">
-            <div class="card-value">
-              <span>{{loadIlsTotal['total_violation_city']}}</span>
-            </div>
-            <div class="card-title">
-              <el-image :src="require('../../image/image-local-car.png')"></el-image>
-              累计本市违章量
-            </div>
-          </div>
-          <div class="card card-red">
-            <div class="card-value">
-              <span>{{loadIlsTotal['total_violation_town']}}</span>
-            </div>
-            <div class="card-title">
-              <el-image :src="require('../../image/image-outland-car.png')"></el-image>
-              累计外埠违章量
-            </div>
-          </div>
-        </div>
-        <chart-violation class="chart-violation"></chart-violation>
-        <chart-recognize class="chart-recognize"></chart-recognize>
       </div>
     </div>
+    <ils-detail :visible.sync="ilsDetail.visible" :data="ilsDetail.data" class="page-wzgl-wzjg-ils-detail"></ils-detail>
   </div>
 </template>
 
@@ -136,12 +140,13 @@
   import mapStyle from '@/assets/baiduMapStyle'
   import ChartRecognize  from './chart-recognize.vue'
   import ChartViolation from './chart-violation.vue'
+  import IlsDetail from '@/views/system/index/companonts/page-wzgl/components/page-wzgl-wzjg/ils-detail.vue'
 
   import API from '@/api'
 
   export default {
     props: ['visible'],
-    components: {ChartRecognize, ChartViolation},
+    components: {ChartRecognize, ChartViolation, IlsDetail},
     data(){
       return {
         loading: false,
@@ -178,6 +183,10 @@
         total: 0,
         vehicles: [],
         loadIlsTotal:'',//累计识别违章量
+        ilsDetail: {
+          visible: false,
+          data: {}
+        },
         table: {
           data: [],
           filter: {},
@@ -283,8 +292,11 @@
       /**
        * 车辆表格中每行编辑图标点击事件
        */
-      selectVehicle(dcId) {
-        console.log('点击：' + dcId + '!')
+      selectVehicle(row) {
+        API.queryIlsDat({tvisJsonId: row.tvisJsonId,vehIdx: row.vehsIdx}).then(res => {
+          this.ilsDetail.data = res.data
+          this.ilsDetail.visible = true
+        })
       },
       handleSizeChange(size){
         this.pageSize = size
@@ -328,7 +340,8 @@
 
 <style lang="scss">
   .page-sjz-qbsj {
-
+    width: 100%;
+    height: 100%;
     .body {
       width: 100%;
       height: calc(100% - 72px);
