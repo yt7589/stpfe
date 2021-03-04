@@ -3,8 +3,8 @@
     <div class="wrapper">
       <!-- <el-image id="img001" style="width:100%;height:80%" :src="originImage">
       </el-image> -->
-      <video id="video" autoplay style="width:100%;height:80%" :poster="originImage"></video>
-      <ul class="item-box" id="image-box">
+      <video id="video" autoplay style="width:100%;height:100%" :poster="originImage"></video>
+      <!-- <ul class="item-box" id="image-box">
         <li class="li-image" v-for="item in vehs" :key="item.wsmVfvvIdx" 
         @click="selVeh = item;toIlsDetailPage(item.vehIdx)">
           <el-image :src="item.cutImgUrl" :alt="originImage">
@@ -15,12 +15,11 @@
               <span style="color:#00F6FF;">{{item.crossTime}}</span>
             </div>
             <div>
-              <!-- {{item.trafficViolationName}}:{{item.trackId}}:{{item.cutImgUrl.substring(item.cutImgUrl.length-10)}} -->
               trackId: {{item.trackId}};
             </div>
           </div>
         </li>
-      </ul>
+      </ul> -->
       <!--<i class="el-icon-close"></i>-->
       <div class="selected-image" v-if="table.current">
         <div class="title">违章详情</div>

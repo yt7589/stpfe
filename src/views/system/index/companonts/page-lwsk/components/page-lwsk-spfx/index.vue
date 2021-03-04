@@ -37,7 +37,7 @@
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
   import CameraInfoWindow from './components/camera-info-window/index.vue'
-
+  import util from '@/libs/util'
   import API from '@/api'
 
   export default {
@@ -49,7 +49,7 @@
       return {
         map: {
           instance: null,
-          zoom: 18,
+          zoom: 6,
           center: {
             lng: 116.48491949999993,
             lat: 39.87675224621402
@@ -113,6 +113,7 @@
       getSiteList(){
         API.GetCameraSiteList().then(res => {
           this.siteList = res.data.recs
+          this.map.zoom = util.map.setZoom(this.siteList);
           if(this.siteList.length > 0){
             this.map.center.lat = this.siteList[0].lat;
             this.map.center.lng = this.siteList[0].lng;

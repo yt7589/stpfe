@@ -5,6 +5,7 @@ import time from './util.time'
 import pdf from './htmlToPdf'
 import bus from './eventBus'
 import webRTCForVideo from './webRTCForVideo'
+import map from './map'
 
 const util = {
   cookies,
@@ -13,7 +14,8 @@ const util = {
   time,
   pdf,
   bus,
-  webRTCForVideo
+  webRTCForVideo,
+  map
 }
 
 /**
