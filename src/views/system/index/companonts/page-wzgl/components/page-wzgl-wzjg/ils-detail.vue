@@ -5,7 +5,7 @@
     </div>
     <div class="body">
       <div class="column-1">
-        <el-image class="ils-image" :src="data.imageUrl"></el-image>
+        <el-image class="ils-image" :src="data.imageUrl" fit="contain"></el-image>
         <div class="ils-content">
           <div><span class="title">时间: </span>{{data.ilsTime}}</div>
           <div><span class="title">地点: </span>{{data.ilsAddr}}</div>
@@ -158,7 +158,8 @@
         }
 
         .ils-image {
-          width: calc(100% - 16px);
+          width: 520px;
+          height: 540px;
           border: 8px solid #fff;
           border-radius: 4px;
         }

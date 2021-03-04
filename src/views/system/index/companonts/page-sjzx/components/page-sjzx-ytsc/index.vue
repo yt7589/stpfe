@@ -135,15 +135,17 @@ import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
         API.recognizeYtscImage(file.file).then(res => {
           let jo = JSON.parse(res.data['jsonResult'])
           if(jo.VEH == undefined){
-            alert('请选具有一辆查询车辆的图片')
+            that.canSearch = false
+            alert('请选择具有车辆的图片')
             return
           }
           let vehs = jo['VEH']
           if (vehs.length < 1) {
-            alert('请选具有一辆查询车辆的图片')
+            that.canSearch = false
+            alert('请选择具有车辆的图片')
             return 
           } else if (vehs.length > 1) {
-            alert('请选择只有一辆查询车辆的图片')
+            alert('请选择只有一辆车的图片')
             return 
           }
           that.canSearch = true
