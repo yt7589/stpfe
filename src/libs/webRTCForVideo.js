@@ -1,4 +1,4 @@
-import kurentoUtils from 'kurento-utils'  // npm install kurento-utils
+import kurentoUtils from './kurento-utils'  // npm install kurento-utils
 const webRTCForVideo = {}
 
 // 创建与后端的视频通话用websocket通信，视频通话必须用https
