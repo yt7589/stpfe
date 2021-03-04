@@ -1,8 +1,9 @@
 <template>
   <div class="camera-photo-dialog">
     <div class="wrapper">
-      <el-image id="img001" style="width:100%;height:80%" :src="originImage">
-      </el-image>
+      <!-- <el-image id="img001" style="width:100%;height:80%" :src="originImage">
+      </el-image> -->
+      <video id="video" autoplay style="width:100%;height:80%" :poster="originImage"></video>
       <ul class="item-box" id="image-box">
         <li class="li-image" v-for="item in vehs" :key="item.wsmVfvvIdx" 
         @click="selVeh = item;toIlsDetailPage(item.vehIdx)">
@@ -46,6 +47,9 @@
     components: {},
     data(){
       return {
+        // videourl: 'rtsp://192.168.2.68:8554/v7.mkv',
+        videourl: 'rtmp://192.168.2.68:1935/stream/0',
+
         data: [],
         vehs: [],
         selVeh: null,
@@ -63,7 +67,7 @@
       }
     },
     mounted(){
-      this.initData()
+      this.startPlay();
       console.log('############ yantao: camera-video-dialog')
       console.log('camera-video-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
       console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
@@ -80,9 +84,9 @@
         console.log('websocket on message......:' + data.data + '!')
         let rst = JSON.parse(data.data)
         this.pageObj.tvisJsonId = rst.tvisJsonId;
-        let img001 = document.getElementById("img001")
-        img001.src = rst.originImage
-        console.log('img001.src: ' + img001.src + '; this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
+        // let img001 = document.getElementById("img001")
+        // img001.src = rst.originImage
+        console.log('this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
         // 车图片数组
         let recs = rst.data
         let hasVeh = false
@@ -131,7 +135,17 @@
       }
       this.initMouseEvent()
     },
+    beforeDestroy(){
+      this.stopPlay();
+    },
     methods: {
+      startPlay(){
+        util.webRTCForVideo.setParams(document.getElementById('video'),this.videourl,this.originImage);
+        util.webRTCForVideo.start();
+      },
+      stopPlay(){
+        util.webRTCForVideo.stop();
+      },
       toIlsDetailPage(vehIdx){
         let params = {
           vehIdx: vehIdx,
