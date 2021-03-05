@@ -10,9 +10,14 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="节点位置" v-model="frm.nodeAddr">
-
-                        </el-input>
+                        <el-select style="width:100%" v-model="frm.nodeAddr" placeholder="节点位置">
+                          <el-option
+                                  v-for="item in nodeAddrOptions"
+                                  :key="item.siteAddrId"
+                                  :label="item.siteAddrName"
+                                  :value="item.siteAddrId">
+                          </el-option>
+                      </el-select>
                     </el-form-item>
 
                     <el-form-item>
@@ -66,26 +71,26 @@
                 :visible.sync="dialogVisible"
         >
             <el-form ref="dialogForm" :model="dialogData"  :rules="rules">
-                <el-form-item label="节点名称" prop="nodeName" label-width="120px">
+                <el-form-item label="节点名称" prop="nodeName" label-width="25%">
                     <el-input v-model="dialogData.nodeName" />
                 </el-form-item>
-                <el-form-item label="节点位置" prop="nodeAddr" label-width="120px">
+                <el-form-item label="节点位置" prop="nodeAddr" label-width="25%">
                     <el-select v-model="dialogData.nodeAddr" placeholder="请选择">
                         <el-option
                                 v-for="item in nodeAddrOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :key="item.siteAddrId"
+                                :label="item.siteAddrName"
+                                :value="item.siteAddrId">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="经纬度" prop="lng" label-width="120px">
+                <el-form-item label="经纬度" prop="lng" label-width="25%">
                     <el-input  :disabled="true" value="去选择" @click.native="selectMap"/>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary"@click="save">确 定</el-button>
+                <el-button type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
         <el-dialog
@@ -179,12 +184,7 @@
               {required: true, message: '请选择经纬度', trigger: 'blur'},
           ]
         },
-        nodeAddrOptions:[
-          {
-            value: '海淀>上地',
-            label: '海淀>上地'
-          },
-        ],
+        nodeAddrOptions:[],
         map: {
           instance: null,
           zoom: 12,
@@ -200,13 +200,18 @@
           address:'',
         },
         clientHeight:document.documentElement.clientHeight-650, // 屏幕高度
-
       }
     },
     mounted(){
       this.getList()
+      this.querySiteAddr()
     },
     methods: {
+      querySiteAddr(){
+        API.querySiteAddr().then((res)=>{
+          this.nodeAddrOptions = res.data.recs
+        })
+      },
       handleSizeChange(size){
         this.frm.startIndex = 0
         this.frm.amount = size

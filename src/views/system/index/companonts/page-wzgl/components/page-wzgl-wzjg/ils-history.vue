@@ -5,20 +5,35 @@
     </div>
     <div class="body">
       <div class="column-1">
-        <el-image class="ils-image" :src="data.imageUrl"></el-image>
+        <el-image class="ils-image" :src="info.imgUrl"></el-image>
         <div class="box-hmhp">{{data.hmhp}}</div>
         <div style="display: flex;justify-content: space-between;">
           <div class="box-ils-count">
             <div>总违章次数</div>
-            <div class="value">123</div>
+            <div class="value">{{info.ilsCount}}</div>
           </div>
           <div class="box-ils-year">
             <div>本年度违章次数</div>
-            <div class="value">123</div>
+            <div class="value">{{info.avCount}}</div>
           </div>
         </div>
       </div>
-      <div class="column-2"></div>
+      <div class="column-2">
+        <div class="pie-chart">
+          <div class="title">
+            <el-image :src="require('../../image/wzlb.png')"></el-image>            
+            违章类别前五
+          </div>
+          <div id="pie-chart" class="chart"></div>
+        </div>
+        <div class="bar-chart">
+          <div class="title">
+            <el-image :src="require('../../image/lswz.png')"></el-image>
+            历史违章走势图
+          </div>
+          <div id="bar-chart" class="chart"></div>
+        </div>
+      </div>
       <div class="column-3">
         <div class="title">
           <el-image :src="require('../../image/image-chart-2.png')"></el-image>
@@ -64,14 +79,18 @@
 
 <script>
   import API from '@/api'
+  import echarts from 'echarts'
 
   export default {
     props: ['data', 'visible'],
     mounted(){
       this.fetchData()
+      this.initChart()
     },
     data () {
       return {
+        pieChart: null,
+        barChart: null,
         loading: false,
         table: {
           data: [],
@@ -86,9 +105,144 @@
             pageSize: 20
           }
         },
+        info:{}
       }
     },
     methods: {
+      initChart(){
+        this.pieChart = echarts.init(document.getElementById('pie-chart'))
+        this.barChart = echarts.init(document.getElementById('bar-chart'))
+      },
+      setBarOptions(yData,xData){
+        this.barChart.setOption({
+          // grid: {
+          //   left:'55',
+          //   bottom:'100',
+          // },
+          xAxis: {
+            type: 'category',
+            color: '#FFFFFF',
+            axisLabel: {
+                interval: 0, //横轴信息全部显示
+                rotate: 0, //0度角倾斜显示
+                show: true,
+                textStyle: {
+                    color: '#FFFFFF'
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#B6C1C4',
+                    width: 3
+                },
+            },
+            axisTick: {
+                show: false,
+            },
+            data: xData
+          },
+          yAxis: {
+            show: false,
+          },
+          series: [{
+              data: yData,
+              type: 'bar',
+              showBackground: true,
+              backgroundStyle: {
+                  color: 'rgba(220, 220, 220, 0.8)'
+              }
+          }]
+          // xAxis: [{
+          //   type: 'value',
+          //   axisLabel: {
+          //     margin: 5,
+          //     color: '#FFFFFF',
+          //     textStyle: {
+          //       fontSize: '14'
+          //     },
+          //   },
+
+          //   splitLine: {
+          //     show: true,
+          //     lineStyle: {
+          //       color: '#979797'
+          //     }
+          //   },
+          //   axisLine: {
+          //     lineStyle: {
+          //       color: '#333333'
+          //     }
+          //   },
+          //   axisTick: {
+          //     show: false
+          //   },
+          // }],
+          // yAxis: [{
+          //   type: 'category',
+          //   inverse: true,
+          //   axisLabel: {
+          //     interval:0,
+          //     textStyle: {
+          //       color: '#FFFFFF',
+          //       fontSize: '14'
+          //     },
+          //   },
+          //   splitNumber:0,
+          //   splitLine: {
+          //     show: false
+          //   },
+          //   axisTick: {
+          //     show: false
+          //   },
+          //   axisLine: {
+          //     lineStyle: {
+          //       color: '#979797'
+          //     }
+          //   },
+          //   // data: yData
+          //   data: ['朝阳区','东城区','房山区','通州区','海淀区','思明区','湖里区','集美区']
+          // }],
+          // series: [{
+          //   name: '值',
+          //   type: 'bar',
+          //   showBackground: true,
+          //   backgroundStyle: {
+          //     color: '#000000',
+          //   },
+          //   itemStyle: {
+          //     normal: {
+          //       color: '#00C087',
+          //     },
+          //   },
+          //   barWidth: 20,
+          //   data: [78,56,63,123,22,330,11,22]
+          // }
+          // ]
+        })
+      },
+      setPieOptions(names,datas){
+        this.pieChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{d}%'
+          },
+          series: [
+            {
+              name:'',
+              type:'pie',
+              center: ['40%', '50%'],
+              radius: ['0', '70%'],
+              roseType: 'radius',
+              data:datas,
+              labelLine:{
+                length: 5,
+                length2:5
+              }
+            }
+          ],
+          color:['#83B22F', '#F18C1E', '#5FB6C9', '#D8D8D8', '#DA4889']
+        })
+      },
       fetchData(page = 1){
         API.queryIlsVehicleHistory({
           hphm: this.data.hmhp,
@@ -97,6 +251,32 @@
         }).then(res => {
           this.table.pagination.total = res.data.total
           this.table.data = res.data.recs
+        })
+        API.queryIlsVsInfo({
+          hphm: this.data.hmhp,
+          tvisJsonId: this.data.tvisJsonId,
+          vehsIdx: this.data.vehIdx,
+        }).then(res => {
+          this.info = res.data
+
+          var pieChartNames = [];
+          if(this.info.ilsVstype.length>0){
+            this.info.ilsVstype.forEach(item => {
+              pieChartNames.push(item.name)
+            });
+          }
+          this.setPieOptions(pieChartNames,this.info.ilsVstype);
+
+          var yData = [];
+          var xData = [];
+          if(this.info.ilsVsTrend.length > 0){
+            this.info.ilsVsTrend.forEach(item => {
+              yData.push(item.count);
+              xData.push(item.year);
+            })
+          }
+          this.setBarOptions(yData,xData);
+
         })
       },
       handleSizeChange(size){
@@ -189,9 +369,53 @@
       }
 
       .column-2 {
-        background: #0073FF33;
         width: 28%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .pie-chart{
+          background: #0073FF33;
+          height: 50%;
+          .title{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 16px;
+            margin-left: 24px;
+            font-size: 18px;
+            .el-image{
+              width: 24px;
+              height: 24px;
+              margin-right: 10px;
+            }
+          }
+          .chart {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .bar-chart{
+          background: #0073FF33;
+          height:49%;
+          .title{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 16px;
+            margin-left: 24px;
+            font-size: 18px;
+            .el-image{
+              width: 24px;
+              height: 24px;
+              margin-right: 10px;
+            }
+          }
+          .chart {
+            width: 100%;
+            height: 100%;
+          }
+        }
       }
 
       .column-3 {

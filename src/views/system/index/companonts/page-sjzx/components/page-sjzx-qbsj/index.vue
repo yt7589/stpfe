@@ -46,7 +46,7 @@
                   搜索
                   <el-image :src="require('../../image/image-search.png')"></el-image>
                 </el-button>
-                <el-button class="button-export">
+                <el-button class="button-export" @click="handleExport">
                   导出
                   <el-image :src="require('../../image/image-export.png')"></el-image>
                 </el-button>
@@ -196,6 +196,12 @@
       this.loadIlsQty()
     },
     methods: {
+      handleExport(){
+        window.location = process.env.VUE_APP_EXPORT_API + 'dc/hp/exportAllData?startTime=' + (this.queryTimes==null? '':this.formatDate(this.queryTimes[0]) )
+                    + '&endTime=' + (this.queryTimes==null? '': this.formatDate(this.queryTimes[1]))
+                    + '&category=' + this.selVehicleLocType + '&vType=' + this.selVehicleType + '&ilType=' + this.selIlsType + '&hphm=' + this.hphm
+                    + '&vAddr=' + this.siteName;
+      },
       /**
        * 获取车辆类别下拉框中内容
        */

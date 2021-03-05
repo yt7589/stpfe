@@ -49,7 +49,7 @@
               </el-button>
             </el-form-item>
             <el-form-item>
-              <el-button class="button-export">
+              <el-button class="button-export" @click="handleExport">
                 导出
                 <el-image :src="require('../../image/image-export.png')"></el-image>
               </el-button>
@@ -165,6 +165,11 @@
       }
     },
     methods: {
+      handleExport(){
+        window.location = process.env.VUE_APP_EXPORT_API + 'vm/ils/exportvs?startTime=' + this.table.filter.date[0] + '&endTime=' + this.table.filter.date[1]
+                    + '&category=' + this.table.filter.type + '&vType=' + this.table.filter.carType + '&illType=' + this.table.filter.wzlx + '&hphm=' + this.table.filter.cph
+                    + '&addr=' + this.table.filter.location;
+      },
       initParam(){
         API.queryVehicleTypes().then(res => {
           this.table.option.typeOptions = [{typeId: null, typeName: "全部"}].concat(res.data)

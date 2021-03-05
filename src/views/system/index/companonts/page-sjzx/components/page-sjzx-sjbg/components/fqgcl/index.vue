@@ -27,7 +27,7 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="count" align="center" label="平均拥堵指数"></el-table-column>
+              <el-table-column prop="count" align="center" :label="label"></el-table-column>
               <el-table-column prop="rg" align="center" label="环比">
                 <template slot-scope="scope">
                   <div>{{scope.row.rg}}
@@ -72,6 +72,7 @@
       return {
         iconUrl:'',
         city: '北京市',
+        label: '平均拥堵指数',
         map: {
           instance: null,
           zoom: 12,
@@ -92,6 +93,7 @@
       }
     },
     mounted(){
+      this.label = this.title == '分区过车量排名'? '过车量':this.label;
       this.iconUrl = require('../../image/'+this.icon);
     },
     watch: {

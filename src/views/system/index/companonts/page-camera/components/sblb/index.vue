@@ -72,10 +72,10 @@
                 :before-close="handleClose"
         >
             <el-form ref="dialogForm" :model="dialogData" :rules="rules">
-                <el-form-item label="设备编号" prop="deviceNo" label-width="120px">
+                <el-form-item label="设备编号" prop="deviceNo" label-width="25%">
                     <el-input v-model="dialogData.deviceNo"/>
                 </el-form-item>
-                <el-form-item label="设备类型" prop="cameraTypeId" label-width="120px">
+                <el-form-item label="设备类型" prop="cameraTypeId" label-width="25%">
                     <el-select v-model="dialogData.cameraTypeId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceTypeOptions"
@@ -85,7 +85,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备节点" prop="siteId" label-width="120px">
+                <el-form-item label="设备节点" prop="siteId" label-width="25%">
                     <el-select v-model="dialogData.siteId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceNodeOptions"
@@ -95,7 +95,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备朝向" prop="directionId" label-width="120px">
+                <el-form-item label="设备朝向" prop="directionId" label-width="25%">
                     <el-select v-model="dialogData.directionId" placeholder="请选择">
                         <el-option
                                 v-for="item in deviceDirectionOptions"
@@ -105,7 +105,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="车辆方向" prop="scTypeId" label-width="120px">
+                <el-form-item label="车辆方向" prop="scTypeId" label-width="25%">
                     <el-select v-model="dialogData.scTypeId" placeholder="请选择">
                         <el-option
                                 v-for="item in vehicleDirectionOptions"
@@ -115,7 +115,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="数据地址" prop="videoUrl" label-width="120px">
+                <el-form-item label="数据地址" prop="videoUrl" label-width="25%">
                     <el-input v-model="dialogData.videoUrl"  />
                 </el-form-item>
             </el-form>

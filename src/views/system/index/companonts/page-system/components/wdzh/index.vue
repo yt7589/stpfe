@@ -9,21 +9,21 @@
                 <div class="user-account">
                     <div class="user-info">
                         <div class="info-left">账号：</div>
-                        <div class="info-right">admin</div>
+                        <div class="info-right">{{userInfo.loginName}}</div>
                     </div>
                     <div class="line"></div>
                 </div>
                 <div class="user-account">
                     <div class="user-info">
                         <div class="info-left">姓名：</div>
-                        <div class="info-right">大数据</div>
+                        <div class="info-right">{{userInfo.userName}}</div>
                     </div>
                     <div class="line"></div>
                 </div>
                 <div class="user-account">
                     <div class="user-info">
                         <div class="info-left">手机号：</div>
-                        <div class="info-right">133********</div>
+                        <div class="info-right">{{userInfo.phone}}</div>
                     </div>
                     <div class="line"></div>
                 </div>
@@ -55,6 +55,8 @@
 <script>
   import HeaderCrumb from '@components/custom/header-crumb'
   import API from '@/api'
+  import util from '@/libs/util'
+  import sha1 from 'js-sha1'
   export default {
     name: 'system-wdzh',
     props:{
@@ -76,13 +78,15 @@
         const validateNewPwd2 = (rule, value, callback) => {
             if (value == undefined || value === '') {
                 callback(new Error('请再次输入密码'));
-            } else if (value !== this.frm.newPwd) {
+            } else if (value !== this.frm.pwd2) {
                 callback(new Error('两次输入密码不一致!'));
             } else {
                 callback();
             }
         }
       return {
+        userInfo: {},
+        userId: util.cookies.get("userId"),
         frm:{
           pwd:'',
           pwd2:''
@@ -98,11 +102,21 @@
       }
 
     },
+    mounted(){
+        this.getData();
+    },
     methods:{
+        getData(){
+            API.getUserInfo({userId:this.userId}).then(res =>{
+                this.userInfo = res.data;
+            })
+        },
         updatePwd(){
             this.$refs.pwdForm.validate((valid) => {
             if (valid) {
-                this.frm.pwd = this.frm.pwd2;
+                this.frm.pwd = sha1(this.frm.pwd);
+                this.frm.pwd2 = undefined;
+                this.frm.userId = this.userId;
                 API.uptUserInfo(this.frm).then(res => {
                     if(1 === res.data.affectedRows){
                         this.$message.success("操作成功");
