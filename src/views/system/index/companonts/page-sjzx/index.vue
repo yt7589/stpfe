@@ -7,7 +7,7 @@
     <page-sjzx-qbsj v-if="curPage.label=='全部数据'" class="custom-main-content"></page-sjzx-qbsj>
     <page-sjzx-sjtj v-if="curPage.label=='数据统计'" class="custom-main-content"></page-sjzx-sjtj>
     <page-sjzx-gjhf v-if="curPage.label=='轨迹回放'" class="custom-main-content"></page-sjzx-gjhf>
-    <page-sjzx-ytsc v-if="curPage.label=='以图搜车'" :searchVeh="searchVeh" @leaveSJZX="leaveSJZX" class="custom-main-content"></page-sjzx-ytsc>
+    <page-sjzx-ytsc v-if="curPage.label=='以图搜车'" :ytscVeh="ytscVeh" :searchVeh="searchVeh" @leaveSJZX="leaveSJZX" class="custom-main-content"></page-sjzx-ytsc>
     <page-sjzx-sjbg v-if="curPage.label=='数据报告'" class="custom-main-content"></page-sjzx-sjbg>
   </div>
 </template>
@@ -18,6 +18,7 @@
   import PageSjzxGjhf from './components/page-sjzx-gjhf'
   import PageSjzxYtsc from './components/page-sjzx-ytsc'
   import PageSjzxSjbg from './components/page-sjzx-sjbg'
+  import util from '@/libs/util'
 
   export default {
     components: {PageSjzxQbsj, PageSjzxSjtj, PageSjzxGjhf, PageSjzxYtsc, PageSjzxSjbg},
@@ -27,6 +28,7 @@
         loading: false,
         curPhoto: {},
         curPage: {},
+        ytscVeh: {},
         pageOptions: [
           {label: '全部数据'},
           {label: '数据统计'},
@@ -35,6 +37,9 @@
           {label: '数据报告'},
         ],
       }
+    },
+    created(e){
+      util.bus.$on('goSearchVeh_sjzx',this.goSearchVeh_sjzx)
     },
     mounted(){
       if(this.searchVeh != null && this.searchVeh.imgUrl != null){
@@ -46,6 +51,10 @@
     methods: {
       leaveSJZX(){
         this.$emit('leaveSJZX')
+      },
+      goSearchVeh_sjzx(veh){
+        this.ytscVeh = veh
+        this.curPage = this.pageOptions[3]
       }
     }
   }

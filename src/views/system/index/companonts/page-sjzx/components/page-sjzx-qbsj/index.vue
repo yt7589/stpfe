@@ -140,7 +140,7 @@
   import mapStyle from '@/assets/baiduMapStyle'
   import ChartRecognize  from './chart-recognize.vue'
   import ChartViolation from './chart-violation.vue'
-  import IlsDetail from '@/views/system/index/companonts/page-wzgl/components/page-wzgl-wzjg/ils-detail.vue'
+  import IlsDetail from './ils-detail.vue'
 
   import API from '@/api'
 

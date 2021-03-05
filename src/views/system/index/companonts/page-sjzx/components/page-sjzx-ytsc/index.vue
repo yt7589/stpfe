@@ -1,7 +1,7 @@
 <template>
   <div class="page-sjzx-ytsc" flex="dir:top">
     <div class="header-crumb">
-      <span>数据中心>以图搜车Yt</span>
+      <span>数据中心>以图搜车</span>
     </div>
     <div class="body">
       <div class="column-1">
@@ -77,7 +77,7 @@
 import { error } from 'highcharts'
 import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
   export default {
-    props: ['visible','searchVeh'],
+    props: ['visible','searchVeh','ytscVeh'],
     components: {ImageCard},
     data(){
       return {
@@ -111,6 +111,11 @@ import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
       if(this.searchVeh != null && this.searchVeh.imgUrl != null){
         this.table.filter.image.url = this.searchVeh.imgUrl;
         this.cltzxl = this.searchVeh.cltzxl;
+        this.canSearch = true;
+      }
+      if(this.ytscVeh != null && this.ytscVeh.imgUrl != null){
+        this.table.filter.image.url = this.ytscVeh.imgUrl;
+        this.cltzxl = this.ytscVeh.cltzxl;
         this.canSearch = true;
       }
     },
