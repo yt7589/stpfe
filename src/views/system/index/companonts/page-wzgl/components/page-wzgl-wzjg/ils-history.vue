@@ -113,111 +113,234 @@
         this.pieChart = echarts.init(document.getElementById('pie-chart'))
         this.barChart = echarts.init(document.getElementById('bar-chart'))
       },
-      setBarOptions(yData,xData){
+      setBarOptions(xData,yData,yMaxData){
+        var barWidth = 50;
+        var colors = [{
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#F93003'
+                }, {
+                    offset: 0.5,
+                    color: '#F93003'
+                }, {
+                    offset: 0.5,
+                    color: '#FF6B51'
+                }, {
+                    offset: 1,
+                    color: '#FF6B51'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#ECAC08'
+                }, {
+                    offset: 0.5,
+                    color: '#ECAC08'
+                }, {
+                    offset: 0.5,
+                    color: '#FBC74B'
+                }, {
+                    offset: 1,
+                    color: '#FBC74B'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#A3BA2F'
+                }, {
+                    offset: 0.5,
+                    color: '#A3BA2F'
+                }, {
+                    offset: 0.5,
+                    color: '#C1D75E'
+                }, {
+                    offset: 1,
+                    color: '#C1D75E'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#4C6061'
+                }, {
+                    offset: 0.5,
+                    color: '#4C6061'
+                }, {
+                    offset: 0.5,
+                    color: '#708E8F'
+                }, {
+                    offset: 1,
+                    color: '#708E8F'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#D9D9D9'
+                }, {
+                    offset: 0.5,
+                    color: '#D9D9D9'
+                }, {
+                    offset: 0.5,
+                    color: '#F2F2F2'
+                }, {
+                    offset: 1,
+                    color: '#F2F2F2'
+                }]
+            }
+        ];
         this.barChart.setOption({
           grid: {
-            left:'55',
-            bottom:'100',
+            top: '10%',
+            bottom: '100'
           },
+          //X轴
           xAxis: {
-            type: 'category',
-            color: '#FFFFFF',
-            axisLabel: {
-                interval: 0, //横轴信息全部显示
-                rotate: 0, //0度角倾斜显示
-                show: true,
-                textStyle: {
-                    color: '#FFFFFF'
-                },
-            },
-            axisLine: {
-                lineStyle: {
-                    color: '#B6C1C4',
-                    width: 3
-                },
-            },
-            axisTick: {
+              type: 'category',
+              data: xData,
+              axisTick: {
                 show: false,
-            },
-            data: xData
+              },
+              axisLabel: {
+                interval:0,
+                color: '#ffffff',
+                textStyle: {
+                  fontSize: 12
+                },
+              },
+              offset: 10,
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: '#D8D8D8',
+                      width: 10
+                  }
+              },
           },
           yAxis: {
-            show: false,
+              show: false
           },
-          series: [{
-              data: yData,
+          series: [
+              // 阴影
+            {
               type: 'bar',
-              showBackground: true,
-              backgroundStyle: {
-                  color: 'rgba(220, 220, 220, 0.8)'
-              }
-          }]
-          // xAxis: [{
-          //   type: 'value',
-          //   axisLabel: {
-          //     margin: 5,
-          //     color: '#FFFFFF',
-          //     textStyle: {
-          //       fontSize: '14'
-          //     },
-          //   },
+              barGap: '-100%',
+              barWidth: barWidth,
+              itemStyle: {
+                  normal: {
+                          color: function(params) {
+                              return colors[4];
+                          },
+                      }
+              },
+              z: -12,
+              data: yMaxData
+              },
+              // 柱体顶部
+              {
+                  z: 3,
+                  type: 'pictorialBar',
+                  symbolPosition: 'end',
+                  data: yMaxData,
+                  symbol: 'diamond',
+                  symbolOffset: [0, '-50%'],
+                  symbolSize: [barWidth, barWidth * 0.5],
+                  itemStyle: {
+                      normal: {
+                          borderWidth: 0,
+                          color: function(params) {
+                              return colors[4].colorStops[0].color;
+                          },
+                      }
+                  },
+              },
+              // 实体柱
+              {
+                  type: 'bar',
+                  barWidth: barWidth,
+                  itemStyle: {
+                      normal: {
+                          color: function(params) {
+                              return colors[params.dataIndex % 4];
+                          }
+                      }
+                  },
+                  // 顶部文字
+                  label: {
+                      show: true,
+                      position: [25,-30],
+                      color: '#045FE0',
+                      fontSize: 12,
+                      fontStyle: 'bold',
+                      formatter: '{c}次',
+                      align: 'center',
+                  },
+                  data: yData
+              },
+              // 柱体底部
+              {
+                  z: 2,
+                  type: 'pictorialBar',
+                  data: yData,
+                  symbol: 'diamond',
+                  symbolOffset: [0, '50%'],
+                  symbolSize: [barWidth, barWidth * 0.5],
+                  itemStyle: {
+                      normal: {
+                          color: function(params) {
+                              return colors[params.dataIndex % 4];
+                          },
+                      }
+                  },
+                  
+              },
+              // 柱体顶部
+              {
+                  z: 3,
+                  type: 'pictorialBar',
+                  symbolPosition: 'end',
+                  data: yData,
+                  symbol: 'diamond',
+                  symbolOffset: [0, '-50%'],
+                  symbolSize: [barWidth, barWidth * 0.5],
+                  itemStyle: {
+                      normal: {
+                          borderWidth: 0,
+                          color: function(params) {
+                              return colors[params.dataIndex % 4].colorStops[0].color;
+                          },
 
-          //   splitLine: {
-          //     show: true,
-          //     lineStyle: {
-          //       color: '#979797'
-          //     }
-          //   },
-          //   axisLine: {
-          //     lineStyle: {
-          //       color: '#333333'
-          //     }
-          //   },
-          //   axisTick: {
-          //     show: false
-          //   },
-          // }],
-          // yAxis: [{
-          //   type: 'category',
-          //   inverse: true,
-          //   axisLabel: {
-          //     interval:0,
-          //     textStyle: {
-          //       color: '#FFFFFF',
-          //       fontSize: '14'
-          //     },
-          //   },
-          //   splitNumber:0,
-          //   splitLine: {
-          //     show: false
-          //   },
-          //   axisTick: {
-          //     show: false
-          //   },
-          //   axisLine: {
-          //     lineStyle: {
-          //       color: '#979797'
-          //     }
-          //   },
-          //   // data: yData
-          //   data: ['朝阳区','东城区','房山区','通州区','海淀区','思明区','湖里区','集美区']
-          // }],
-          // series: [{
-          //   name: '值',
-          //   type: 'bar',
-          //   showBackground: true,
-          //   backgroundStyle: {
-          //     color: '#000000',
-          //   },
-          //   itemStyle: {
-          //     normal: {
-          //       color: '#00C087',
-          //     },
-          //   },
-          //   barWidth: 20,
-          //   data: [78,56,63,123,22,330,11,22]
-          // }
-          // ]
+                      }
+                  }
+              }
+          ]
         })
       },
       setPieOptions(names,datas){
@@ -266,7 +389,6 @@
             });
           }
           this.setPieOptions(pieChartNames,this.info.ilsVstype);
-
           var yData = [];
           var xData = [];
           if(this.info.ilsVsTrend.length > 0){
@@ -275,7 +397,12 @@
               xData.push(item.year);
             })
           }
-          this.setBarOptions(yData,xData);
+          var max = Math.max(...yData);
+          var yMaxData = [];
+          yData.forEach(item =>{
+            yMaxData.push(max)
+          })
+          this.setBarOptions(xData,yData,yMaxData);
 
         })
       },

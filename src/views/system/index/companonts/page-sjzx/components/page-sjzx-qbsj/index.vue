@@ -199,7 +199,7 @@
       handleExport(){
         window.location = process.env.VUE_APP_EXPORT_API + 'dc/hp/exportAllData?startTime=' + (this.queryTimes==null? '':this.formatDate(this.queryTimes[0]) )
                     + '&endTime=' + (this.queryTimes==null? '': this.formatDate(this.queryTimes[1]))
-                    + '&category=' + this.selVehicleLocType + '&vType=' + this.selVehicleType + '&ilType=' + this.selIlsType + '&hphm=' + this.hphm
+                    + '&category=' + this.selVehicleLocType + '&vType=' + (this.selVehicleType==0?'':this.selVehicleType) + '&ilType=' + (this.selIlsType==0?'':this.selIlsType) + '&hphm=' + this.hphm
                     + '&vAddr=' + this.siteName;
       },
       /**

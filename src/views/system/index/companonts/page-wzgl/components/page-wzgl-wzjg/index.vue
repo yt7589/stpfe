@@ -166,7 +166,8 @@
     },
     methods: {
       handleExport(){
-        window.location = process.env.VUE_APP_EXPORT_API + 'vm/ils/exportvs?startTime=' + this.table.filter.date[0] + '&endTime=' + this.table.filter.date[1]
+        window.location = process.env.VUE_APP_EXPORT_API + 'vm/ils/export?startTime=' + (this.table.filter.date==[]?'':this.table.filter.date[0]) 
+                    + '&endTime=' + (this.table.filter.date==[]?'':this.table.filter.date[1])
                     + '&category=' + this.table.filter.type + '&vType=' + this.table.filter.carType + '&illType=' + this.table.filter.wzlx + '&hphm=' + this.table.filter.cph
                     + '&addr=' + this.table.filter.location;
       },

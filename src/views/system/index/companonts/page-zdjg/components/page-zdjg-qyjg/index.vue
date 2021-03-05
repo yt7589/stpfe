@@ -135,7 +135,7 @@
 
 <script>
   import mapStyle from '@/assets/baiduMapStyle'
-    import HeaderCrumb from '../common/header-crumb'
+  import HeaderCrumb from '../common/header-crumb'
   import API from '@/api'
   export default {
     name: 'page-zdjg-qyjg',
