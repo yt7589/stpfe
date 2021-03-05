@@ -45,13 +45,13 @@
               <el-table-column align="center" prop="ilTime" label="时间" minWidth="60"></el-table-column>
               <el-table-column align="center" prop="ilAddr" label="地点" minWidth="60"></el-table-column>
               <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="lng" label="详情" minWidth="60">
+              <!-- <el-table-column align="center" prop="lng" label="详情" minWidth="60">
                 <template slot-scope="scope">
                   <el-image :src="scope.row.imageUrl">
                     <div slot="error"></div>
                   </el-image>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column align="center" prop="" label="操作" minWidth="60">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="viewDetail(scope.row)">查看详情</el-button>
@@ -115,10 +115,10 @@
       },
       setBarOptions(yData,xData){
         this.barChart.setOption({
-          // grid: {
-          //   left:'55',
-          //   bottom:'100',
-          // },
+          grid: {
+            left:'55',
+            bottom:'100',
+          },
           xAxis: {
             type: 'category',
             color: '#FFFFFF',
@@ -230,12 +230,12 @@
             {
               name:'',
               type:'pie',
-              center: ['40%', '50%'],
-              radius: ['0', '70%'],
+              center: ['50%', '45%'],
+              radius: ['0', '60%'],
               roseType: 'radius',
               data:datas,
               labelLine:{
-                length: 5,
+                length: 15,
                 length2:5
               }
             }
