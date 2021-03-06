@@ -272,7 +272,6 @@
             this.loginForm.form.password = sha1(this.loginForm.form.password)
             this.login(this.loginForm.form).then(res => {
               if(res.code == 0){
-                this.login(res.data);
                 // 重定向对象不存在则返回顶层路径
                 this.$router.replace(this.$route.query.redirect || '/')
               }else{
