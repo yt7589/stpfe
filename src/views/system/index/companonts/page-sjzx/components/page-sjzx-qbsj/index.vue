@@ -1,8 +1,97 @@
 <template>
+<<<<<<< HEAD
   <div>
     <div class="page-sjz-qbsj" v-if="!ilsDetail.visible">
       <div class="header-crumb">
         <span>数据中心>全部数据</span>
+=======
+  <div class="page-sjz-qbsj">
+    <div class="header-crumb">
+      <span>数据中心>全部数据</span>
+    </div>
+    <div class="body">
+      <div class="column-left">
+        <div class="wrapper">
+          <el-form class="search-form">
+            <div style="display: flex;justify-content: space-between;">
+              <el-date-picker
+                v-model="queryTimes" format="yyyy-MM-dd" 
+                class="custom-date-editor"
+                style="width:35%"
+                type="daterange"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
+
+              <el-select class="custom-input custom-input-mini"
+                         style="width:14%" placeholder="类型"
+                         v-model="selVehicleLocType">
+                <el-option v-for="item in vehicleLocTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+
+              <el-select class="custom-input custom-input-mini"
+                         style="width:24%" placeholder="车辆类型" v-model="selVehicleType">
+                <el-option v-for="item in vehicleTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+
+              <el-select class="custom-input custom-input-mini"
+                         style="width:24%" placeholder="违章类型" v-model="selIlsType">
+                <el-option v-for="item in ilsTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </div>
+            <div style="display: flex;justify-content: space-between;margin-top:0.041rem;">
+              <el-input placeholder="请输入车牌号" v-model="hphm"
+                        class="custom-input custom-input-mini" style="width:15%"></el-input>
+              <el-input placeholder="请输入地点" v-model="siteName"
+                        class="custom-input custom-input-mini" style="width:15%">>
+              </el-input>
+
+              <div style="width:68%;display: inline-block;text-align: right">
+                <el-button class="button-search" @click="queryVehiclesHandler">
+                  搜索
+                  <el-image :src="require('../../image/image-search.png')"></el-image>
+                </el-button>
+                <el-button class="button-export" @click="handleExport">
+                  导出
+                  <el-image :src="require('../../image/image-export.png')"></el-image>
+                </el-button>
+              </div>
+            </div>
+          </el-form>
+
+          <el-container class="table-container">
+            <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
+              <el-table class="custom-table wzgl-table" :data="vehicles" height="100%">
+                <el-table-column align="center" prop="dcTime" label="时间" minWidth="90"></el-table-column>
+                <el-table-column align="center" prop="dcAddr" label="地点" minWidth="90"></el-table-column>
+                <el-table-column align="center" prop="hphm" label="车牌号" minWidth="50"></el-table-column>
+                <el-table-column align="center" prop="category" label="类别" minWidth="40"></el-table-column>
+                <el-table-column align="center" prop="isIl" label="违章" minWidth="40"></el-table-column>
+                <el-table-column align="center" prop="ilType" label="违章类型" minWidth="50"></el-table-column>
+                <el-table-column align="center" prop="" label="详情" minWidth="60">
+                  <template slot-scope="scope">
+                    <span :id="scope.row.dcId" @click="selectVehicle(scope.row.dcId)">...</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-main>
+            <el-footer>
+              <el-pagination
+                background
+                class="custom-pagination zq-pagination"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page.sync="currentPage"
+                :page-sizes="[20, 50, 100, 200]"
+                :page-size="pageSize"
+                layout="total,prev, pager, next,sizes,jumper"
+                :total="total">
+              </el-pagination>
+            </el-footer>
+          </el-container>
+        </div>
+>>>>>>> 6daacc9661cac5341f8b1e835b8df324057bbe96
       </div>
       <div class="body">
         <div class="column-left">
@@ -205,6 +294,12 @@
       this.loadIlsQty()
     },
     methods: {
+      handleExport(){
+        window.location = process.env.VUE_APP_EXPORT_API + 'dc/hp/exportAllData?startTime=' + (this.queryTimes==null? '':this.formatDate(this.queryTimes[0]) )
+                    + '&endTime=' + (this.queryTimes==null? '': this.formatDate(this.queryTimes[1]))
+                    + '&category=' + this.selVehicleLocType + '&vType=' + (this.selVehicleType==0?'':this.selVehicleType) + '&ilType=' + (this.selIlsType==0?'':this.selIlsType) + '&hphm=' + this.hphm
+                    + '&vAddr=' + this.siteName;
+      },
       /**
        * 获取车辆类别下拉框中内容
        */

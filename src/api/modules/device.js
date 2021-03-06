@@ -112,6 +112,14 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       data,
     })
   },
+  //节点位置
+  querySiteAddr(data){
+    return request({
+      url: appConst.msTmdp + 'dm/sm/querySiteAddr?p=pc&v=0.001',
+      method: 'GET',
+      data,
+    })
+  },
   //修改节点
   UpdateNode(data){
     return request({

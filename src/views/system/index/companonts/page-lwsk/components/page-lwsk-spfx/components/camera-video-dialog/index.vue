@@ -46,9 +46,7 @@
     components: {},
     data(){
       return {
-        // videourl: 'rtsp://192.168.2.68:8554/v7.mkv',
-        videourl: 'rtmp://222.128.117.234:1935/stream/0',
-
+        videourl: '',
         data: [],
         vehs: [],
         selVeh: null,
@@ -63,17 +61,18 @@
           },
           current: null
         },
+        userId: util.cookies.get('userId')
       }
     },
     mounted(){
-      this.startPlay();
       console.log('############ yantao: camera-video-dialog')
       console.log('camera-video-diag page cameraId=' + this.$store.state.stp.video_analysis.cameraId + '!!!!!!!!!!!!!!!!!!!')
-      console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
+      // console.log('ws:' + this.$globalws.ws + '; v=' + JSON.stringify(this.$globalws) + '!')
       let msg = {
-        'userId': '' + 1018,
+        'userId': this.userId,
         'type': 'wmtRrSpfx',
         'topic': 'ksRrSpfx',
+        'action': 'sub',
         'cameraId': this.$store.state.stp.video_analysis.cameraId,
         'streamId': this.$store.state.stp.video_analysis.streamId
       }
@@ -82,42 +81,51 @@
       this.$globalws.ws.onmessage = function(data) {
         console.log('websocket on message......:' + data.data + '!')
         let rst = JSON.parse(data.data)
-        this.pageObj.tvisJsonId = rst.tvisJsonId;
-        // let img001 = document.getElementById("img001")
-        // img001.src = rst.originImage
-        console.log('this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
-        // 车图片数组
-        let recs = rst.data
-        let hasVeh = false
-        let vehLen = 0
-        recs.forEach(element => {
-          hasVeh = false
-          this.pageObj.vehs.forEach(item => {
-            if (element.trackId!=-1 && item.trackId == element.trackId) {
-              // 更新现有元素信息
-              item.wsmVfvvIdx = element.wsmVfvvIdx
-              item.vehIdx = element.vehIdx
-              item.ppcxnk = element.ppcxnk
-              item.hphm = element.hphm
-              item.cutImgUrl = element.cutImgUrl
-              item.crossTime = element.crossTime
-              item.trafficViolationName = element.trafficViolationName
-              hasVeh = true
-            }
-          })
-          // 替换元素后 hashVeh为true，进入不到if  会进else？
-          if (!hasVeh) {
-            if (this.pageObj.vehs.length > 0) {
-              this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
-              vehLen = this.pageObj.vehs.length
-              // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
-              if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
-                this.pageObj.vehs.pop()
+        if(rst.type == 101){
+          // videourl
+          this.pageObj.videourl = rst.videoUrl;
+          this.pageObj.startPlay();
+        }else{
+          this.pageObj.tvisJsonId = rst.tvisJsonId;
+          // let img001 = document.getElementById("img001")
+          // img001.src = rst.originImage
+
+          // console.log('this.pageObj.vehs.length=' + this.pageObj.vehs.length + '!')
+          // 车图片数组
+          let recs = rst.data
+          let hasVeh = false
+          let vehLen = 0
+          recs.forEach(element => {
+            hasVeh = false
+            this.pageObj.vehs.forEach(item => {
+              if (element.trackId!=-1 && item.trackId == element.trackId) {
+                // 更新现有元素信息
+                item.wsmVfvvIdx = element.wsmVfvvIdx
+                item.vehIdx = element.vehIdx
+                item.ppcxnk = element.ppcxnk
+                item.hphm = element.hphm
+                item.cutImgUrl = element.cutImgUrl
+                item.crossTime = element.crossTime
+                item.trafficViolationName = element.trafficViolationName
+                hasVeh = true
               }
-            } else {
-              this.pageObj.vehs.push(element)
+            })
+            // 替换元素后 hashVeh为true，进入不到if  会进else？
+            if (!hasVeh) {
+              if (this.pageObj.vehs.length > 0) {
+                this.pageObj.vehs.splice(0, 0, element) // 将没有的元素加在最前面
+                vehLen = this.pageObj.vehs.length
+                // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
+                if (vehLen > 10) { // 只跟踪100辆车，老的车辆信息将丢弃
+                  this.pageObj.vehs.pop()
+                }
+              } else {
+                this.pageObj.vehs.push(element)
+              }
             }
-          }
+        })
+        }
+        
           /*
           if (!hasVeh && this.pageObj.vehs.length > 0) {
             // console.log('-++++-图片显示数组添加新数据：',this.pageObj.vehs,vehLen)
@@ -130,14 +138,25 @@
           } else if (!hasVeh) {
             this.pageObj.vehs.push(element)
           }*/
-        })
       }
       this.initMouseEvent()
     },
     beforeDestroy(){
       this.stopPlay();
+      this.stopReceiveWS();
     },
     methods: {
+      stopReceiveWS(){
+          let msg = {
+          'userId': this.userId,
+          'type': 'wmtRrSpfx',
+          'topic': 'ksRrSpfx',
+          'action': 'unsub',
+          'cameraId': this.$store.state.stp.video_analysis.cameraId,
+          'streamId': this.$store.state.stp.video_analysis.streamId
+        }
+        this.$globalws.ws.send(JSON.stringify(msg))
+      },
       startPlay(){
         util.webRTCForVideo.setParams(document.getElementById('video'),this.videourl,this.originImage);
         util.webRTCForVideo.start();

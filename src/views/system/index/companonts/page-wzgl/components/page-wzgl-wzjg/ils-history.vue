@@ -5,20 +5,35 @@
     </div>
     <div class="body">
       <div class="column-1">
-        <el-image class="ils-image" :src="data.imageUrl"></el-image>
+        <el-image class="ils-image" :src="info.imgUrl"></el-image>
         <div class="box-hmhp">{{data.hmhp}}</div>
         <div style="display: flex;justify-content: space-between;">
           <div class="box-ils-count">
             <div>总违章次数</div>
-            <div class="value">123</div>
+            <div class="value">{{info.ilsCount}}</div>
           </div>
           <div class="box-ils-year">
             <div>本年度违章次数</div>
-            <div class="value">123</div>
+            <div class="value">{{info.avCount}}</div>
           </div>
         </div>
       </div>
-      <div class="column-2"></div>
+      <div class="column-2">
+        <div class="pie-chart">
+          <div class="title">
+            <el-image :src="require('../../image/wzlb.png')"></el-image>            
+            违章类别前五
+          </div>
+          <div id="pie-chart" class="chart"></div>
+        </div>
+        <div class="bar-chart">
+          <div class="title">
+            <el-image :src="require('../../image/lswz.png')"></el-image>
+            历史违章走势图
+          </div>
+          <div id="bar-chart" class="chart"></div>
+        </div>
+      </div>
       <div class="column-3">
         <div class="title">
           <el-image :src="require('../../image/image-chart-2.png')"></el-image>
@@ -30,13 +45,13 @@
               <el-table-column align="center" prop="ilTime" label="时间" minWidth="60"></el-table-column>
               <el-table-column align="center" prop="ilAddr" label="地点" minWidth="60"></el-table-column>
               <el-table-column align="center" prop="ilType" label="违章类型" minWidth="60"></el-table-column>
-              <el-table-column align="center" prop="lng" label="详情" minWidth="60">
+              <!-- <el-table-column align="center" prop="lng" label="详情" minWidth="60">
                 <template slot-scope="scope">
                   <el-image :src="scope.row.imageUrl">
                     <div slot="error"></div>
                   </el-image>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column align="center" prop="" label="操作" minWidth="60">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="viewDetail(scope.row)">查看详情</el-button>
@@ -64,14 +79,18 @@
 
 <script>
   import API from '@/api'
+  import echarts from 'echarts'
 
   export default {
     props: ['data', 'visible'],
     mounted(){
       this.fetchData()
+      this.initChart()
     },
     data () {
       return {
+        pieChart: null,
+        barChart: null,
         loading: false,
         table: {
           data: [],
@@ -86,9 +105,267 @@
             pageSize: 20
           }
         },
+        info:{}
       }
     },
     methods: {
+      initChart(){
+        this.pieChart = echarts.init(document.getElementById('pie-chart'))
+        this.barChart = echarts.init(document.getElementById('bar-chart'))
+      },
+      setBarOptions(xData,yData,yMaxData){
+        var barWidth = 50;
+        var colors = [{
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#F93003'
+                }, {
+                    offset: 0.5,
+                    color: '#F93003'
+                }, {
+                    offset: 0.5,
+                    color: '#FF6B51'
+                }, {
+                    offset: 1,
+                    color: '#FF6B51'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#ECAC08'
+                }, {
+                    offset: 0.5,
+                    color: '#ECAC08'
+                }, {
+                    offset: 0.5,
+                    color: '#FBC74B'
+                }, {
+                    offset: 1,
+                    color: '#FBC74B'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#A3BA2F'
+                }, {
+                    offset: 0.5,
+                    color: '#A3BA2F'
+                }, {
+                    offset: 0.5,
+                    color: '#C1D75E'
+                }, {
+                    offset: 1,
+                    color: '#C1D75E'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#4C6061'
+                }, {
+                    offset: 0.5,
+                    color: '#4C6061'
+                }, {
+                    offset: 0.5,
+                    color: '#708E8F'
+                }, {
+                    offset: 1,
+                    color: '#708E8F'
+                }]
+            },
+            {
+                type: 'linear',
+                x: 0,
+                x2: 1,
+                y: 0,
+                y2: 0,
+                colorStops: [{
+                    offset: 0,
+                    color: '#D9D9D9'
+                }, {
+                    offset: 0.5,
+                    color: '#D9D9D9'
+                }, {
+                    offset: 0.5,
+                    color: '#F2F2F2'
+                }, {
+                    offset: 1,
+                    color: '#F2F2F2'
+                }]
+            }
+        ];
+        this.barChart.setOption({
+          grid: {
+            top: '10%',
+            bottom: '100'
+          },
+          //X轴
+          xAxis: {
+              type: 'category',
+              data: xData,
+              axisTick: {
+                show: false,
+              },
+              axisLabel: {
+                interval:0,
+                color: '#ffffff',
+                textStyle: {
+                  fontSize: 12
+                },
+              },
+              offset: 10,
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: '#D8D8D8',
+                      width: 10
+                  }
+              },
+          },
+          yAxis: {
+              show: false
+          },
+          series: [
+              // 阴影
+            {
+              type: 'bar',
+              barGap: '-100%',
+              barWidth: barWidth,
+              itemStyle: {
+                  normal: {
+                          color: function(params) {
+                              return colors[4];
+                          },
+                      }
+              },
+              z: -12,
+              data: yMaxData
+              },
+              // 柱体顶部
+              {
+                  z: 3,
+                  type: 'pictorialBar',
+                  symbolPosition: 'end',
+                  data: yMaxData,
+                  symbol: 'diamond',
+                  symbolOffset: [0, '-50%'],
+                  symbolSize: [barWidth, barWidth * 0.5],
+                  itemStyle: {
+                      normal: {
+                          borderWidth: 0,
+                          color: function(params) {
+                              return colors[4].colorStops[0].color;
+                          },
+                      }
+                  },
+              },
+              // 实体柱
+              {
+                  type: 'bar',
+                  barWidth: barWidth,
+                  itemStyle: {
+                      normal: {
+                          color: function(params) {
+                              return colors[params.dataIndex % 4];
+                          }
+                      }
+                  },
+                  // 顶部文字
+                  label: {
+                      show: true,
+                      position: [25,-30],
+                      color: '#045FE0',
+                      fontSize: 12,
+                      fontStyle: 'bold',
+                      formatter: '{c}次',
+                      align: 'center',
+                  },
+                  data: yData
+              },
+              // 柱体底部
+              {
+                  z: 2,
+                  type: 'pictorialBar',
+                  data: yData,
+                  symbol: 'diamond',
+                  symbolOffset: [0, '50%'],
+                  symbolSize: [barWidth, barWidth * 0.5],
+                  itemStyle: {
+                      normal: {
+                          color: function(params) {
+                              return colors[params.dataIndex % 4];
+                          },
+                      }
+                  },
+                  
+              },
+              // 柱体顶部
+              {
+                  z: 3,
+                  type: 'pictorialBar',
+                  symbolPosition: 'end',
+                  data: yData,
+                  symbol: 'diamond',
+                  symbolOffset: [0, '-50%'],
+                  symbolSize: [barWidth, barWidth * 0.5],
+                  itemStyle: {
+                      normal: {
+                          borderWidth: 0,
+                          color: function(params) {
+                              return colors[params.dataIndex % 4].colorStops[0].color;
+                          },
+
+                      }
+                  }
+              }
+          ]
+        })
+      },
+      setPieOptions(names,datas){
+        this.pieChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{d}%'
+          },
+          series: [
+            {
+              name:'',
+              type:'pie',
+              center: ['50%', '45%'],
+              radius: ['0', '60%'],
+              roseType: 'radius',
+              data:datas,
+              labelLine:{
+                length: 15,
+                length2:5
+              }
+            }
+          ],
+          color:['#83B22F', '#F18C1E', '#5FB6C9', '#D8D8D8', '#DA4889']
+        })
+      },
       fetchData(page = 1){
         API.queryIlsVehicleHistory({
           hphm: this.data.hmhp,
@@ -97,6 +374,36 @@
         }).then(res => {
           this.table.pagination.total = res.data.total
           this.table.data = res.data.recs
+        })
+        API.queryIlsVsInfo({
+          hphm: this.data.hmhp,
+          tvisJsonId: this.data.tvisJsonId,
+          vehsIdx: this.data.vehIdx,
+        }).then(res => {
+          this.info = res.data
+
+          var pieChartNames = [];
+          if(this.info.ilsVstype.length>0){
+            this.info.ilsVstype.forEach(item => {
+              pieChartNames.push(item.name)
+            });
+          }
+          this.setPieOptions(pieChartNames,this.info.ilsVstype);
+          var yData = [];
+          var xData = [];
+          if(this.info.ilsVsTrend.length > 0){
+            this.info.ilsVsTrend.forEach(item => {
+              yData.push(item.count);
+              xData.push(item.year);
+            })
+          }
+          var max = Math.max(...yData);
+          var yMaxData = [];
+          yData.forEach(item =>{
+            yMaxData.push(max)
+          })
+          this.setBarOptions(xData,yData,yMaxData);
+
         })
       },
       handleSizeChange(size){
@@ -189,9 +496,53 @@
       }
 
       .column-2 {
-        background: #0073FF33;
         width: 28%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .pie-chart{
+          background: #0073FF33;
+          height: 50%;
+          .title{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 16px;
+            margin-left: 24px;
+            font-size: 18px;
+            .el-image{
+              width: 24px;
+              height: 24px;
+              margin-right: 10px;
+            }
+          }
+          .chart {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .bar-chart{
+          background: #0073FF33;
+          height:49%;
+          .title{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 16px;
+            margin-left: 24px;
+            font-size: 18px;
+            .el-image{
+              width: 24px;
+              height: 24px;
+              margin-right: 10px;
+            }
+          }
+          .chart {
+            width: 100%;
+            height: 100%;
+          }
+        }
       }
 
       .column-3 {

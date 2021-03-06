@@ -61,5 +61,12 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       method: 'GET',
       params
     })
+  },
+  queryIlsVsInfo(params){
+    return request({
+      url: appConst.msTmdp + 'vm/ils/queryIlsVsInfo',
+      method: 'GET',
+      params
+    })
   }
 })
