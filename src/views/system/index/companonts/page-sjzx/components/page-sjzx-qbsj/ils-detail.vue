@@ -159,7 +159,11 @@
 
         .ils-image {
           width: 520px;
-          height: 540px;
+          height: 500px;
+          .el-image{
+            width: 520px;
+            height: 500px;
+          }
           border: 8px solid #fff;
           border-radius: 4px;
         }
