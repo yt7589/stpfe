@@ -30,7 +30,7 @@
       </div>
     </div>
     <camera-info-window class="camera-info-window" v-if="cameraDialog.visible"
-                        :data="cameraDialog.data" @close="cameraDialog.visible=false"></camera-info-window>
+                        :siteId="cameraDialog.data" @close="cameraDialog.visible=false"></camera-info-window>
   </div>
 </template>
 
@@ -102,10 +102,8 @@
        * 点击点位图标响应函数
        */
       onPointClick(point){
-        API.GetCameraList({siteId: point.siteId}).then(res => {
-          this.cameraDialog.visible = true
-          this.cameraDialog.data = res.data
-        })
+        this.cameraDialog.visible = true
+        this.cameraDialog.data = point.siteId
       },
       /**
        * 获取在地图上显示的点位列表信息

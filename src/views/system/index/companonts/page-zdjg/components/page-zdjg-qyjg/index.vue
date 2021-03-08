@@ -22,8 +22,8 @@
                             </el-table>
                         </el-main>
                         <div  class="button-page-group" >
-                            <el-button @click="getAreaListPrev()" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
-                            <el-button @click="getAreaListNext()" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
+                            <el-button @click="getAreaListPrev()" :disabled="hasPrevious" class="button-page" size="mini" ><i class="el-icon-arrow-up" style="float: left"></i>上一页</el-button>
+                            <el-button @click="getAreaListNext()" :disabled="hasNext" class="button-page" size="mini" ><i class="el-icon-arrow-down" style="float: right"></i> 下一页</el-button>
                         </div>
                     </div>
                 </el-col>
@@ -195,6 +195,9 @@
         dtData:[],
         options:[],
         dialogVisibleConfirm:false,
+        pageCount:0,
+        hasNext:true,
+        hasPrevious:true
       }
     },
     mounted(){
@@ -277,23 +280,41 @@
         API.GetKsAsQueryKeyAreas(this.frm).then((res) => {
             this.tableData = res.data.recs
             this.loading = false
+            let length = res.data.total;
+            this.pageCount = Math.ceil(length/10) ;
+            // 总页数            
+            if(this.pageCount > 1){
+              if(this.tableData.length < this.frm.amount || (this.page == this.pageCount)){
+                this.hasNext = true;
+              }else{
+                this.hasNext = false;
+              }
+            }
         })
       },
       getAreaListPrev(){
-        let page = this.page
-        if (page > 1){
-          this.page = page - 1
-          this.frm.startIndex = (this.page - 1) * this.frm.amount
-        }else{
-          this.frm.startIndex = 0
+        if(!this.hasPrevious){
+          this.frm.startIndex = this.page * this.frm.amount
+          this.frm.direction = 0;
+          this.getAreaList();
+          this.page -=1;
+          this.hasNext = false;
+          if(this.page == 1){
+            this.hasPrevious = true;
+          }
         }
-        this.frm.direction = 0
-        this.getAreaList()
       },
       getAreaListNext(){
-        this.frm.startIndex = (this.page - 1) * this.frm.amount
-        this.frm.direction = 1
-        this.getAreaList()
+        if(!this.hasNext){
+          this.frm.startIndex = (this.page) * this.frm.amount
+          this.frm.direction = 1
+          this.getAreaList();
+          this.page +=1;
+          this.hasPrevious = false;
+          if(this.page+1 == this.pageCount){
+            this.hasNext = true;
+          }
+        }
       },
 
       remoteMethod(parms) {

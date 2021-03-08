@@ -193,7 +193,6 @@
             series: [{
               name: '昨日',
               data: [],
-//              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#02C6D7',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -213,7 +212,6 @@
             }, {
               name: '今日',
               data: [],
-//              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               lineColor: '#E84D07',
               color: {
                 linearGradient: [0, 0, 0, '100%'],
@@ -238,8 +236,8 @@
           instance: null,
           zoom: 12,
           center: {
-            lng: 116.495843,
-            lat: 39.90421
+            lng: 116.404844,
+            lat: 39.914714
           }
         },
         data: {
