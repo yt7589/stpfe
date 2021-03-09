@@ -47,7 +47,7 @@
                     搜索
                     <el-image :src="require('../../image/image-search.png')"></el-image>
                   </el-button>
-                  <el-button class="button-export">
+                  <el-button class="button-export" @click="handleExport">
                     导出
                     <el-image :src="require('../../image/image-export.png')"></el-image>
                   </el-button>

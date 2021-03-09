@@ -74,8 +74,8 @@
 <script>
   import API from '@/api'
   import ImageCard from './image-card.vue'
-import { error } from 'highcharts'
-import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
+  import { error } from 'highcharts'
+  import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
   export default {
     props: ['visible','searchVeh','ytscVeh'],
     components: {ImageCard},
@@ -150,6 +150,7 @@ import { getCoordinateSystemDimensions } from 'echarts/lib/echarts'
             alert('请选择具有车辆的图片')
             return 
           } else if (vehs.length > 1) {
+            that.canSearch = false
             alert('请选择只有一辆车的图片')
             return 
           }

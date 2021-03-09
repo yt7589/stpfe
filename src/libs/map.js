@@ -1,4 +1,3 @@
-import {BaiduMap} from 'vue-baidu-map'
 const map = {}
 var mapObj = {} 
 var zoom = 6;
