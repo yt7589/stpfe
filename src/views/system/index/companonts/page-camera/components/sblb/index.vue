@@ -57,7 +57,7 @@
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
                                 layout="total,prev, pager, next,sizes,jumper"
-                                :page.sync="frm.page"
+                                :current-page.sync="frm.page"
                                 :page-sizes="[20, 50, 100, 200]"
                                 :page-size="frm.pageSize"
                                 :total="total">
@@ -314,7 +314,12 @@
       },
       getList(){
         this.loading = true
-        API.QueryDevice(this.frm).then((res) => {
+        API.QueryDevice({
+          page:this.frm.page,
+          pageSize:this.frm.pageSize,
+          type:this.frm.type,
+          code:this.frm.code
+        }).then((res) => {
           this.tableData = res.data.recs
           this.loading = false
           this.total = res.data.total

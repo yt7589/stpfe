@@ -56,9 +56,9 @@
                                 class="custom-pagination zq-pagination"
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
-                                :page.sync="frm.startIndex + 1"
+                                :page.sync="frm.page"
                                 :page-sizes="[20, 50, 100, 200]"
-                                :page-size="frm.amount"
+                                :page-size="frm.pageSize"
                                 layout="total,prev, pager, next,sizes,jumper"
                                 :total="total">
                         </el-pagination>
@@ -155,8 +155,8 @@
       return {
         loading: false,
         frm:{
-          amount:20,
-          startIndex:0,
+          pageSize:20,
+          page:1,
           nodeName:'',
           nodeAddr:'',
         },
@@ -213,17 +213,22 @@
         })
       },
       handleSizeChange(size){
-        this.frm.startIndex = 0
-        this.frm.amount = size
+        this.frm.page = 1
+        this.frm.pageSize = size
         this.getList()
       },
       handleCurrentChange(page){
-        this.frm.startIndex = page - 1
+        this.frm.page = page
         this.getList()
       },
       getList(){
         this.loading = true
-        API.QueryNode(this.frm).then((res) => {
+        API.QueryNode({
+          pageSize: this.frm.pageSize,
+          page: this.frm.page,
+          nodeName: this.frm.nodeName,
+          nodeAddr:this.frm.nodeAddr
+        }).then((res) => {
           this.tableData = res.data.recs
           this.loading = false
           this.total = res.data.total
