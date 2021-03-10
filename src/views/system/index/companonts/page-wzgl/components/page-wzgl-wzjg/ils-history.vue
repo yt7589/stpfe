@@ -5,7 +5,7 @@
     </div>
     <div class="body">
       <div class="column-1">
-        <el-image class="ils-image" :src="info.imgUrl"></el-image>
+        <el-image class="ils-image" :src="info.imgUrl" fit="contain"></el-image>
         <div class="box-hmhp">{{data.hmhp}}</div>
         <div style="display: flex;justify-content: space-between;">
           <div class="box-ils-count">
@@ -447,8 +447,13 @@
 
         .ils-image {
           width: calc(100% - 16px);
+          height: 278px;
           border: 8px solid #fff;
           border-radius: 4px;
+          .el-image{
+            width: 257px;;
+            height: 278px;
+          }
         }
 
         .box-hmhp {
