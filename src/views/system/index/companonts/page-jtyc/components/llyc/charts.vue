@@ -74,8 +74,9 @@
       setOptions(yData,yData2,seriesData){
         this.chart.setOption({
           grid: {
-            left:'55',
+            left:'100',
             top:'20',
+            right: '80',
             bottom:'100',
 
           },
@@ -126,8 +127,15 @@
                 color: '#979797'
               }
             },
+            axisLabel: {
+              fontSize: 12,
+              color: '#FFFFFF',
+              width: 100,
+              // rotate:20,
+              // margin: 18,
+              overflow: 'break'
+            },
             data: yData
-            //data: ['朝阳区','东城区','房山区','通州区','海淀区','思明区','湖里区','集美区']
           },
             {
               type: 'category',
@@ -141,17 +149,15 @@
                   fontSize: '18'
                 },
               },
-              //data:[78,56,63,123,22,330,11,22]
               data:yData2
             }
-
           ],
           series: [{
             name: '值',
             type: 'bar',
             showBackground: true,
             backgroundStyle: {
-              color: '#000000',
+              color: 'rgba(255, 255, 255, 0.2)',
             },
             itemStyle: {
               normal: {
@@ -159,7 +165,6 @@
               },
             },
             barWidth: 20,
-            //data: [78,56,63,123,22,330,11,22]
             data: seriesData
           }
           ]

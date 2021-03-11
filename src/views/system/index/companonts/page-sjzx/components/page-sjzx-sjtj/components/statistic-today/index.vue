@@ -11,8 +11,8 @@
           过车总量 <span class="big-text">{{getReadableNumber(todayData.vehicle)}}</span>
         </div>
         <div class="line">
-          本市车辆 <span style="color:#00F6FF;">{{todayData.vehicle_city}}</span>
-          外埠车辆 <span style="color:#00F6FF;">{{todayData.vehicle_town}}</span>
+          本市车辆 <span style="marginRight:40px" class="big-text1">{{getReadableNumber(todayData.vehicle_city)}}</span>
+          外埠车辆 <span class="big-text1">{{getReadableNumber(todayData.vehicle_town)}}</span>
         </div>
       </div>
       <div class="left-car">
@@ -357,15 +357,19 @@
           .big-text {
             font-size: 32px;
           }
+          .big-text1 {
+            font-size: 24px;
+            color:#00F6FF;
+          }
         }
       }
       .left-car{
+          top: -30px;
           position: absolute;
           right: 250px;
           width: 120px;
           height: 120px;
         .car-active {
-          // top: -30px;
           width: 120px;
           height: 98px;
 
@@ -383,12 +387,12 @@
         }
       }
       .right-car{
+          top: -30px;
           position: absolute;
           right: 57px;
           width: 120px;
           height: 120px;
         .car-online {
-          // top: -30px;
           width: 120px;
           height: 98px;
 
