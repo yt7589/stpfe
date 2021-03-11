@@ -394,7 +394,7 @@
           if(this.info.ilsVsTrend.length > 0){
             this.info.ilsVsTrend.forEach(item => {
               yData.push(item.count);
-              xData.push(item.year);
+              xData.push(item.year+'年');
             })
           }
           var max = Math.max(...yData);

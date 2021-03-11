@@ -4,32 +4,19 @@
       <el-image fit="contain" :src="require('../../image/image-clock.png')"></el-image>
       违法车点位排名TOP7
     </div>
-
-    <div class="card-box">
-      <div v-for="(item,index) in chart.data" :key="index" class="chart-line">
-        <span class="chart-name">{{item.name}}</span>
-        <span>
-            <el-image v-for="i in item.count" :key="i+'@'+index" class="chart-image" :src="require('../../image/image-car-blue.png')"
-                      fit="contain"></el-image>
-            <el-image v-for="j in (12-item.count)" :key="j+'#'+index" class="chart-image"
-                      :src="require('../../image/image-car-invalid.png')"
-                      fit="contain"></el-image>
-        </span>
-        <span class="chart-value">{{item.value}}</span>
-      </div>
+    <div id="chart" class="card-box">
     </div>
   </div>
 </template>
 
 <script>
+  import echarts from 'echarts'
   export default {
     props: ['data'],
     components: {},
     data(){
       return {
-        chart: {
-          data: []
-        }
+        chart: null
       }
     },
     watch: {
@@ -38,32 +25,87 @@
       }
     },
     mounted(){
-      this.updateChartData()
+      this.initChart()
     },
     methods: {
+      initChart(){
+        this.chart = echarts.init(document.getElementById("chart"))
+        this.updateChartData();
+      },
       updateChartData(){
         if (this.data) {
-          let array = this.data.concat([])
-          array.sort((t1, t2) => t2.count - t1.count)
-
-          let data = []
-          let max = 100
-          array.forEach(item => {
-            data.push({
-              name: item.siteName,
-              count: 0,
-              value: parseInt(item.count),
-            })
-            if (item.count > max) {
-              max = item.count
-            }
+          let siteNames = [];
+          let counts = [];
+          this.data.forEach(item => {
+            siteNames.push(item.siteName)
+            counts.push(item.count)
           })
-          data.forEach(item => {
-            item.count = parseInt((item.value * 12) / max)
-          })
-
-          this.chart.data = data
+          this.setOptions(siteNames,counts,Math.max(counts))
         }
+      },
+      setOptions(yData,xData,maxData){
+        this.chart.setOption({
+          grid: {
+            top: 'center',
+            height: 200,
+            left: 80,
+            right: 50
+          },
+          xAxis: {
+            max: maxData,
+            splitLine: {show: false},
+            axisLine: {
+                show:false
+            },
+            axisTick: {show: false},
+            axisLabel: {
+              show:false
+            }
+          },
+          yAxis: {
+            data: yData,
+            inverse: true,
+            axisTick: {show: false},
+            axisLine: {show: false},
+            axisLabel: {
+                margin: 20,
+                color: '#FFFFFF',
+                fontSize: 12
+            }
+          },
+          series: [{
+            type: 'pictorialBar',
+            symbol:'image://'+require('../../image/image-car-blue.png'),
+            symbolRepeat: 'fixed',
+            symbolMargin: '10',
+            symbolClip: true,
+            symbolSize: 20,
+            symbolBoundingData: maxData,
+            data: xData,
+            z: 10
+        }, {
+            type: 'pictorialBar',
+            itemStyle: {
+                normal: {
+                    opacity: 0.2
+                }
+            },
+            label: {
+                show: true,
+                position: 'right',
+                offset: [10, 0],
+                color: '#FFFFFF',
+                fontSize: 12
+            },
+            animationDuration: 0,
+            symbolRepeat: 'fixed',
+            symbolMargin: '10',
+            symbol: 'image://'+require('../../image/image-car-blue.png'),
+            symbolSize: 20,
+            data: xData,
+            z: 5
+        }]
+        })
       }
     }
   }

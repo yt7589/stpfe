@@ -56,14 +56,14 @@
               type: 'column',
               options3d: {
                 enabled: true,
-                alpha: 0,
+                alpha: -10,
                 beta: 30,
                 viewDistance: 45,
                 depth: 100,
                 frame: {
                   bottom: {
                     color: '#D8D8D880',
-                    size: 2,
+                    size: 0,
                   }
                 }
               },
@@ -84,11 +84,14 @@
               enabled: false,
             },
             xAxis: {
+              // type:'category' ,
               gridLineWidth: 0,
               lineWidth: 0,
               lineColor: 'red',
               categories: [],
               labels: {
+                autoRotation:[100],
+                autoRotationLimit: 20,
                 style: {
                   color: 'white',
                   fontSize: '0.0625rem',
@@ -138,14 +141,14 @@
               type: 'column',
               options3d: {
                 enabled: true,
-                alpha: 0,
+                alpha: -10,
                 beta: 30,
                 viewDistance: 45,
                 depth: 100,
                 frame: {
                   bottom: {
                     color: '#D8D8D880',
-                    size: 2,
+                    size: 0,
                   }
                 }
               },
@@ -171,6 +174,8 @@
               lineColor: 'red',
               categories: [],
               labels: {
+                autoRotation:[100],
+                autoRotationLimit: 20,
                 style: {
                   color: 'white',
                   fontSize: '0.0625rem',
