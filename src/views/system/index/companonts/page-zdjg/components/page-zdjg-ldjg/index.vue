@@ -6,7 +6,7 @@
                 <el-col :span="5" class="col" style="width: 23%;">
                     <div class="search-form" >
                         <el-input v-model="frm.rssName" placeholder="路段名称" class="search-input"></el-input>
-                        <button class="search-button" @click="getListNext"><span>搜索</span></button>
+                        <button class="search-button" @click="getList"><span>搜索</span></button>
                         <button class="create-button" @click="handleAdd"><span>添加</span></button>
                     </div>
                     <div>
