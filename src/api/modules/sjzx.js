@@ -51,9 +51,15 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   },
   sjzxQueryVehicle(params){
     console.log('params:' + JSON.stringify(params) + '!')
+    params.startIndex = (params.page - 1) * params.pageSize
+    params.amount = params.pageSize
     return request({
       url: appConst.msTmdp + 'dc/cs/queryVehicle',
-      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      data: params,
       params,
     })
   },
