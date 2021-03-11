@@ -70,7 +70,6 @@
                   allowOverlap: true,
                   style: {
                     "color": 'white',
-                    fontSize: '0.0625rem',
                   }
                 }
               }

@@ -17,13 +17,13 @@
         chart: {
           option: {
             chart: {
-              polar: true,
-              type: 'line',
+            polar: true,
+            type: 'line',
               plotBackgroundColor: 'transparent',
               backgroundColor: 'transparent',
             },
             title: {
-              text: '',
+              text: ''
             },
             tooltip: {
               backgroundColor: 'transparent',
@@ -35,7 +35,7 @@
                 fontSize: '0.0625rem',
               },
               formatter: function () {
-                return this.y;
+                return this.y+'--'+this.x;
               }
             },
             credits: {
@@ -49,29 +49,10 @@
             },
             pane: {
               startAngle: 0,
-              endAngle: 360,
-              size: '80%',
-              // TODO: 数据刷新时 背景也会刷新
-//              background: [
-//                {
-//                  backgroundColor: '#0A367F',
-//                  borderWidth: 0,
-//                  innerRadius: '80%',
-//                  outerRadius: '100%',
-//                },
-//                {
-//                  backgroundColor: '#0A367F',
-//                  borderWidth: 0,
-//                  innerRadius: '40%',
-//                  outerRadius: '60%',
-//                }]
+                endAngle: 360,
+              size: '80%'
             },
             xAxis: {
-              tickInterval: 36,
-              min: 0,
-              max: 360,
-//              categories: ['遮挡车牌', '主驾驶抽烟', '副驾驶未系安全带', '主驾驶看手机', '遮挡车牌2',
-//                '主驾驶未系安全带', '摩托车载人', '主驾驶打电话', '主驾驶抽烟', '摩托车嘉诚人员未带头盔'],
               categories: [],
               lineWidth: 1,
               gridLineColor: '#0445A6',
@@ -80,54 +61,37 @@
               labels: {
                 distance: 18,
                 formatter: function () {
-                  let index = parseInt(this.pos / this.axis.tickInterval)
-                  let options = this.axis.categories
-                  let name = index < options.length ? options[index] : ''
                   let colors = ['#E69B03', '#D1494E', '#42FF00', '#00F6FF', '#00C087', '#06A6FF', '#FF5200', '#4C49EC', '#045FE0', '#041FE0']
-                  let color = index < colors.length ? colors[index] : '#06A6FF'
-                  return '<span style="color:' + color + '">' + name + '</span>'
+                  let color = colors[parseInt(this.pos%10)]
+                  return '<span style="color:' + color + '">' + this.value + '</span>'
                 },
                 style: {
                   color: 'white',
-                  // fontSize: '0.0625rem',
                 }
               }
             },
             yAxis: {
-              //              gridLineInterpolation: 'polygon',
-              //              lineWidth: 0,
+              gridLineInterpolation: 'polygon',
               min: 0,
-              tickAmount: 6,
-              labels: {
-                enabled: false
-              },
-              gridLineDashStyle: 'dash',
-              minorGridLineDashStyle: 'dash',
-              lineWidth: 0,
-              gridLineColor: '#0445A6',
-              lineColor: '#04327B',
-            },
-            plotOptions: {
-              series: {
-                pointStart: 0,
-                pointInterval: 36
-              },
-              column: {
-                pointPadding: 0,
-                groupPadding: 0
-              }
+                tickAmount: 6,
+                labels: {
+                  enabled: false
+                },
+                gridLineDashStyle: 'dash',
+                minorGridLineDashStyle: 'dash',
+                lineWidth: 0,
+                gridLineColor: '#0445A6',
+                lineColor: '#04327B',
             },
             series: [{
-              name: '',
               type: 'area',
+              name: '柱形',
+              data: [],
               color: '#00F6FF80',
-              //data: [43000, 19000, 60000, 35000, 17000, 10000,20001,2312,44412,123345],
-//              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-              data:[]
+              pointPlacement: 'between'
             }]
-          },
-          instance: null,
-        },
+          }
+        }
       }
     },
     watch: {
@@ -141,29 +105,14 @@
     methods: {
       updateChartData(){
         if (this.data) {
-          let categories = this.chart.option.xAxis.categories
-          let data = this.chart.option.series[0].data
-          // 合并类型
+          let categories =[];
+          let xData = [];
           this.data.forEach(item => {
-            let found = categories.find(name => name == item.name)
-            if (!found) {
-              categories.push(item.name)
-              data.push(0)
-            }
-          })
-          this.chart.option.plotOptions.series.pointInterval = this.chart.option.xAxis.tickInterval = 360.0 / categories.length
-
-          //  合并数据
-
-          categories.forEach((name, index) => {
-            let found = this.data.find((item) => item.name == name)
-            if (found) {
-              let value = parseInt(found.count)
-              this.$set(data, index, value)
-            } else {
-              data[index] = 0;
-            }
-          })
+            categories.push(item.name);
+            xData.push(item.count);
+          });
+          this.chart.option.xAxis.categories = categories;
+          this.chart.option.series[0].data = xData;
         }
       }
     }
