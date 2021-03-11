@@ -52,7 +52,7 @@
           <el-main v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.5)">
             <image-card v-for="(item,index) in table.data" :key="index" :image="item" class="image-card"></image-card>
           </el-main>
-          <el-footer>
+          <!-- <el-footer>
             <el-pagination
               background
               class="custom-pagination zq-pagination"
@@ -64,7 +64,7 @@
               layout="total,prev, pager, next,sizes,jumper"
               :total="table.pagination.total">
             </el-pagination>
-          </el-footer>
+          </el-footer> -->
         </el-container>
       </div>
     </div>
@@ -181,6 +181,7 @@
         this.fetchData(page)
       },
       fetchData(){
+        this.loading = true;
         console.log('this.table.filter.date=' + this.table.filter.date + '!')
         console.log('this.table.filter.time=' + this.table.filter.time + '!')
         if(this.table.filter.image.url == null){
@@ -208,6 +209,7 @@
               pageOption.endTime = this.formatDate('HH:MM', this.table.filter.time[1])
             }
             API.sjzxQueryVehicle(pageOption).then(res => {
+              this.loading = false;
               this.table.data = res.data.recs
               this.table.pagination.total = res.data.total
             })
