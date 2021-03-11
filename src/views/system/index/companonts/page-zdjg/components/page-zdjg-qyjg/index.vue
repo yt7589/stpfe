@@ -6,7 +6,7 @@
                 <el-col :span="5" class="col">
                     <div class="search-form" >
                         <el-input v-model="frm.areaName" placeholder="地区名称" class="search-input"></el-input>
-                        <button class="search-button" @click="getAreaListNext"><span>搜索</span></button>
+                        <button class="search-button" @click="getAreaList"><span>搜索</span></button>
                         <button class="create-button" @click="addArea"><span>添加</span></button>
                     </div>
                     <div>
