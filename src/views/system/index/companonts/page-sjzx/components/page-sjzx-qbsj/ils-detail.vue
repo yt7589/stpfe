@@ -34,7 +34,7 @@
           <div class="line-content">
             <div v-if="!isMoto" class="line-item">
               <div>方位: <span class="value">{{data.direction}}</span></div>
-              <div>主驾驶看手机: <span class="value">{{data.md_isPhone > 0 ? '是' : '否'}}</span></div>
+              <div>主驾驶看手机: <span class="value">{{data.md_isWPhone > 0 ? '是' : '否'}}</span></div>
               <div>主驾驶打电话: <span class="value">{{data.md_isPhone > 0 ? '是' : '否'}}</span></div>
               <div>副驾驶不系安全带: <span class="value">{{data.ct_isSafetyBelt > 0 ? '是' : '否'}}</span></div>
               <div>主驾驶放下遮阳板: <span class="value">{{data.md_isSunVisor > 0 ? '是' : '否'}}</span></div>
