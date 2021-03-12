@@ -13,7 +13,7 @@
           <div><span class="title">车牌号码: </span>{{data.hphm}}</div>
           <!-- <div><span class="title">违章类型: </span>{{data.ilsType}}</div> -->
         </div>
-        <el-button v-if="!isMoto" class="search-button" @click="searchVeh_sjzx(data)">搜索相似车辆
+        <el-button v-if="!isMoto && !isSLC" class="search-button" @click="searchVeh_sjzx(data)">搜索相似车辆
           <el-image :src="require('../../image/image-search.png')"></el-image>
         </el-button>
       </div>
@@ -110,7 +110,8 @@
     props: ['data', 'visible'],
     data(){
       return{
-        isMoto:false
+        isMoto:false,
+        isSLC:false
       }
     },
     mounted(){
@@ -119,6 +120,7 @@
     watch:{
       data(val){
         this.isMoto = val.vlType=='摩托车'? true: false;
+        this.isSLC = val.vlType=='三轮车'? true: false;
       }
     },
     beforeDestroy(){

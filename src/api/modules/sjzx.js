@@ -68,6 +68,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
       url: appConst.msTmdp + 'dc/rt/queryDataReport',
       method: 'GET',
       params,
+      timeout: 10 * 1000,
     })
   }
 })

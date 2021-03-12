@@ -56,6 +56,9 @@
           return [];
         }
       },
+      dateType:{
+        type: String
+      }
     },
     data(){
       return {
@@ -64,14 +67,18 @@
       }
     },
     mounted(){
-      this.initChart()
+      this.setOptions(this.xData,this.lineData)
       this.iconUrl = require('../../image/'+this.icon);
     },
     watch: {
       xData: {
         deep: true,
         handler(val) {
-          this.setOptions(this.xData,this.lineData)
+          if(this.dateType == 'today'){
+            this.setOptions(this.xData,this.lineData)
+          }else{
+            this.setBarOptions(this.xData,this.lineData)
+          }
         }
       }
     },
@@ -84,10 +91,111 @@
     },
     methods:{
       initChart(){
+        if(this.chart != null){
+          this.chart.dispose()
+          this.chart = null
+        }
         this.chart = echarts.init(document.getElementById(this.id))
-        this.setOptions(this.xData,this.lineData)
+      },
+      setBarOptions(xData,seriesData){
+        var barWidth = 12;
+        var fonsize = 18;
+        if(this.dateType == 'month'){
+          barWidth = 12;
+        }else if(this.dateType == 'year'){
+          barWidth = 36;
+        }else if(this.dateType == 'week'){
+          barWidth = 56;
+          fonsize = 12;
+        }else if(this.dateType == 'half'){
+          barWidth = 80;
+        }else if(this.dateType == 'quarter'){
+          barWidth = 240;
+        }
+        this.initChart();
+        this.chart.setOption({
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: {
+            borderColor : '#979797',
+            left: '5%',
+            top: '20%',
+            bottom: '75',
+            x: '100'
+          },
+          xAxis: [{
+            type: 'category',
+            data: xData,
+            // data: ['1', '2', '3'],
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                fontSize : fonsize
+              }
+            },
+            axisLine:{
+                lineStyle:{
+                    color:'#979797',
+                },
+            }
+          }],
+          yAxis: [{
+            name: '',
+            type: 'value',
+            axisTick: {
+                show:false
+            },
+            splitLine:{
+               show:false
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                fontSize : fonsize
+              }
+            },
+            axisLine:{
+                lineStyle:{
+                    color:'#979797',
+                }
+            },
+          }],
+          series: [{
+            type: 'bar',
+            barWidth: barWidth,
+            data: seriesData,
+            // data: ['11', '2', '30'],
+            itemStyle: {
+              normal: {
+                label: {
+									show: true,
+									position: 'top',
+									textStyle: {
+                    color: '#979797',
+										fontSize: fonsize
+									}
+								},
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#045FE0' // 0% 处的颜色
+                }, {
+                  offset: 1,
+                  color: '#045FE0' // 100% 处的颜色
+                }], false),
+              }
+            }
+          }]
+        })
       },
       setOptions(xData,lineData){
+        this.initChart();
         this.chart.setOption({
           tooltip: {
             trigger: 'axis',

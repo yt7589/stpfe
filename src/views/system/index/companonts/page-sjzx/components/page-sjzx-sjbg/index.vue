@@ -12,17 +12,17 @@
     </div>
     <div  id="pdfDom"> 
       <div class="title">
-        北京市一日交通数据报告
+        {{info.city}}一日交通数据报告
       </div>
       <div class="chart-1" id="chart-1">
-        <fsdydqs id="line1" :x-data="rtjXData?rtjXData:[]" :line-data="rtjLineData?rtjLineData:[]" 
+        <fsdydqs id="line1" :dateType="buttonKey" :x-data="rtjXData?rtjXData:[]" :line-data="rtjLineData?rtjLineData:[]" 
         :title="params[0].title" :icon="params[0].icon" :chartItem="params[0].chartItem"></fsdydqs>
       </div>
       <div class="chart-2" id="chart-2">
         <fqgfsd :data="data.raj?data.raj:[]" :title="params[1].title" :icon="params[1].icon"></fqgfsd>
       </div>
       <div class="chart-3" id="chart-3">
-        <fsdydqs id="line2" :x-data="rtvXData?rtvXData:[]" :line-data="rtvLineData?rtvLineData:[]" 
+        <fsdydqs :dateType="buttonKey" id="line2" :x-data="rtvXData?rtvXData:[]" :line-data="rtvLineData?rtvLineData:[]" 
         :title="params[2].title" :icon="params[2].icon" :chartItem="params[2].chartItem"></fsdydqs>
       </div>
       <div class="chart-4" id="chart-4">
@@ -42,9 +42,15 @@
   import fqgfsd from './components/fqgfsd/index.vue'
   import API from '@/api'
   import util from '@/libs/util'
+  import {mapState} from 'vuex'
   export default {
     components: {
       fqgcl,fqgfsd,fsdydqs
+    },
+    computed: {
+      ...mapState('d2admin/system', [
+        'info'
+      ])
     },
     data(){
       return {
@@ -107,7 +113,7 @@
         util.pdf.domsToPdf(doms,'数据报告');
       },
       fetchData(){
-        API.sjzxQueryDataReport({buttonKey:this.buttonKey}).then(res => {
+        API.sjzxQueryDataReport({tp:this.buttonKey}).then(res => {
           this.data = res.data
           // 解析分时段拥堵趋势数据
           let rtjData = this.data.rtj;
