@@ -46,6 +46,7 @@
     props: ['visible'],
     components: {},
     data(){
+      let markerIcon = require("../../image/image-map-marker.png")
       return {
         cameraChart: {
           option: {
@@ -238,6 +239,13 @@
           center: {
             lng: 116.404844,
             lat: 39.914714
+          },
+          marker: {
+            url: markerIcon,
+            size: {
+              width: 33,
+              height: 44
+            }
           }
         },
         data: {

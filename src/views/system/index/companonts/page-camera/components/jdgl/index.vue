@@ -105,7 +105,7 @@
                 <el-button type="primary" @click="del">确 定</el-button>
             </span>
         </el-dialog>
-        <el-dialog :title="dialogTitle" :visible.sync="mapVisible"   id="mapDialog" :close-on-click-modal="false">
+        <el-dialog :title="dialogTitle" :visible.sync="mapVisible"   id="mapDialog" :close-on-click-modal="false" class="loction-dialog">
             <baidu-map  class="map"  :center="map.center" :zoom="map.zoom"  @ready="handler"
                         :scroll-wheel-zoom="true"
                         @click="clickEvent"
@@ -267,6 +267,7 @@
         this.map.center.lng = row.lng
         this.locData.longitude= row.lng
         this.locData.latitude= row.lat
+        this.dialogData.nodeAddr = row.areaId
         this.dialogTitle = '修改';
         this.saveType = 'update'
         this.dialogVisible = true
@@ -310,7 +311,7 @@
       },
       clickEvent(e){
         map.clearOverlays();
-        let Icon_0 = new BMap.Icon("../image/mark_point1.png",new BMap.Size(64, 64), {anchor: new BMap.Size(18, 32),imageSize: new BMap.Size(36, 36)});
+        let Icon_0 = new BMap.Icon(require("../../image/mark_point1.png"),new BMap.Size(64, 64), {anchor: new BMap.Size(18, 32),imageSize: new BMap.Size(30, 43)});
         var myMarker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat),{icon: Icon_0});
         map.addOverlay(myMarker);
 
@@ -329,7 +330,7 @@
       //定位成功回调
       getLoctionSuccess(point, AddressComponent, marker){
         map.clearOverlays();
-        let Icon_0 = new BMap.Icon("../image/marker_point1.png", new BMap.Size(64, 64), {anchor: new BMap.Size(18, 32),imageSize: new BMap.Size(36, 36)});
+        let Icon_0 = new BMap.Icon(require("../../image/mark_point1.png"), new BMap.Size(64, 64), {anchor: new BMap.Size(18, 32),imageSize: new BMap.Size(30, 43)});
         var myMarker = new BMap.Marker(new BMap.Point(point.point.lng, point.point.lat),{icon: Icon_0});
         map.addOverlay(myMarker);
         console.log("====getLoctionSuccess")
@@ -453,6 +454,9 @@
                     }
                 }
             }
+        }
+        .loction-dialog .el-dialog{
+          width: 1000px;
         }
 
         .el-dialog__header{

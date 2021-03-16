@@ -45,7 +45,7 @@
       CameraInfoWindow
     },
     data(){
-      let markerIcon = require("./image/image-map-marker.png")
+      let markerIcon = require("../../image/image-map-marker.png")
       return {
         map: {
           instance: null,

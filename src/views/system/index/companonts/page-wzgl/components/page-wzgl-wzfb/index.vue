@@ -63,6 +63,7 @@
     props: ['visible'],
     components: {AreaViolationTop10Card, CameraViolationTop10Card, ViolationTable},
     data(){
+      let markerIcon = require("../../image/image-map-marker.png")
       return {
         loading: false,
         table: {
@@ -98,6 +99,13 @@
           center: {
             lng: 116.495843,
             lat: 39.90421
+          },
+          marker: {
+            url: markerIcon,
+            size: {
+              width: 33,
+              height: 44
+            }
           }
         },
         illData: {},
