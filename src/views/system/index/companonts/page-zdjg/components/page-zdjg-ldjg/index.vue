@@ -34,7 +34,7 @@
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
                             <div v-for="(item,index) in markerPoints" :key="index">
-                            <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="true" @click="infoWindowOpen(index)">
+                            <bm-marker :icon=bmMarkerStyle  :position="{lat:item.lat,lng:item.lng}" :dragging="false" @click="infoWindowOpen(index)">
                                 <bm-info-window  :show="item.show" @close="infoWindowClose(index)">
                                     <div class="bm-info-content">
                                         <p>{{item.siteName}}</p>

@@ -38,12 +38,12 @@
                                     @ready="onMapReady" @moveend="syncCenterAndZoom" @zoomend="syncCenterAndZoom"
                                     :scroll-wheel-zoom="true">
                             <div v-for="(item,index) in markerPoints" :key="index">
-                                <bm-marker v-if="index===0" :icon="bmMarkerStyleStart"  :position="{lat:item.lat,lng:item.lng}" :dragging="true" >
+                                <bm-marker v-if="index===0" :icon="bmMarkerStyleStart"  :position="{lat:item.lat,lng:item.lng}" :dragging="false" >
 
                                 </bm-marker>
-                                <bm-marker v-else-if="index===markerPointsCount" :icon="bmMarkerStyleEnd"  :position="{lat:item.lat,lng:item.lng}" :dragging="true" >
+                                <bm-marker v-else-if="index===markerPointsCount" :icon="bmMarkerStyleEnd"  :position="{lat:item.lat,lng:item.lng}" :dragging="false" >
                                 </bm-marker>
-                                <bm-marker v-else :icon="bmMarkerStyleIng"  :position="{lat:item.lat,lng:item.lng}" :dragging="true" >
+                                <bm-marker v-else :icon="bmMarkerStyleIng"  :position="{lat:item.lat,lng:item.lng}" :dragging="false" >
                                 </bm-marker>
                             </div>
                         </baidu-map>
