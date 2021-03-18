@@ -63,6 +63,7 @@ wss.onmessage = function(message) { // eslint-disable-line no-unused-vars
 }
 // 发起呼叫
 webRTCForVideo.start = function start() {
+	showSpinner(video);
 	var userMediaConstraints = {
 		audio : false,
 		video : true
@@ -215,11 +216,11 @@ export function login(loginID) {
 }
 function onError() {
 }
-// 好像是呼叫请求时转圈圈用的
+// 加载动画
 function showSpinner() { // eslint-disable-line no-unused-vars
 	for (var i = 0; i < arguments.length; i++) {
-		arguments[i].poster = '../logo.png';
-		arguments[i].style.background = 'center transparent url("../logo.png") no-repeat';
+		// arguments[i].poster = '../logo.png';
+		// arguments[i].style.background = 'center transparent url("../logo.png") no-repeat';
 	}
 }
 function hideSpinner() {

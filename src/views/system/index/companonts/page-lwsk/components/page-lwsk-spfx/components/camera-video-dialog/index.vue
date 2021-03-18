@@ -3,7 +3,7 @@
     <div class="wrapper">
       <!-- <el-image id="img001" style="width:100%;height:80%" :src="originImage">
       </el-image> -->
-      <video id="video" autoplay style="width:100%;height:80%" :poster="originImage"></video>
+      <video id="video" autoplay style="width:100%;height:80%" class="video"></video>
       <ul class="item-box" id="image-box">
         <li class="li-image" v-for="item in vehs" :key="item.wsmVfvvIdx" 
         @click="selVeh = item;toIlsDetailPage(item.vehIdx)">
@@ -219,6 +219,12 @@
       right: 20px;
       bottom: 20px;
       z-index: 8000;
+      .video{
+        background-image: url("../../image/loading.gif");
+        background-repeat: no-repeat;
+        background-size: 100px;
+        background-position: center;
+      }
     }
 
     .item-box {

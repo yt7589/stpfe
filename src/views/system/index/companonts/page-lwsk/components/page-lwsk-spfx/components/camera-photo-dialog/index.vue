@@ -1,10 +1,12 @@
 <template>
   <div class="camera-photo-dialog">
-    <div class="wrapper">
-      <el-image id="img001" style="width: 100%; height: 80%" fit="contain" :src="originImage" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <div class="wrapper" v-loading="loading"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)">
+      <el-image v-if="!loading" id="img001" style="width: 100%; height: 80%" fit="contain" :src="originImage" @mouseenter="mouseenter" @mouseleave="mouseleave">
       </el-image>
       <ul class="item-box" id="image-box">
-        <div class="left-button" @click="goLeft"></div>
+        <div class="left-button" @click="goLeft" v-if="!loading"></div>
         <li
           class="li-image"
           v-for="item in vehs"
@@ -23,7 +25,7 @@
             </div>
           </div>
         </li>
-        <div class="right-button" @click="goRight"></div>
+        <div class="right-button" @click="goRight" v-if="!loading"></div>
       </ul>
       <!--<i class="el-icon-close"></i>-->
       <div class="selected-image" v-if="table.current">
@@ -56,6 +58,7 @@ export default {
   components: {},
   data() {
     return {
+      loading:true,
       data: [],
       vehs: [],
       selVeh: null,
@@ -108,6 +111,7 @@ export default {
       API.getTvisAnalysisResult(params).then((res) => {
         console.log("get the result of getTvisAnalysisResult! res:" + JSON.stringify(res) + "!");
         if (res.data != null) {
+          pageObj.loading = false;
           console.log("result: " + JSON.stringify(res.data) + "!");
           pageObj.tvisJsonId = res.data.tvisJsonId;
           pageObj.originImage = res.data.originImage;

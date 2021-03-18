@@ -65,7 +65,7 @@ export default ({service, request, serviceForMock, requestForMock, mock, faker, 
   },
   sjzxQueryDataReport(params){
     return request({
-      url: appConst.msTmdp + 'dc/rt/queryDataReport',
+      url: process.env.VUE_APP_EXPORT_API + 'dc/rt/queryDataReport',
       method: 'GET',
       params,
       timeout: 10 * 1000,
