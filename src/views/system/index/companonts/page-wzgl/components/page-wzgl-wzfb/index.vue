@@ -39,7 +39,7 @@
                      @ready="onMapReady" @tilesloaded="onMapLoaded">
             <bm-marker v-for="(point,index) in siteData" :key="index"
                        :position="{lng: point.lng, lat: point.lat}"
-                       v-if="map.instance" @click="onPointClick(point)" :icon="map.marker">
+                       v-if="map.instance" :icon="map.marker">
             </bm-marker>
           </baidu-map>
         </div>
@@ -119,10 +119,6 @@
       onMapReady ({BMap, map}) {
         this.map.instance = map
         this.initMap()
-        setTimeout(() => {
-          this.map.ready = true
-          this.zoomFocus();
-        }, 2000)
       },
       onMapLoaded(){
       },
@@ -139,21 +135,12 @@
         })
         API.querySiteIllegal().then(res => {
           this.siteData = res.data.recs
-          this.zoomFocus();
+          if(this.siteData.length > 0){
+            this.map.center.lat = this.siteData[0].lat;
+            this.map.center.lng = this.siteData[0].lng;
+          }
         })
-      },
-      zoomFocus(){
-        if (this.map.ready) {
-          var points = []
-          this.siteData.forEach((item) => {
-            points.push(new BMap.Point(item.lng, item.lat))
-          })
-          let v = this.map.instance.getViewport(points);
-
-          this.map.center = v.center
-          this.map.zoom = v.zoom
-        }
-      },
+      }
     }
   }
 </script>
