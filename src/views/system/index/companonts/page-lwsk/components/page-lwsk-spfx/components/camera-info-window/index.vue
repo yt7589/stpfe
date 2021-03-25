@@ -106,11 +106,13 @@
         }
       },
       initData(){
+        this.hasNext = true;
+        this.hasPrevious = true;
         API.GetCameraList(this.frm).then(res => {
           this.itemData = res.data.recs
           this.cameraNum = res.data.camera;
           this.snapshotNum = res.data.snapshot;
-          let length = this.cameraNum + this.snapshotNum;
+          let length = this.itemData.length;
           this.pageCount = Math.ceil(length/10) ;
           // 总页数            
           if(this.pageCount > 1){
