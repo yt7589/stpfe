@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import API from '@/api'
   export default {
+    props:['data'],
     components: {},
     data(){
       return {
@@ -113,23 +113,29 @@ import API from '@/api'
         },
       }
     },
-    mounted(){
-      this.getVioQty()
+    watch: {
+      data: {
+        immediate: true, // 初次监听即执行  
+        deep: true,
+        handler(val) {
+          if(val){
+            this.initData()
+          }
+        }
+      }
     },
     methods: {
-      getVioQty(){
-        API.getTrendParam().then(res => {
-          let arr_categories = []
-          let arr_data = []
-          let tdit = res.data.dit
-          let vtLen= tdit.length
-          for (let i=0; i<vtLen; i++) {
-            arr_categories.push(tdit[i]['name'])
-            arr_data.push(tdit[i]['count'])
-          }
-          this.chart.option.xAxis.categories = arr_categories
-          this.chart.option.series[0].data = arr_data
-        })
+      initData(){
+        let arr_categories = []
+        let arr_data = []
+        let tdit = this.data
+        let vtLen= tdit.length
+        for (let i=0; i<vtLen; i++) {
+          arr_categories.push(tdit[i]['name'])
+          arr_data.push(tdit[i]['count'])
+        }
+        this.chart.option.xAxis.categories = arr_categories
+        this.chart.option.series[0].data = arr_data
       }
     }
   }

@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import API from '@/api'
   export default {
+    props:['data'],
     components: {},
     data(){
       return {
@@ -104,24 +104,29 @@ import API from '@/api'
         },
       }
     },
-    mounted(){
-      this.getRecQty()
+    watch: {
+      data: {
+        immediate: true, // 初次监听即执行  
+        deep: true,
+        handler(val) {
+          if(val){
+            this.initData()
+          }
+        }
+      }
     },
     methods: {
-      getRecQty(){
-        let pageObj = this
-        API.getTrendParam().then(res => {
-          let arr_categories = []
-          let arr_data = []
-          let tdrt = res.data.drt
-          let vtLen= tdrt.length
-          for (let i=0; i<vtLen; i++) {
-            arr_categories.push(tdrt[i]['name'])
-            arr_data.push(tdrt[i]['count']/10000)
-          }
-          this.chart.option.xAxis.categories = arr_categories
-          this.chart.option.series[0].data = arr_data
-        })
+      initData(){
+        let arr_categories = []
+        let arr_data = []
+        let tdrt = this.data
+        let vtLen= tdrt.length
+        for (let i=0; i<vtLen; i++) {
+          arr_categories.push(tdrt[i]['name'])
+          arr_data.push(tdrt[i]['count']/10000)
+        }
+        this.chart.option.xAxis.categories = arr_categories
+        this.chart.option.series[0].data = arr_data
       }
     }
   }

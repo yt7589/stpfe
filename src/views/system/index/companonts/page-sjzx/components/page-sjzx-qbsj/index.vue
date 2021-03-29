@@ -127,8 +127,8 @@
               </div>
             </div>
           </div>
-          <chart-violation class="chart-violation"></chart-violation>
-          <chart-recognize class="chart-recognize"></chart-recognize>
+          <chart-violation class="chart-violation" :data="loadIlsTotal.dit"></chart-violation>
+          <chart-recognize class="chart-recognize" :data="loadIlsTotal.drt"></chart-recognize>
         </div>
       </div>
     </div>
